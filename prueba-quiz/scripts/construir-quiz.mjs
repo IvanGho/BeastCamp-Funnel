@@ -20,18 +20,34 @@ const datos = new Function(`${datosTxt}; return DATOS;`)();
 const ilust = src("ilustraciones.js");
 const comun = src("comun.js");
 
-const cabeza = (titulo) => `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><title>${titulo}</title><style>${css}</style></head>`;
+// `imagenes`: lo que se ve en la primera pantalla; el navegador lo pide antes de ejecutar el JS que arma la página.
+const cabeza = (titulo, imagenes = [], cssExtra = "") => `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><title>${titulo}</title>${imagenes.map((u) => `<link rel="preload" as="image" href="${u}" fetchpriority="high">`).join("")}<style>${css}${cssExtra}</style></head>`;
+const primeraPantallaQuiz = ["/media/hook.jpg", ...["m_golpes", "m_aire", "m_plan", "m_const"].map((k) => `/img/muneco-${k}.webp`)];
 const scripts = (extra) => `<script>\n${datosTxt}\n${ilust}\n${comun}\n${extra}\n</script>`;
 
 // ---------- Quiz ----------
 salida("quiz/index.html",
-  cabeza("BeastCamp · Plan de shadowboxing en casa") +
+  cabeza("BeastCamp · Plan de shadowboxing en casa", primeraPantallaQuiz) +
   `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app"></main></div>${scripts(src("quiz.js"))}</body></html>`);
 
 // ---------- Oferta y rescates ----------
 for (const [id, titulo] of [["oferta", "BeastCamp Sombra · Tu plan de 4 semanas"], ["back1", "BeastCamp Sombra · 20% OFF"], ["back2", "BeastCamp Sombra · 50% OFF final"]]) {
   salida(`${id}/index.html`,
-    cabeza(titulo) + `<body><div class="shell" id="shell"><div id="bg"></div><main id="app" class="oferta-main"></main></div>${scripts(`const PAGINA='${id}';\n${src("oferta.js")}`)}</body></html>`);
+    cabeza(titulo, ["/media/oferta.jpg"]) + `<body><div class="shell" id="shell"><div id="bg"></div><main id="app" class="oferta-main"></main></div>${scripts(`const PAGINA='${id}';\n${src("oferta.js")}`)}</body></html>`);
+}
+
+// ---------- Funnel de bajar de peso (rutas nuevas, solo se agregan) ----------
+const peso = (f) => src(`peso/${f}`);
+const cssPeso = peso("peso.css");
+const cssOfertaPeso = peso("peso-oferta.css");
+// Primera pantalla (edad): el póster del video hook y los cuatro muñecos de sus tarjetas.
+const primeraPantallaPeso = ["/media/hook.jpg", ...["n_empiezo", "n_seis", "n_anios", "n_mas"].map((k) => `/img/muneco-${k}.webp`)];
+salida("quiz-peso/index.html",
+  cabeza("BeastCamp · Plan para bajar de peso en casa", primeraPantallaPeso, cssPeso) +
+  `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app"></main></div>${scripts([peso("calculos-peso.js"), peso("datos-peso.js"), peso("quiz-peso.js")].join("\n"))}</body></html>`);
+for (const [id, titulo] of [["oferta", "BeastCamp Sombra · Tu plan de 4 semanas"], ["back1", "BeastCamp Sombra · 20% OFF"], ["back2", "BeastCamp Sombra · 50% OFF final"]]) {
+  salida(`${id}-peso/index.html`,
+    cabeza(titulo, ["/media/oferta.jpg"], cssOfertaPeso) + `<body><div class="shell" id="shell"><div id="bg"></div><main id="app" class="oferta-main"></main></div>${scripts(`const PAGINA='${id}';\n${[peso("calculos-peso.js"), peso("datos-peso.js"), peso("oferta-peso.js")].join("\n")}`)}</body></html>`);
 }
 
 // ---------- Gracias ----------

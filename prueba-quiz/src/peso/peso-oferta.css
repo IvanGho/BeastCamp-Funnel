@@ -1,0 +1,34 @@
+/* CSS propio de /oferta-peso/, /back1-peso/ y /back2-peso/. Se carga después de base.css y manda base.css: acá solo van la tarjeta Hoy → Tu meta y el gráfico de proyección (prefijo po-). */
+
+/* Tarjeta Hoy → Tu meta */
+.po-par{display:flex;align-items:stretch;justify-content:center;gap:8px}
+.po-col{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.po-col small{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--m)}
+.po-col b{font-size:26px;line-height:1.15;font-variant-numeric:tabular-nums}
+.po-col span{font-size:13px;color:var(--m);font-variant-numeric:tabular-nums}
+.po-col.meta{border-color:var(--g);background:#f0fdf4}
+.po-col.meta small,.po-col.meta b{color:var(--gd)}
+.po-flecha{flex:none;align-self:center;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+.po-flecha svg{width:24px;height:24px;stroke:var(--g);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.po-fecha{margin-top:10px;text-align:center;font-size:14px;color:var(--m);line-height:1.5}
+.po-fecha b{color:var(--t)}
+
+/* Gráfico de proyección */
+.po-graf{display:block;width:100%;height:auto;margin-top:8px;overflow:visible}
+.po-area{fill:url(#poRelleno);stroke:none}
+.po-linea{fill:none;stroke:var(--g);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.po-pt{fill:#fff;stroke:var(--m);stroke-width:2.6}
+.po-pt.meta{fill:var(--g);stroke:#fff;stroke-width:2.6;filter:drop-shadow(0 1px 3px rgba(22,163,74,.5))}
+.po-et{font:700 12.5px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;fill:var(--t)}
+.po-et.meta{fill:var(--gd)}
+.po-nota{margin:6px 0 0;font-size:12.5px;line-height:1.4;color:var(--m)}
+
+@media(max-width:380px){
+ .po-col b{font-size:22px}
+ .po-par{gap:4px}
+}
+
+/* Barra fija de abajo: oculta hasta que la persona termina de leer «Por qué te sirve» (oferta-peso.js le pone .oculta). Escondida queda fuera de pantalla, sin recibir toques y fuera del lector de pantalla. */
+.sticky{transition:transform .28s ease,visibility 0s}
+.sticky.oculta{transform:translateY(calc(100% + 40px));visibility:hidden;pointer-events:none;transition:transform .28s ease,visibility 0s .28s}
+@media(prefers-reduced-motion:reduce){.sticky,.sticky.oculta{transition:none}}

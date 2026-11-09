@@ -1,4 +1,4 @@
-<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><title>BeastCamp · Plan de shadowboxing en casa</title><style>:root{--g:#16A34A;--g2:#4ade80;--gd:#15803d;--t:#0b0f0c;--m:#5b665e;--line:#e5ebe6;--bg:#fff;--soft:#f4f7f5;--r:16px}
+<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><title>BeastCamp · Plan de shadowboxing en casa</title><link rel="preload" as="image" href="/media/hook.jpg" fetchpriority="high"><link rel="preload" as="image" href="/img/muneco-m_golpes.webp" fetchpriority="high"><link rel="preload" as="image" href="/img/muneco-m_aire.webp" fetchpriority="high"><link rel="preload" as="image" href="/img/muneco-m_plan.webp" fetchpriority="high"><link rel="preload" as="image" href="/img/muneco-m_const.webp" fetchpriority="high"><style>:root{--g:#16A34A;--g2:#4ade80;--gd:#15803d;--t:#0b0f0c;--m:#5b665e;--line:#e5ebe6;--bg:#fff;--soft:#f4f7f5;--r:16px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--t);font:17px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 body{min-height:100dvh}
@@ -393,7 +393,47 @@ function setBg(n) {
   const bg = $('bg');
   if (!n) { forma.classList.remove('conbg'); if (bg) bg.innerHTML = ''; return; }
   forma.classList.add('conbg');
-  bg.innerHTML = `<video src="/media/hd/${n}.mp4" poster="/media/${n}.jpg" autoplay muted loop playsinline></video>`;
+  const v = videoDe(n);
+  bg.replaceChildren(v);
+  v.play().catch(() => {});
+}
+
+/* Un solo elemento por video: el que se precarga es el mismo que después se muestra, así no se baja dos veces. */
+const VIDEOS = {};
+function videoDe(n) {
+  if (VIDEOS[n]) return VIDEOS[n];
+  const v = document.createElement('video');
+  v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
+  v.poster = `/media/${n}.jpg`;
+  v.src = `/media/hd/${n}.mp4`;
+  return (VIDEOS[n] = v);
+}
+
+/* Espera a que el video pueda reproducirse entero; si la conexión no da, a los 20 s sigue con el próximo. */
+const videoListo = (v) => new Promise((listo) => {
+  if (v.readyState >= 4) return listo();
+  v.addEventListener('canplaythrough', listo, { once: true });
+  v.addEventListener('error', listo, { once: true });
+  setTimeout(listo, 20000);
+});
+
+/* Baja todo en el orden del funnel apenas abre la página. */
+const precargadas = [];
+async function precargar() {
+  const urls = ['mail', 'espejo', 'oferta'].map((n) => `/media/${n}.jpg`);
+  S.forEach((x) => {
+    if (x.o) x.o.forEach((o) => urls.push(`/img/muneco-${o[1]}.webp`));
+    if (x.t === 'info') ['e_pies', 'e_guardia', 'e_resp'].forEach((k) => urls.push(`/img/muneco-${k}.webp`));
+  });
+  urls.forEach((u) => { const i = new Image(); i.src = u; precargadas.push(i); });
+  if (navigator.connection && navigator.connection.saveData) return;   // con ahorro de datos solo imágenes: el póster reemplaza al video
+  await videoListo(videoDe('hook'));
+  for (const n of ['mail', 'espejo', 'oferta']) {
+    const v = videoDe(n);
+    /* iOS ignora preload hasta que el video arranca: se le da play y se pausa, salvo que ya esté en pantalla. */
+    v.play().then(() => { if (!v.isConnected) v.pause(); }).catch(() => {});
+    await videoListo(v);
+  }
 }
 const progreso = () => { $('barra').style.width = Math.max(4, Math.round((s / (S.length - 1)) * 100)) + '%'; };
 function siguiente() {
@@ -508,5 +548,6 @@ function cargando() {
 
 pie();
 dibuja();
+precargar();
 
 </script></body></html>

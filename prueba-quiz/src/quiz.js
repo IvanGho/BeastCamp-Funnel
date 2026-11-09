@@ -32,7 +32,47 @@ function setBg(n) {
   const bg = $('bg');
   if (!n) { forma.classList.remove('conbg'); if (bg) bg.innerHTML = ''; return; }
   forma.classList.add('conbg');
-  bg.innerHTML = `<video src="/media/hd/${n}.mp4" poster="/media/${n}.jpg" autoplay muted loop playsinline></video>`;
+  const v = videoDe(n);
+  bg.replaceChildren(v);
+  v.play().catch(() => {});
+}
+
+/* Un solo elemento por video: el que se precarga es el mismo que después se muestra, así no se baja dos veces. */
+const VIDEOS = {};
+function videoDe(n) {
+  if (VIDEOS[n]) return VIDEOS[n];
+  const v = document.createElement('video');
+  v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
+  v.poster = `/media/${n}.jpg`;
+  v.src = `/media/hd/${n}.mp4`;
+  return (VIDEOS[n] = v);
+}
+
+/* Espera a que el video pueda reproducirse entero; si la conexión no da, a los 20 s sigue con el próximo. */
+const videoListo = (v) => new Promise((listo) => {
+  if (v.readyState >= 4) return listo();
+  v.addEventListener('canplaythrough', listo, { once: true });
+  v.addEventListener('error', listo, { once: true });
+  setTimeout(listo, 20000);
+});
+
+/* Baja todo en el orden del funnel apenas abre la página. */
+const precargadas = [];
+async function precargar() {
+  const urls = ['mail', 'espejo', 'oferta'].map((n) => `/media/${n}.jpg`);
+  S.forEach((x) => {
+    if (x.o) x.o.forEach((o) => urls.push(`/img/muneco-${o[1]}.webp`));
+    if (x.t === 'info') ['e_pies', 'e_guardia', 'e_resp'].forEach((k) => urls.push(`/img/muneco-${k}.webp`));
+  });
+  urls.forEach((u) => { const i = new Image(); i.src = u; precargadas.push(i); });
+  if (navigator.connection && navigator.connection.saveData) return;   // con ahorro de datos solo imágenes: el póster reemplaza al video
+  await videoListo(videoDe('hook'));
+  for (const n of ['mail', 'espejo', 'oferta']) {
+    const v = videoDe(n);
+    /* iOS ignora preload hasta que el video arranca: se le da play y se pausa, salvo que ya esté en pantalla. */
+    v.play().then(() => { if (!v.isConnected) v.pause(); }).catch(() => {});
+    await videoListo(v);
+  }
 }
 const progreso = () => { $('barra').style.width = Math.max(4, Math.round((s / (S.length - 1)) * 100)) + '%'; };
 function siguiente() {
@@ -147,3 +187,4 @@ function cargando() {
 
 pie();
 dibuja();
+precargar();
