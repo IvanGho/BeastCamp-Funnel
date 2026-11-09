@@ -1,0 +1,170 @@
+<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><title>BeastCamp · Política de privacidad</title><style>:root{--g:#16A34A;--g2:#4ade80;--gd:#15803d;--t:#0b0f0c;--m:#5b665e;--line:#e5ebe6;--bg:#fff;--soft:#f4f7f5;--r:16px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--t);font:17px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{min-height:100dvh}
+button{font:inherit;color:inherit}
+/* progreso fijo arriba */
+.prog{position:fixed;top:0;left:0;right:0;height:6px;background:#e5ebe6;z-index:30}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--g),var(--g2));border-radius:0 6px 6px 0;transition:width .5s cubic-bezier(.3,.8,.3,1);box-shadow:0 0 12px rgba(74,222,128,.6)}
+/* estructura: en compu video a la izquierda; en celular franja arriba */
+.shell{display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr;min-height:100dvh}
+#bg{position:relative;height:0;overflow:hidden;background:#dff3e6;transition:height .35s}
+#bg video{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.15) contrast(1.03)}
+#bg:after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(transparent,#fff)}
+.shell.conbg #bg{height:clamp(72px,15dvh,150px);margin-top:6px}
+main{padding:10px 16px 66px;width:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;justify-content:center}
+@media(min-width:900px){
+ .shell{grid-template-rows:1fr}.shell.conbg{grid-template-columns:1fr 1fr}
+ #bg{height:0;margin:0}.shell.conbg #bg{height:100dvh;position:sticky;top:0;margin-top:0}
+ #bg:after{left:auto;top:0;bottom:0;right:0;width:90px;height:auto;background:linear-gradient(90deg,transparent,#fff)}
+ main{padding:14px 28px 66px}
+ .shell:not(.conbg) main{max-width:560px}
+}
+/* pie legal fijo */
+.ft{position:fixed;left:0;right:0;bottom:0;z-index:20;text-align:center;color:#8a948d;font-size:10px;line-height:1.35;padding:14px 16px 8px;background:linear-gradient(transparent,#fff 45%);pointer-events:none}
+.ft a{color:#6b756e;pointer-events:auto}
+/* textos */
+h1{font-size:28px;line-height:1.15;margin:6px 0 8px}h2{font-size:23px;line-height:1.2;margin:4px 0 6px;text-align:center}
+p{margin:0 0 10px}.sub{text-align:center;color:var(--m);font-size:14px;margin:0 0 12px}
+.tag{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--g);font-weight:800;margin:0 0 6px}
+.cen{text-align:center}
+/* pill de prueba social / gatillos */
+.pill{align-self:center;display:inline-flex;gap:7px;align-items:center;font-size:12.5px;font-weight:700;color:var(--gd);background:#ecfdf3;border:1px solid #c8f1d6;border-radius:99px;padding:5px 12px;margin:4px 0 8px}
+.pill svg{width:15px;height:15px;stroke:var(--g);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.estr{color:#f5a623;letter-spacing:2px}
+.gift{margin:12px 0 0;font-size:12.5px;background:#fffbe6;border:1px solid #fde68a;border-radius:12px;padding:9px 12px;color:#854d0e;display:flex;gap:10px;align-items:center}
+.gift svg{width:26px;height:26px;flex:none;stroke:#b45309;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.gift svg .a{stroke:#b45309}
+/* globo de dato */
+.globo{position:relative;background:#f0fdf4;border:1px solid #c8f1d6;color:#14532d;border-radius:14px;padding:9px 12px 9px 38px;font-size:13px;margin:0 0 12px;line-height:1.35}
+.globo:before{content:"";position:absolute;left:12px;top:11px;width:16px;height:16px;border-radius:50%;background:var(--g)}
+.globo:after{content:"i";position:absolute;left:12px;top:11px;width:16px;height:16px;color:#fff;font:800 11px/16px system-ui;text-align:center}
+/* tarjetas de opciones */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.c{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:10px 8px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:clamp(96px,19dvh,156px);transition:.15s;position:relative;overflow:hidden}
+.c:hover{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 18px rgba(22,163,74,.15)}
+.c.on{border-color:var(--g);background:#f0fdf4;box-shadow:0 0 0 3px rgba(74,222,128,.25)}
+.c b{font-size:13.5px;line-height:1.25;font-weight:700}.c small{display:block;font-size:11.5px;color:var(--m);font-weight:500;margin-top:2px}
+.c svg{width:clamp(50px,11dvh,92px);height:clamp(50px,11dvh,92px);flex:none}
+.c.A svg *{fill:none;stroke:#0b0f0c;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}.c.A svg .a *,.c.A svg .a{stroke:var(--g)}
+
+@keyframes bob{50%{transform:translateY(-3px)}}.c.B svg .fig{animation:bob 1.7s ease-in-out infinite;transform-origin:50% 100%}.c.B:nth-child(2) .fig{animation-delay:.2s}.c.B:nth-child(3) .fig{animation-delay:.4s}.c.B:nth-child(4) .fig{animation-delay:.6s}
+.c.chico{min-height:clamp(80px,14.5dvh,118px);padding:6px 6px}.c.chico svg{width:clamp(42px,8.6dvh,72px);height:clamp(42px,8.6dvh,72px)}.c.chico b{font-size:12.5px}
+.c .chk{position:absolute;right:8px;top:8px;width:20px;height:20px;border-radius:6px;border:2px solid #cfd8d2;background:#fff}
+.c.on .chk{background:var(--g);border-color:var(--g)}.c.on .chk:after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+/* botones */
+.cta{display:block;width:100%;border:0;border-radius:14px;background:linear-gradient(180deg,#1fbf5b,var(--g));color:#fff;font-weight:800;font-size:17px;padding:16px;margin-top:12px;cursor:pointer;text-align:center;text-decoration:none;box-shadow:0 8px 20px rgba(22,163,74,.3);position:relative;overflow:hidden}
+.cta:after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:brillo 3.2s infinite}
+@keyframes brillo{0%{left:-60%}60%,100%{left:140%}}
+.cta.s{background:#fff;color:var(--t);border:2px solid var(--line);box-shadow:none}.cta.s:after{display:none}.cta[disabled]{opacity:.45;box-shadow:none}
+.box{background:var(--soft);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin:12px 0}
+.row{display:flex;justify-content:space-between;gap:10px}
+input[type=text],input[type=email]{width:100%;padding:15px;font-size:17px;border:2px solid #dfe6e1;border-radius:14px;margin-bottom:10px;font-family:inherit}
+input:focus{outline:0;border-color:var(--g)}
+/* entrada de pantallas */
+.scr{animation:entra .35s ease both}@keyframes entra{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.sale{opacity:0;transform:translateX(-18px);transition:.16s}
+/* «Entrenar mal te frena» */
+.ill{display:flex;gap:12px;align-items:center;margin:8px 0;background:var(--soft);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px}
+.ill .esc3d{width:84px;height:84px;object-fit:contain;mix-blend-mode:multiply;flex:none}.ill b{display:block;font-size:15px}.ill span{font-size:13px;color:var(--m)}
+@keyframes sep{0%,100%{transform:translateX(0)}50%{transform:translateX(-5px)}}@keyframes sep2{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.esc .f1,.esc .p1{animation:sep 1.8s ease-in-out infinite}.esc .f2,.esc .p2{animation:sep2 1.8s ease-in-out infinite}
+@keyframes sube{0%,100%{transform:translateY(7px)}45%{transform:translateY(-4px)}}.esc .guante-g{animation:sube 1.5s ease-in-out infinite}
+@keyframes infla{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}.esc .pecho{animation:infla 2.4s ease-in-out infinite;transform-origin:48px 52px}
+@keyframes exhala{0%{opacity:0;transform:translate(-8px,6px)}40%{opacity:1}100%{opacity:0;transform:translate(8px,-8px)}}.esc .aire circle{animation:exhala 2.4s ease-out infinite}.esc .aire circle:nth-child(2){animation-delay:.3s}.esc .aire circle:nth-child(3){animation-delay:.6s}
+/* noticia */
+.nota{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.07)}
+.nota .im{height:120px;background:linear-gradient(135deg,#0b3d24,#16A34A 60%,#4ade80);display:flex;align-items:center;justify-content:center}
+.nota .im img{width:100%;height:100%;object-fit:cover;display:block}.nota .im svg{width:58px;height:58px;stroke:#fff;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.nota .tx{padding:12px 14px}.nota .et{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--g);font-weight:800}
+.nota h3{margin:4px 0 6px;font-size:17px;line-height:1.25}.nota p{font-size:13px;color:var(--m);margin:0 0 6px}.nota .fu{font-size:11.5px;color:#8a948d}.nota a{color:var(--gd)}
+/* especialista */
+.exp{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;text-align:center;box-shadow:0 10px 26px rgba(0,0,0,.06)}
+.av{width:76px;height:76px;border-radius:50%;margin:0 auto 8px;background:linear-gradient(135deg,var(--g),#065f46);color:#fff;font-weight:800;font-size:25px;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 0 0 3px var(--g2);overflow:hidden}.av img{width:100%;height:100%;object-fit:cover}
+.exp .nm{font-size:18px;font-weight:800}.exp .ti{color:var(--m);font-size:14px}.exp .mt{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:800;background:#fef9c3;color:#854d0e;border-radius:99px;padding:2px 9px}
+.exp ul{list-style:none;margin:10px 0 0;padding:0;text-align:left;font-size:12.5px;color:var(--m)}.exp li{margin:5px 0;padding-left:16px;position:relative}.exp li:before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;background:var(--g)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:12px;color:var(--m)}.chips span{border:1px solid var(--line);border-radius:99px;padding:5px 10px;background:#f9fbf9;display:inline-flex;gap:5px;align-items:center}
+.chips svg{width:13px;height:13px;stroke:var(--g);fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+/* carga */
+.ring{position:relative;width:150px;height:150px;margin:6px auto 10px}.ring svg{transform:rotate(-90deg)}.ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px}
+.chkl{display:flex;gap:10px;align-items:center;margin:9px 0;font-size:15px;color:#9aa49d;transition:.3s}.chkl .ic{width:22px;height:22px;border-radius:50%;border:2px solid #d4dcd7;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;flex:none}
+.chkl.d{color:var(--t)}.chkl.d .ic{background:var(--g);border-color:var(--g)}
+.velo{position:fixed;inset:0;background:rgba(236,243,239,.78);backdrop-filter:blur(3px);z-index:60;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}@keyframes fade{from{opacity:0}}
+.hoja{background:#fff;width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:20px 18px 26px;animation:sube2 .3s}@keyframes sube2{from{transform:translateY(30px)}}
+.hoja .tag{text-align:center}.hoja h3{text-align:center;margin:4px 0 12px;font-size:19px}
+/* oferta */
+.tbar{position:sticky;top:6px;z-index:5;margin:0 0 10px;background:#0b0f0c;color:#fff;border-radius:12px;padding:9px 12px;font-size:13px;text-align:center}.tbar b{color:var(--g2);font-size:16px;font-variant-numeric:tabular-nums}
+.vid{position:relative;border-radius:var(--r);overflow:hidden;background:#000;margin:8px 0}.vid video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
+.sello{display:flex;gap:12px;align-items:center}.sello svg{width:40px;height:40px;flex:none;stroke:var(--g);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.vs{display:flex;gap:8px;margin-top:10px}.vs>div{flex:1;font-size:13px;line-height:1.7;color:var(--m);background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}.vs small{display:block;font-weight:800;letter-spacing:.08em;margin-bottom:4px;color:#b91c1c}.vs .on{border-color:var(--g);background:#f0fdf4;color:var(--t)}.vs .on small{color:var(--g)}
+.st{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:14px}.st i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--g);color:#fff;font-style:normal;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.sem{display:flex;gap:10px;margin:9px 0;font-size:14px}.sem b{flex:none;width:74px;color:var(--g)}.sem span{color:var(--m)}
+.stack>div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}.stack s{color:var(--m);white-space:nowrap}.stack .tot{font-weight:800;border-bottom:0}
+.big{font-size:46px;font-weight:900;color:var(--g);line-height:1.1}.note{font-size:13px;color:var(--m);margin-top:4px}.badge{margin-top:10px;font-size:13px;font-weight:700;color:var(--g)}
+.garantia{display:flex;gap:12px;align-items:center;background:#f0fdf4;border:1px solid #c8f1d6;border-radius:var(--r);padding:14px;margin:12px 0}.garantia svg{width:44px;height:44px;flex:none;stroke:var(--g);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.faq details{border-top:1px solid var(--line);padding:10px 0;font-size:14px;color:var(--m)}.faq summary{font-weight:700;color:var(--t);cursor:pointer;font-size:15px}
+.test2{display:flex;gap:10px;align-items:center;margin-top:10px}.test2 span{color:var(--m);font-size:14px}
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:1px solid var(--line);padding:8px 14px 34px;box-shadow:0 -6px 20px rgba(0,0,0,.08);display:flex;gap:10px;align-items:center}
+.sticky span{font-size:12px;color:var(--m);flex:none;line-height:1.3}.sticky b{display:block;color:var(--g);font-size:16px}.sticky .cta{margin:0}
+.oferta-main{padding-bottom:140px}.oferta-main .scr{animation:none}
+.legal{max-width:680px;margin:0 auto;padding:22px 18px 80px;font-size:15px}.legal h1{font-size:26px}.legal h2{text-align:left;font-size:18px;margin-top:22px}.legal a{color:var(--gd)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* pantallas bajas (celulares chicos): todo entra sin scroll */
+
+@media(max-height:700px){
+ h2{font-size:21px;margin:2px 0 4px}.sub{margin-bottom:8px}.pill{margin:2px 0 6px}.gift{margin-top:8px;padding:7px 10px}.globo{margin-bottom:8px;padding-top:7px;padding-bottom:7px}
+ .nota .im{height:60px}.nota .im svg{width:34px;height:34px}.nota .cu{display:none}.nota h3{font-size:16px}
+ .ill{margin:5px 0;padding:4px 10px}.ill .esc{width:74px;height:74px}
+ .experto .exp ul,.experto .exp p{display:none}.experto .av{width:58px;height:58px;font-size:19px}.experto .exp{padding:10px}.experto .chips{margin-top:8px}
+ .perfil .tag{display:none}.perfil .box{padding:7px 12px;margin:5px 0}.perfil .sem{margin:2px 0;font-size:12.5px}.perfil h2{font-size:19px}.perfil .cta{margin-top:8px;padding:12px}
+ .cta{padding:13px;margin-top:8px}.mail input{margin-bottom:7px}
+}
+@media(max-height:560px){.c b{font-size:12px}.c small{font-size:10.5px}.globo{display:none}.gift{display:none}}
+/* compu: las tarjetas y los muñecos crecen con la altura de la ventana (no hay franja de video arriba) */
+@media(min-width:900px){
+ .c{min-height:clamp(110px,24dvh,205px)}.c svg{width:clamp(56px,14dvh,128px);height:clamp(56px,14dvh,128px)}
+ .c.chico{min-height:clamp(88px,15.5dvh,140px)}.c.chico svg{width:clamp(46px,9.6dvh,84px);height:clamp(46px,9.6dvh,84px)}
+ .c b{font-size:clamp(13px,2.2dvh,16px)}
+ h2{font-size:clamp(22px,4.2dvh,30px)}
+}
+@media(min-width:900px) and (max-height:700px){.c{min-height:clamp(100px,21dvh,160px)}.c svg{width:clamp(54px,12.5dvh,100px);height:clamp(54px,12.5dvh,100px)}}
+.perfil .box span{font-size:14.5px}
+@media(min-width:900px){
+ .velo{align-items:center}.hoja{border-radius:22px;max-width:460px;animation:fade .25s}
+ .c.chico{flex-direction:row;justify-content:flex-start;gap:12px;padding:6px 14px;text-align:left}
+ .c.chico svg{width:clamp(62px,12.5dvh,104px);height:clamp(62px,12.5dvh,104px)}
+ .c.chico b{font-size:clamp(13px,2.3dvh,16px)}
+}
+
+/* muñecos 3D generados (por ahora 3 opciones de prueba) */
+.c img.im3d{width:clamp(50px,11.4dvh,92px);height:clamp(50px,11.4dvh,92px);object-fit:contain;mix-blend-mode:multiply;flex:none}
+@media(min-width:900px){.c img.im3d{width:clamp(64px,17dvh,150px);height:clamp(64px,17dvh,150px)}}
+@media(min-width:900px) and (max-height:700px){.c img.im3d{width:clamp(60px,15dvh,110px);height:clamp(60px,15dvh,110px)}}
+
+/* movimiento de las escenas 3D */
+@keyframes tambalea{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}.e-pies{animation:tambalea 2s ease-in-out infinite;transform-origin:50% 90%}
+@keyframes sube3{0%,100%{transform:translateY(2px)}50%{transform:translateY(-5px)}}.e-guardia{animation:sube3 1.6s ease-in-out infinite}
+@keyframes infla3{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}.e-resp{animation:infla3 2.4s ease-in-out infinite;transform-origin:50% 80%}
+@keyframes bob3{50%{transform:translateY(-3px)}}.c img.im3d{animation:bob3 2.2s ease-in-out infinite}.c:nth-child(2) img.im3d{animation-delay:.25s}.c:nth-child(3) img.im3d{animation-delay:.5s}.c:nth-child(4) img.im3d{animation-delay:.75s}
+@media(max-height:700px){.ill .esc3d{width:68px;height:68px}}
+.shell:not(.conbg) #bg{display:none}
+
+/* muñecos 3D: figura vertical a la izquierda y texto a la derecha, para que se vean grandes sin scroll */
+.c:has(img.im3d){flex-direction:row;justify-content:flex-start;gap:6px;padding:4px 8px 4px 4px;text-align:left}
+.c:has(img.im3d) b{flex:1;min-width:0}
+.c img.im3d{height:clamp(84px,17dvh,150px);width:auto;max-width:48%;aspect-ratio:3/4;object-fit:contain;mix-blend-mode:multiply;flex:none}
+.c.chico:has(img.im3d){padding:2px 8px 2px 2px}.c.chico img.im3d{height:clamp(62px,12.4dvh,112px)}
+@media(min-width:900px){.c:has(img.im3d){padding:6px 14px 6px 8px;gap:12px}.c img.im3d{height:clamp(100px,22dvh,190px)}.c.chico img.im3d{height:clamp(78px,15.5dvh,140px)}}
+@media(min-width:900px) and (max-height:700px){.c img.im3d{height:clamp(92px,20dvh,150px)}.c.chico img.im3d{height:clamp(70px,14.5dvh,110px)}}
+
+.toast{position:fixed;left:50%;top:22px;transform:translate(-50%,-20px);background:#0b0f0c;color:#fff;padding:11px 18px;border-radius:30px;font-weight:700;font-size:14.5px;opacity:0;transition:.3s;z-index:90;box-shadow:0 8px 30px #0003;max-width:90vw;text-align:center}.toast.in{opacity:1;transform:translate(-50%,0)}
+.tbar.up{text-transform:uppercase;letter-spacing:.03em;font-size:12.5px;background:#7f1d1d}.tbar.up b{color:#fff}
+.gracias{text-align:center;padding-top:8px}.gracias .tick{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1fbf5b,#15803d);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 10px 26px rgba(22,163,74,.35)}.gracias .tick svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.precio2{display:flex;justify-content:space-between;gap:10px;font-size:15px;margin-top:6px}
+</style></head><body><div class="legal"><p><a href="/quiz/">← Volver</a></p><h1>Política de privacidad</h1>
+<p>Esta política explica qué datos guardamos cuando usás el quiz de BeastCamp y para qué.</p>
+<h2>1. Qué datos guardamos</h2><p>Guardamos el nombre o apodo y el mail que ingresás, tu nivel de entrenamiento y un registro, sin datos personales, de cuándo tocás el botón de reserva. Tus demás respuestas se usan solo en tu navegador para armar tu plan y no se envían a nuestros servidores.</p>
+<h2>2. Para qué los usamos</h2><p>Para enviarte tu plan y el acceso a BeastCamp, y para mejorar la oferta. No vendemos tus datos ni los compartimos con terceros para publicidad.</p>
+<h2>3. Cómo los protegemos</h2><p>Los datos se guardan en un servidor propio, con acceso restringido, y no se muestran en registros de funcionamiento.</p>
+<h2>4. Tus derechos</h2><p>Podés pedir en cualquier momento ver, corregir o borrar tus datos (Ley 25.326 de Protección de los Datos Personales de la República Argentina). Para hacerlo, escribinos por el mismo medio por el que llegaste a esta página.</p>
+<h2>5. Menores</h2><p>El quiz es para mayores de 18 años. No guardamos datos de menores a sabiendas.</p>
+<h2>6. Cookies y tecnologías similares</h2><p>Usamos el almacenamiento de tu navegador solo durante la sesión, para recordar tus respuestas y el contador de la oferta.</p></div></body></html>
