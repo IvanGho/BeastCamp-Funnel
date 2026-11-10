@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es-AR"><head><meta charset="utf-8"><title>Hoja de contacto de la marca</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:1400px;padding:28px 32px 40px;background:#eef2ef;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#0b0f0c}
+h2{font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:#15803d;margin:26px 0 12px}
+h2:first-child{margin-top:0}
+.fila{display:flex;gap:28px;align-items:flex-end;flex-wrap:wrap}
+figure{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+figcaption{font-size:12px;color:#5b665e}
+.fondo{background:#fff;padding:14px;border-radius:10px;display:flex;gap:14px;align-items:flex-end}
+.oscuro{background:#1c1f1d}
+.tab{display:flex;align-items:center;gap:8px;background:#fff;border-radius:8px 8px 0 0;padding:8px 14px;width:230px;font-size:13px;border:1px solid #d8dfda}
+.tab img{width:16px;height:16px}
+.m512{width:256px;height:256px;position:relative;background:#fff}
+.m512 img{width:100%;height:100%;display:block}
+.circ{border-radius:50%;overflow:hidden}
+.red{border-radius:22%;overflow:hidden}
+.guia{position:relative}
+.guia:after{content:"";position:absolute;left:10%;top:10%;width:80%;height:80%;border-radius:50%;border:2px dashed rgba(255,0,80,.9)}
+.og{width:600px;height:315px;display:block;border-radius:6px;box-shadow:0 1px 6px rgba(0,0,0,.25)}
+.cuad{width:315px;height:315px;overflow:hidden;border-radius:6px;box-shadow:0 1px 6px rgba(0,0,0,.25)}
+.cuad img{width:600px;height:315px;margin-left:-142.5px;display:block}
+.pequeno{width:300px;height:157px;border-radius:4px}
+.cuad.p{width:157px;height:157px}.cuad.p img{width:300px;height:157px;margin-left:-71.5px}
+</style></head><body>
+<h2>Íconos a tamaño real</h2>
+<div class="fila">
+  <figure><div class="tab"><img src="../../sitio/img/marca/favicon-32.png" alt="">BeastCamp · Plan de…</div><figcaption>favicon-32 en la pestaña (16 px)</figcaption></figure>
+  <figure><div class="fondo"><img src="../../sitio/img/marca/favicon-32.png" width="32" height="32" alt=""><img src="../../sitio/img/marca/favicon-32.png" width="16" height="16" alt=""></div><figcaption>favicon-32 a 32 y 16 px</figcaption></figure>
+  <figure><div class="fondo"><img src="../../sitio/img/marca/apple-touch-icon.png" width="180" height="180" alt=""></div><figcaption>apple-touch-icon 180 (real)</figcaption></figure>
+  <figure><div class="fondo"><img src="../../sitio/img/marca/icono-192.png" width="192" height="192" alt=""></div><figcaption>icono-192 (real)</figcaption></figure>
+  <figure><div class="fondo oscuro"><img src="../../sitio/img/marca/icono-192.png" width="192" height="192" alt=""></div><figcaption>icono-192 sobre fondo oscuro</figcaption></figure>
+</div>
+<h2>Ampliados</h2>
+<div class="fila">
+  <figure><div class="fondo"><img src="../../sitio/img/marca/icono-512.png" width="256" height="256" alt=""></div><figcaption>icono-512 (a 256)</figcaption></figure>
+  <figure><div class="fondo"><img src="../../sitio/img/marca/favicon.svg" width="256" height="256" alt=""></div><figcaption>favicon.svg</figcaption></figure>
+  <figure><div class="fondo"><img src="../../sitio/img/marca/apple-touch-icon.png" width="256" height="256" alt=""></div><figcaption>apple-touch-icon ampliado</figcaption></figure>
+</div>
+<h2>Maskable 512 con máscaras (a 256)</h2>
+<div class="fila">
+  <figure><div class="fondo"><div class="m512"><img src="../../sitio/img/marca/icono-maskable-512.png" alt=""></div></div><figcaption>sin máscara</figcaption></figure>
+  <figure><div class="fondo"><div class="m512 guia"><img src="../../sitio/img/marca/icono-maskable-512.png" alt=""></div></div><figcaption>con el círculo del 80 % (zona segura) en rojo</figcaption></figure>
+  <figure><div class="fondo"><div class="m512 circ"><img src="../../sitio/img/marca/icono-maskable-512.png" alt=""></div></div><figcaption>máscara circular</figcaption></figure>
+  <figure><div class="fondo"><div class="m512 red"><img src="../../sitio/img/marca/icono-maskable-512.png" alt=""></div></div><figcaption>máscara redondeada (22 %)</figcaption></figure>
+</div>
+<h2>Imágenes para compartir (1200×630 a la mitad) y su recorte cuadrado del centro</h2>
+<div class="fila">
+  <figure><img class="og" src="../../sitio/img/og-quiz.jpg" alt=""><figcaption>og-quiz.jpg</figcaption></figure>
+  <figure><div class="cuad"><img src="../../sitio/img/og-quiz.jpg" alt=""></div><figcaption>recorte cuadrado</figcaption></figure>
+  <figure><div class="cuad p"><img src="../../sitio/img/og-quiz.jpg" alt=""></div><figcaption>miniatura chica</figcaption></figure>
+</div>
+<div class="fila" style="margin-top:20px">
+  <figure><img class="og" src="../../sitio/img/og-quiz-peso.jpg" alt=""><figcaption>og-quiz-peso.jpg</figcaption></figure>
+  <figure><div class="cuad"><img src="../../sitio/img/og-quiz-peso.jpg" alt=""></div><figcaption>recorte cuadrado</figcaption></figure>
+  <figure><div class="cuad p"><img src="../../sitio/img/og-quiz-peso.jpg" alt=""></div><figcaption>miniatura chica</figcaption></figure>
+</div>
+</body></html>
