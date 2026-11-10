@@ -108,7 +108,7 @@ function html() {
   const h = [];
   h.push(`<div class="tbar${esRescate ? ' up' : ''}"><span>${CFG.barra}</span> <b class="tm">10:00</b></div>`);
   h.push(bloqueEncabezado());
-  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline></video></div>`);
+  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture></video></div>`);
   h.push(bloqueHoyMeta());
   h.push(bloqueGrafico());
   h.push(`<div class="box sello">${I_ESCUDO}<div><b>Hecho para arrancar de cero</b><br><span style="color:var(--m);font-size:14px">No necesitás saber boxear ni tener equipo.</span></div></div>`);
@@ -175,7 +175,7 @@ piePesoOferta();
 /* Salida: al intentar irse, la persona pasa al siguiente rescate (otra página con su propia dirección). */
 if (CFG.siguiente) {
   let ido = false;
-  const salir = () => { if (ido) return; ido = true; location.replace(CFG.siguiente); };
+  const salir = () => { if (ido) return; ido = true; location.replace(CFG.siguiente + consultaCampana()); };
   try { history.pushState({ a: 1 }, ''); history.pushState({ a: 2 }, ''); } catch (e) {}
   window.addEventListener('popstate', salir);
   document.addEventListener('mouseleave', (e) => { if (e.clientY <= 0) salir(); });

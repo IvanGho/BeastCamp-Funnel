@@ -32,7 +32,7 @@ test("quiz: solo envía mail y clic a /api/lead y /api/click; sin terceros, sin 
   assert.deepEqual([...paginas["quiz"].matchAll(/sendBeacon\('([^']*)'/g)].map((m) => m[1]), ["/api/"]);
   assert.match(paginas["quiz"], /if \(k !== 'lead' && k !== 'click'\) return/);
   assert.doesNotMatch(html, /feedback|Lo comprarías|Qué cambiarías|encuesta/i);
-  assert.equal((paginas["oferta"].match(/pagoUrl: ''/g) ?? []).length, 1, "un solo punto de pago, vacío hasta que exista el checkout");
+  assert.equal((paginas["oferta"].match(/pagoUrl: \{ base: '', b1: '', b2: '' \}/g) ?? []).length, 1, "un solo lugar para los links de pago (uno por precio), vacíos hasta que exista el checkout");
   assert.match(paginas["oferta"], /Todavía no abrimos el pago/);
 });
 
@@ -53,7 +53,10 @@ test("quiz: los datos reales viven en un solo archivo y están vacíos o con lo 
   assert.equal(D.estrellas, "");
   assert.deepEqual(D.testimonios, []);
   assert.deepEqual(D.especialista, { nombre: "Juan Medina", titulo: "Médico deportista", foto: "", matricula: "", universidad: "", posgrados: [], resumen: "" });
-  assert.equal(D.pagoUrl, "");
+  assert.deepEqual(D.pagoUrl, { base: "", b1: "", b2: "" }, "un link de pago por precio, vacíos hasta que exista el checkout");
+  assert.equal(D.appUrl, "/app/");
+  assert.equal(D.sitioUrl, "", "vacío = etiquetas para compartir con rutas relativas");
+  assert.equal(D.responsable, "");
   assert.equal(D.garantiaDias, 30);
   assert.match(D.noticia.enlace, /^https:\/\/www\.mdpi\.com\//, "la noticia cita una fuente real con enlace");
   assert.equal(D.noticia.imagen, "");

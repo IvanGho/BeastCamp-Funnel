@@ -1,4 +1,4 @@
-<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><title>BeastCamp · Gracias</title><style>:root{--g:#16A34A;--g2:#4ade80;--gd:#15803d;--t:#0b0f0c;--m:#5b665e;--line:#e5ebe6;--bg:#fff;--soft:#f4f7f5;--r:16px}
+<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><meta name="description" content="Tu BeastCamp está activado. Te mandamos el acceso a tu plan por mail; guardalo, es tu link personal."><meta property="og:type" content="website"><meta property="og:locale" content="es_AR"><meta property="og:site_name" content="BeastCamp"><meta property="og:title" content="BeastCamp · Gracias"><meta property="og:description" content="Tu BeastCamp está activado. Te mandamos el acceso a tu plan por mail; guardalo, es tu link personal."><meta property="og:image" content="/img/og-quiz.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="BeastCamp: plan de shadowboxing en casa"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/img/marca/favicon.svg" type="image/svg+xml"><link rel="icon" href="/img/marca/favicon-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/img/marca/apple-touch-icon.png"><title>BeastCamp · Gracias</title><style>:root{--g:#16A34A;--g2:#4ade80;--gd:#15803d;--t:#0b0f0c;--m:#5b665e;--line:#e5ebe6;--bg:#fff;--soft:#f4f7f5;--r:16px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--t);font:17px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 body{min-height:100dvh}
@@ -160,6 +160,42 @@ input:focus{outline:0;border-color:var(--g)}
 .tbar.up{text-transform:uppercase;letter-spacing:.03em;font-size:12.5px;background:#7f1d1d}.tbar.up b{color:#fff}
 .gracias{text-align:center;padding-top:8px}.gracias .tick{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1fbf5b,#15803d);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 10px 26px rgba(22,163,74,.35)}.gracias .tick svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
 .precio2{display:flex;justify-content:space-between;gap:10px;font-size:15px;margin-top:6px}
+/* Solo /gracias/: festejo suave alrededor del tilde, el aviso del acceso personal y nada más. El resto sale de base.css. */
+.gracias{position:relative;padding-top:48px}
+.gracias .festejo{position:absolute;left:0;right:0;top:34px;height:130px;pointer-events:none}
+.gracias .festejo .aro{position:absolute;left:50%;top:50px;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;border:3px solid var(--g2);opacity:0;animation:gr-aro 1.8s .2s ease-out 2}
+.gracias .festejo .aro.dos{animation-delay:.7s}
+.gracias .festejo .cf{position:absolute;left:50%;top:50px;width:9px;height:14px;margin:-7px 0 0 -4px;border-radius:3px;background:var(--g);opacity:0;animation:gr-cf 1.5s .15s cubic-bezier(.2,.8,.3,1) forwards}
+.gracias .festejo .cf-b,.gracias .festejo .cf-e{background:var(--g2)}
+.gracias .festejo .cf-c,.gracias .festejo .cf-g{background:#fbbf24;width:8px;height:8px;border-radius:50%}
+.gracias .festejo .cf-d,.gracias .festejo .cf-h{background:var(--gd)}
+.gracias .festejo .cf-a{--x:-118px;--y:-34px;--r:-40deg}
+.gracias .festejo .cf-b{--x:-84px;--y:34px;--r:70deg}
+.gracias .festejo .cf-c{--x:-62px;--y:-52px;--r:0deg}
+.gracias .festejo .cf-d{--x:-132px;--y:22px;--r:25deg}
+.gracias .festejo .cf-e{--x:118px;--y:-30px;--r:40deg}
+.gracias .festejo .cf-f{--x:86px;--y:36px;--r:-70deg}
+.gracias .festejo .cf-g{--x:64px;--y:-54px;--r:0deg}
+.gracias .festejo .cf-h{--x:134px;--y:20px;--r:-25deg}
+.gracias .tick{position:relative;animation:gr-pop .55s cubic-bezier(.2,1.3,.4,1) both}
+.gracias .tick svg path{stroke-dasharray:24;stroke-dashoffset:24;animation:gr-trazo .45s .3s ease forwards}
+.gracias .tag{margin-top:4px}
+.gracias h1{font-size:27px}
+.gracias p{color:var(--m);margin:6px 0}
+.gracias p b{color:var(--t);overflow-wrap:anywhere}
+.gracias .cta{margin-top:18px}
+.gr-aviso{display:flex;align-items:center;gap:10px;text-align:left;font-size:14px;color:var(--m);margin:16px 0 0}
+.gr-aviso svg{flex:none;width:20px;height:20px;fill:none;stroke:var(--g);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@keyframes gr-aro{0%{transform:scale(.9);opacity:.55}100%{transform:scale(2.3);opacity:0}}
+@keyframes gr-cf{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.4)}15%{opacity:1}100%{opacity:.9;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1)}}
+@keyframes gr-pop{0%{opacity:0;transform:scale(.5)}100%{opacity:1;transform:none}}
+@keyframes gr-trazo{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){
+ .gracias .festejo .aro{display:none}
+ .gracias .festejo .cf{animation:none;opacity:.85;transform:translate(var(--x),var(--y)) rotate(var(--r))}
+ .gracias .tick,.gracias .tick svg path{animation:none}
+ .gracias .tick svg path{stroke-dashoffset:0}
+}
 </style></head><body><div class="shell" id="shell"><div id="bg"></div><main id="app"></main></div><script>
 /*DATOS-INICIO*/
 /* ============================================================================================
@@ -199,13 +235,23 @@ const DATOS = {
     imagen: '',            // ruta de una imagen para la tarjeta, ej. '/media/noticia.jpg'
   },
 
-  /* Pago: único punto a reemplazar cuando exista el checkout (CAMP_SHOPIFY_CHECKOUT_URL). Vacío = no se cobra nada. */
-  pagoUrl: '',
+  /* Pago: único punto a reemplazar cuando exista el checkout de Hilvapay. Un link de pago por precio.
+     Cada clave es el precio de su página: base = /oferta, b1 = /back1 (20% OFF), b2 = /back2 (50% OFF); los dos funnels (peleadores y bajar de peso) usan los mismos.
+     Pegá el link completo de Hilvapay (con https). Al tocar «Ir al pago», la página le agrega sola: acceso, funnel, nivel, pagina, nombre, email y la campaña (utm_*, fbclid, fbc, ttclid, gclid).
+     Vacío = no se cobra nada: se muestra «Todavía no abrimos el pago» y se cuenta el clic. */
+  pagoUrl: { base: '', b1: '', b2: '' },
 
-  /* Dirección de la app donde entra el comprador (botón «Entrar a mi plan» de /gracias). Vacío = el botón no se muestra. */
-  appUrl: '',
+  /* Dirección de la app donde entra el comprador. El botón «Entrar a mi plan» de /gracias/ lleva a appUrl + acceso + '/'. Con barra al final. Vacío = el botón no se muestra. */
+  appUrl: '/app/',
 
-  /* Contacto para pedir el borrado de datos (se muestra en Privacidad). Vacío = texto genérico. */
+  /* Dirección final del sitio, con https y sin barra al final. Se usa para las etiquetas al compartir el link (og:image y og:url, que tienen que ser absolutas).
+     Vacío = esas etiquetas salen con rutas relativas y sin og:url. */
+  sitioUrl: '',
+
+  /* Responsable de los datos personales: nombre o razón social (se muestra en Privacidad). Vacío = no se muestra y queda un texto genérico. */
+  responsable: '',
+
+  /* Contacto para pedir el borrado de datos y la devolución (se muestra en Privacidad y en Términos). Vacío = texto genérico. */
   contacto: '',
 
   garantiaDias: 30,
@@ -263,11 +309,83 @@ const leer = (k, d) => { try { const v = sessionStorage.getItem(k); return v ? J
 const A = leer('bc_resp', {});            // respuestas del quiz (solo en esta sesión del navegador)
 const guardaA = () => guardar('bc_resp', A);
 
-/* Envíos: solo «lead» (nombre y mail) y «click» (precio, sin datos personales). Nada más sale del navegador. */
+/* Envíos: solo «lead» (nombre y mail) y «click» (precio y campaña, sin datos personales). Nada más sale del navegador. */
 window.__send = (k, d) => {
   if (k !== 'lead' && k !== 'click') return;
   try { navigator.sendBeacon('/api/' + k, new Blob([JSON.stringify(d)], { type: 'application/json' })); } catch (e) {}
 };
+
+/* ---------- Campaña (UTM), acceso y funnel ---------- */
+const FUNNEL = location.pathname.indexOf('-peso') >= 0 ? 'peso' : 'peleador';   // los de bajar de peso terminan en «-peso»
+const CLAVES_CAMPANA = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'ttclid', 'gclid'];
+const VIDA_CAMPANA = 30 * 24 * 60 * 60 * 1000;                                 // la campaña se recuerda 30 días
+const RE_ACCESO = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+const lsLeer = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lsGuardar = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const corto = (v) => String(v == null ? '' : v).trim().slice(0, 500);          // Hilvapay acepta hasta 500 caracteres por valor
+
+function campanaGuardada() {
+  try {
+    const v = JSON.parse(lsLeer('bc_utm') || 'null');
+    if (v && typeof v === 'object' && Date.now() - (+v.ts || 0) < VIDA_CAMPANA) return v;
+  } catch (e) {}
+  return {};
+}
+
+/* Si la dirección trae campaña, se guarda en bc_utm pisando lo anterior (fbc = fb.1.<ahora>.<fbclid> solo con un fbclid nuevo). Sin campaña en la dirección queda lo guardado. */
+function capturaCampana() {
+  const previa = campanaGuardada();
+  const q = new URLSearchParams(location.search);
+  const nueva = {};
+  CLAVES_CAMPANA.forEach((k) => { const v = corto(q.get(k)); if (v) nueva[k] = v; });
+  if (!Object.keys(nueva).length) return previa;
+  if (nueva.fbclid) nueva.fbc = previa.fbclid === nueva.fbclid && previa.fbc ? previa.fbc : 'fb.1.' + Date.now() + '.' + nueva.fbclid;
+  const mismo = Object.keys(nueva).length === Object.keys(previa).filter((k) => k !== 'ts').length && Object.keys(nueva).every((k) => nueva[k] === previa[k]);
+  nueva.ts = mismo && previa.ts ? previa.ts : Date.now();                       // la misma campaña vista de nuevo no renueva los 30 días
+  lsGuardar('bc_utm', JSON.stringify(nueva));
+  return nueva;
+}
+const CAMPANA = capturaCampana();
+
+/* «?utm_source=…&fbclid=…» con la campaña guardada, o '' si no hay: se suma a los links internos del funnel (quiz → oferta → back1 → back2). */
+function consultaCampana() {
+  const p = new URLSearchParams();
+  CLAVES_CAMPANA.forEach((k) => { if (CAMPANA[k]) p.set(k, corto(CAMPANA[k])); });
+  const s = p.toString();
+  return s ? '?' + s : '';
+}
+
+function nuevoUuid() {
+  try { if (crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+  const b = new Uint8Array(16);
+  try { crypto.getRandomValues(b); } catch (e) { for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256); }
+  b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;                            // UUID v4
+  const h = Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+  return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+}
+/* Acceso personal del comprador (bc_acceso): se crea una sola vez, al tocar «Ir al pago», y viaja en el link de pago. Sin crear, devuelve lo que haya o ''. */
+function accesoGuardado(crear) {
+  let a = lsLeer('bc_acceso') || '';
+  if (!RE_ACCESO.test(a)) { a = crear ? nuevoUuid() : ''; if (a) lsGuardar('bc_acceso', a); }
+  return a;
+}
+
+/* Nivel de carga elegido en la pregunta «tiempo»: Arranque t1, Ritmo t2, Impulso t3, Fighter t4. */
+const NIVEL_DE_TIEMPO = { Arranque: 't1', Ritmo: 't2', Impulso: 't3', Fighter: 't4' };
+const nivelElegido = () => NIVEL_DE_TIEMPO[String(A.tiempo || '').split(' · ')[0].trim()] || '';
+
+/* Video silencioso (fondo del quiz y oferta) que arranca solo, también en iOS: muted, playsinline y autoplay como atributos (Safari los pide así), loop, precarga y póster.
+   Nunca lleva sonido. Con el ahorro de batería de iOS el autoplay puede bloquearse: ahí se ve el póster y el video arranca con el primer toque. */
+function videoSilencioso(v, poster) {
+  v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
+  ['muted', 'loop', 'playsinline', 'webkit-playsinline', 'autoplay', 'disablepictureinpicture'].forEach((a) => v.setAttribute(a, ''));
+  v.setAttribute('preload', 'auto');
+  if (poster) v.poster = poster;
+  return v;
+}
+['touchstart', 'pointerdown'].forEach((ev) => window.addEventListener(ev, () => {
+  document.querySelectorAll('video').forEach((v) => { if (v.isConnected && v.paused && !v.ended) v.play().catch(() => {}); });
+}, { passive: true }));
 
 /* Contadores: cada página tiene el suyo y se reinicia al llegar a cero. /oferta 10:00, /back1 09:57, /back2 04:57. */
 const CICLOS = { oferta: 600, back1: 597, back2: 297 };
@@ -336,10 +454,31 @@ function tarjetaNoticia() {
   return `<div class="nota"><div class="im">${img}</div><div class="tx"><div class="et">${esc(n.etiqueta)}</div><h3>${esc(n.titular)}</h3>${n.bajada ? `<p>${esc(n.bajada)}</p>` : ''}${n.cuerpo ? `<p class="cu">${esc(n.cuerpo)}</p>` : ''}<div class="fu">${esc(n.fuente)}${n.fecha ? ' · ' + esc(n.fecha) : ''}${n.enlace ? ` · <a href="${esc(n.enlace)}" target="_blank" rel="noopener noreferrer">Ver el estudio</a>` : ''}</div></div></div>`;
 }
 
-/* Un solo punto de pago. Con DATOS.pagoUrl vacío no se cobra nada: se muestra «Reservá tu lugar» y se cuenta el clic. */
+/* Link de Hilvapay con todo lo que se sabe de la persona (solo lo que tenga valor, cada uno de hasta 500 caracteres):
+   acceso, funnel, nivel, pagina, nombre, email y la campaña (utm_*, fbclid, fbc, ttclid, gclid). Lo que ya traiga el link base no se pisa. */
+function urlPago(base, pagina) {
+  let u;
+  try { u = new URL(base, location.href); } catch (e) { return ''; }
+  const nombre = A.nombre && A.nombre !== 'Campeón' ? A.nombre : '';             // «Campeón» es el nombre de relleno del quiz, no el de la persona
+  const mail = /^\S+@\S+\.\S+$/.test(A.mail || '') ? A.mail : '';
+  const extra = { acceso: accesoGuardado(true), funnel: FUNNEL, nivel: nivelElegido(), pagina, nombre, email: mail };
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'fbc', 'ttclid', 'gclid'].forEach((k) => { extra[k] = CAMPANA[k]; });
+  Object.keys(extra).forEach((k) => { const v = corto(extra[k]); if (v && !u.searchParams.has(k)) u.searchParams.set(k, v); });
+  return u.toString();
+}
+
+/* Un solo punto de pago: DATOS.pagoUrl tiene un link por precio (base, b1, b2). Con el link vacío no se cobra nada: se muestra «Todavía no abrimos el pago» y se cuenta el clic.
+   El clic viaja con funnel, página y campaña (sin datos personales). */
 function pagar(precio) {
-  window.__send('click', { precio, t: Date.now() });
-  if (DATOS.pagoUrl) { location.href = DATOS.pagoUrl; return; }
+  const clave = Object.keys(P).find((k) => P[k] === precio) || 'base';
+  const pagina = typeof PAGINA === 'string' ? PAGINA : '';
+  const clic = { precio, funnel: FUNNEL, pagina };
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbc'].forEach((k) => { if (CAMPANA[k]) clic[k] = corto(CAMPANA[k]); });
+  clic.t = Date.now();
+  window.__send('click', clic);
+  const base = DATOS.pagoUrl && DATOS.pagoUrl[clave];
+  const destino = base ? urlPago(base, pagina) : '';
+  if (destino) { location.href = destino; return; }
   const m = $('pg');
   if (m) m.innerHTML = '<b>Gracias por llegar hasta acá.</b><br><span style="color:var(--m);font-size:14px">Todavía no abrimos el pago, así que no se cobró nada. Registramos tu interés.</span>';
 }
@@ -359,9 +498,46 @@ function reservar(clave) {
 
 if (typeof module !== 'undefined') module.exports = { P };
 
+/* Gracias (/gracias/), compartida por los dos funnels. Hilvapay redirige acá con los datos de la compra en la dirección:
+   nombre, email, acceso (el que viajó en el link de pago) y la campaña (utm_*, fbclid). La campaña ya la guardó comun.js.
+   Se muestran con esc(), nunca sin escapar: vienen de la URL. */
+(function () {
+  const q = new URLSearchParams(location.search);
+  const limpio = (v, n) => String(v || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, n);
 
-const nom = esc(A.nombre || 'Campeón');
-const mail = A.mail ? esc(A.mail) : 'tu mail';
-$('app').innerHTML = '<div class="scr gracias"><div class="tick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></div><h1>Listo, ' + nom + '. Tu BeastCamp está activado.</h1><p>Te mandamos el acceso a <b>' + mail + '</b>. Revisá también spam.</p>' + (DATOS.appUrl ? '<a class="cta" href="' + esc(DATOS.appUrl) + '">Entrar a mi plan</a>' : '') + '<p class="note" style="margin-top:14px">Garantía de devolución de ' + DATOS.garantiaDias + ' días.</p></div>';
-pie();
+  /* Nombre y mail: de la dirección; si no vienen (por ejemplo al recargar), lo que quedó de esta sesión. */
+  const nombreUrl = limpio(q.get('nombre'), 60);
+  const mailUrl = limpio(q.get('email'), 120);
+  if (nombreUrl) A.nombre = nombreUrl;
+  if (mailUrl) A.mail = mailUrl;
+  if (nombreUrl || mailUrl) guardaA();
+
+  /* Los datos personales no se quedan en la barra de direcciones ni en el historial (el acceso y la campaña sí). */
+  if (q.has('nombre') || q.has('email') || location.hash) {
+    q.delete('nombre'); q.delete('email');
+    const resto = q.toString();
+    try { history.replaceState(null, '', location.pathname + (resto ? '?' + resto : '')); } catch (e) {}
+  }
+
+  /* Acceso: el de la dirección; si no vino, el que se creó al tocar «Ir al pago» en este navegador. */
+  const deUrl = limpio(q.get('acceso'), 80).toLowerCase();
+  const acceso = RE_ACCESO.test(deUrl) ? deUrl : accesoGuardado(false);
+  if (acceso) lsGuardar('bc_app_ultimo', acceso);
+  const destino = DATOS.appUrl ? DATOS.appUrl + (acceso ? acceso + '/' : '') : '';
+
+  const nom = esc(A.nombre || 'Campeón');
+  const mail = /^\S+@\S+\.\S+$/.test(A.mail || '') ? esc(A.mail) : 'tu mail';
+  const confeti = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].map((k) => '<i class="cf cf-' + k + '"></i>').join('');
+  $('app').innerHTML =
+    '<div class="scr gracias"><div class="festejo" aria-hidden="true">' + confeti + '<span class="aro"></span><span class="aro dos"></span></div>' +
+    '<div class="tick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></div>' +
+    '<div class="tag cen">Bienvenido a BeastCamp</div>' +
+    '<h1>Listo, ' + nom + '. Tu BeastCamp está activado.</h1>' +
+    '<p>Te mandamos el acceso a <b>' + mail + '</b>. Revisá también spam.</p>' +
+    (destino ? '<a class="cta" id="entrar" href="' + esc(destino) + '">Entrar a mi plan</a>' : '') +
+    '<div class="box gr-aviso">' + I_CANDADO + '<span>Guardá el mail: ese link es tu acceso personal. No lo compartas.</span></div>' +
+    '<p class="note" style="margin-top:14px">Garantía de devolución de ' + DATOS.garantiaDias + ' días.</p></div>';
+  pie();
+})();
+
 </script></body></html>

@@ -103,9 +103,7 @@ function piePeso() {
   const VIDEOS = {};
   function videoDe(n) {
     if (VIDEOS[n]) return VIDEOS[n];
-    const v = document.createElement('video');
-    v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
-    v.poster = `/media/${n}.jpg`;
+    const v = videoSilencioso(document.createElement('video'), `/media/${n}.jpg`);
     v.src = `/media/hd/${n}.mp4`;
     return (VIDEOS[n] = v);
   }
@@ -359,7 +357,7 @@ function piePeso() {
       q('#seguir').onclick = sigue;
       q('#nm').addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); sigue(); } });
     } else if (x.t === 'perfil') {
-      q('#ver').onclick = () => { guardaA(); location.href = '/oferta-peso/'; };
+      q('#ver').onclick = () => { guardaA(); location.href = '/oferta-peso/' + consultaCampana(); };
     }
   }
 

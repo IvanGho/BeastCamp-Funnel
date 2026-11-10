@@ -1,4 +1,4 @@
-<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><title>BeastCamp Sombra · 50% OFF final</title><link rel="preload" as="image" href="/media/oferta.jpg" fetchpriority="high"><style>:root{--g:#16A34A;--g2:#4ade80;--gd:#15803d;--t:#0b0f0c;--m:#5b665e;--line:#e5ebe6;--bg:#fff;--soft:#f4f7f5;--r:16px}
+<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#16A34A"><meta name="description" content="50% OFF en BeastCamp Sombra: plan de 4 semanas de shadowboxing en casa para arrancar de cero, con timer de rounds y rutinas guiadas. Pago único, sin suscripción. Garantía de 30 días."><meta property="og:type" content="website"><meta property="og:locale" content="es_AR"><meta property="og:site_name" content="BeastCamp"><meta property="og:title" content="BeastCamp Sombra · 50% OFF final"><meta property="og:description" content="50% OFF en BeastCamp Sombra: plan de 4 semanas de shadowboxing en casa para arrancar de cero, con timer de rounds y rutinas guiadas. Pago único, sin suscripción. Garantía de 30 días."><meta property="og:image" content="/img/og-quiz-peso.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="BeastCamp: plan de shadowboxing en casa para empezar de cero"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/img/marca/favicon.svg" type="image/svg+xml"><link rel="icon" href="/img/marca/favicon-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/img/marca/apple-touch-icon.png"><title>BeastCamp Sombra · 50% OFF final</title><link rel="preload" as="image" href="/media/oferta.jpg" fetchpriority="high"><style>:root{--g:#16A34A;--g2:#4ade80;--gd:#15803d;--t:#0b0f0c;--m:#5b665e;--line:#e5ebe6;--bg:#fff;--soft:#f4f7f5;--r:16px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--t);font:17px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 body{min-height:100dvh}
@@ -233,13 +233,23 @@ const DATOS = {
     imagen: '',            // ruta de una imagen para la tarjeta, ej. '/media/noticia.jpg'
   },
 
-  /* Pago: único punto a reemplazar cuando exista el checkout (CAMP_SHOPIFY_CHECKOUT_URL). Vacío = no se cobra nada. */
-  pagoUrl: '',
+  /* Pago: único punto a reemplazar cuando exista el checkout de Hilvapay. Un link de pago por precio.
+     Cada clave es el precio de su página: base = /oferta, b1 = /back1 (20% OFF), b2 = /back2 (50% OFF); los dos funnels (peleadores y bajar de peso) usan los mismos.
+     Pegá el link completo de Hilvapay (con https). Al tocar «Ir al pago», la página le agrega sola: acceso, funnel, nivel, pagina, nombre, email y la campaña (utm_*, fbclid, fbc, ttclid, gclid).
+     Vacío = no se cobra nada: se muestra «Todavía no abrimos el pago» y se cuenta el clic. */
+  pagoUrl: { base: '', b1: '', b2: '' },
 
-  /* Dirección de la app donde entra el comprador (botón «Entrar a mi plan» de /gracias). Vacío = el botón no se muestra. */
-  appUrl: '',
+  /* Dirección de la app donde entra el comprador. El botón «Entrar a mi plan» de /gracias/ lleva a appUrl + acceso + '/'. Con barra al final. Vacío = el botón no se muestra. */
+  appUrl: '/app/',
 
-  /* Contacto para pedir el borrado de datos (se muestra en Privacidad). Vacío = texto genérico. */
+  /* Dirección final del sitio, con https y sin barra al final. Se usa para las etiquetas al compartir el link (og:image y og:url, que tienen que ser absolutas).
+     Vacío = esas etiquetas salen con rutas relativas y sin og:url. */
+  sitioUrl: '',
+
+  /* Responsable de los datos personales: nombre o razón social (se muestra en Privacidad). Vacío = no se muestra y queda un texto genérico. */
+  responsable: '',
+
+  /* Contacto para pedir el borrado de datos y la devolución (se muestra en Privacidad y en Términos). Vacío = texto genérico. */
   contacto: '',
 
   garantiaDias: 30,
@@ -297,11 +307,83 @@ const leer = (k, d) => { try { const v = sessionStorage.getItem(k); return v ? J
 const A = leer('bc_resp', {});            // respuestas del quiz (solo en esta sesión del navegador)
 const guardaA = () => guardar('bc_resp', A);
 
-/* Envíos: solo «lead» (nombre y mail) y «click» (precio, sin datos personales). Nada más sale del navegador. */
+/* Envíos: solo «lead» (nombre y mail) y «click» (precio y campaña, sin datos personales). Nada más sale del navegador. */
 window.__send = (k, d) => {
   if (k !== 'lead' && k !== 'click') return;
   try { navigator.sendBeacon('/api/' + k, new Blob([JSON.stringify(d)], { type: 'application/json' })); } catch (e) {}
 };
+
+/* ---------- Campaña (UTM), acceso y funnel ---------- */
+const FUNNEL = location.pathname.indexOf('-peso') >= 0 ? 'peso' : 'peleador';   // los de bajar de peso terminan en «-peso»
+const CLAVES_CAMPANA = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'ttclid', 'gclid'];
+const VIDA_CAMPANA = 30 * 24 * 60 * 60 * 1000;                                 // la campaña se recuerda 30 días
+const RE_ACCESO = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+const lsLeer = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lsGuardar = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const corto = (v) => String(v == null ? '' : v).trim().slice(0, 500);          // Hilvapay acepta hasta 500 caracteres por valor
+
+function campanaGuardada() {
+  try {
+    const v = JSON.parse(lsLeer('bc_utm') || 'null');
+    if (v && typeof v === 'object' && Date.now() - (+v.ts || 0) < VIDA_CAMPANA) return v;
+  } catch (e) {}
+  return {};
+}
+
+/* Si la dirección trae campaña, se guarda en bc_utm pisando lo anterior (fbc = fb.1.<ahora>.<fbclid> solo con un fbclid nuevo). Sin campaña en la dirección queda lo guardado. */
+function capturaCampana() {
+  const previa = campanaGuardada();
+  const q = new URLSearchParams(location.search);
+  const nueva = {};
+  CLAVES_CAMPANA.forEach((k) => { const v = corto(q.get(k)); if (v) nueva[k] = v; });
+  if (!Object.keys(nueva).length) return previa;
+  if (nueva.fbclid) nueva.fbc = previa.fbclid === nueva.fbclid && previa.fbc ? previa.fbc : 'fb.1.' + Date.now() + '.' + nueva.fbclid;
+  const mismo = Object.keys(nueva).length === Object.keys(previa).filter((k) => k !== 'ts').length && Object.keys(nueva).every((k) => nueva[k] === previa[k]);
+  nueva.ts = mismo && previa.ts ? previa.ts : Date.now();                       // la misma campaña vista de nuevo no renueva los 30 días
+  lsGuardar('bc_utm', JSON.stringify(nueva));
+  return nueva;
+}
+const CAMPANA = capturaCampana();
+
+/* «?utm_source=…&fbclid=…» con la campaña guardada, o '' si no hay: se suma a los links internos del funnel (quiz → oferta → back1 → back2). */
+function consultaCampana() {
+  const p = new URLSearchParams();
+  CLAVES_CAMPANA.forEach((k) => { if (CAMPANA[k]) p.set(k, corto(CAMPANA[k])); });
+  const s = p.toString();
+  return s ? '?' + s : '';
+}
+
+function nuevoUuid() {
+  try { if (crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+  const b = new Uint8Array(16);
+  try { crypto.getRandomValues(b); } catch (e) { for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256); }
+  b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;                            // UUID v4
+  const h = Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+  return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+}
+/* Acceso personal del comprador (bc_acceso): se crea una sola vez, al tocar «Ir al pago», y viaja en el link de pago. Sin crear, devuelve lo que haya o ''. */
+function accesoGuardado(crear) {
+  let a = lsLeer('bc_acceso') || '';
+  if (!RE_ACCESO.test(a)) { a = crear ? nuevoUuid() : ''; if (a) lsGuardar('bc_acceso', a); }
+  return a;
+}
+
+/* Nivel de carga elegido en la pregunta «tiempo»: Arranque t1, Ritmo t2, Impulso t3, Fighter t4. */
+const NIVEL_DE_TIEMPO = { Arranque: 't1', Ritmo: 't2', Impulso: 't3', Fighter: 't4' };
+const nivelElegido = () => NIVEL_DE_TIEMPO[String(A.tiempo || '').split(' · ')[0].trim()] || '';
+
+/* Video silencioso (fondo del quiz y oferta) que arranca solo, también en iOS: muted, playsinline y autoplay como atributos (Safari los pide así), loop, precarga y póster.
+   Nunca lleva sonido. Con el ahorro de batería de iOS el autoplay puede bloquearse: ahí se ve el póster y el video arranca con el primer toque. */
+function videoSilencioso(v, poster) {
+  v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
+  ['muted', 'loop', 'playsinline', 'webkit-playsinline', 'autoplay', 'disablepictureinpicture'].forEach((a) => v.setAttribute(a, ''));
+  v.setAttribute('preload', 'auto');
+  if (poster) v.poster = poster;
+  return v;
+}
+['touchstart', 'pointerdown'].forEach((ev) => window.addEventListener(ev, () => {
+  document.querySelectorAll('video').forEach((v) => { if (v.isConnected && v.paused && !v.ended) v.play().catch(() => {}); });
+}, { passive: true }));
 
 /* Contadores: cada página tiene el suyo y se reinicia al llegar a cero. /oferta 10:00, /back1 09:57, /back2 04:57. */
 const CICLOS = { oferta: 600, back1: 597, back2: 297 };
@@ -370,10 +452,31 @@ function tarjetaNoticia() {
   return `<div class="nota"><div class="im">${img}</div><div class="tx"><div class="et">${esc(n.etiqueta)}</div><h3>${esc(n.titular)}</h3>${n.bajada ? `<p>${esc(n.bajada)}</p>` : ''}${n.cuerpo ? `<p class="cu">${esc(n.cuerpo)}</p>` : ''}<div class="fu">${esc(n.fuente)}${n.fecha ? ' · ' + esc(n.fecha) : ''}${n.enlace ? ` · <a href="${esc(n.enlace)}" target="_blank" rel="noopener noreferrer">Ver el estudio</a>` : ''}</div></div></div>`;
 }
 
-/* Un solo punto de pago. Con DATOS.pagoUrl vacío no se cobra nada: se muestra «Reservá tu lugar» y se cuenta el clic. */
+/* Link de Hilvapay con todo lo que se sabe de la persona (solo lo que tenga valor, cada uno de hasta 500 caracteres):
+   acceso, funnel, nivel, pagina, nombre, email y la campaña (utm_*, fbclid, fbc, ttclid, gclid). Lo que ya traiga el link base no se pisa. */
+function urlPago(base, pagina) {
+  let u;
+  try { u = new URL(base, location.href); } catch (e) { return ''; }
+  const nombre = A.nombre && A.nombre !== 'Campeón' ? A.nombre : '';             // «Campeón» es el nombre de relleno del quiz, no el de la persona
+  const mail = /^\S+@\S+\.\S+$/.test(A.mail || '') ? A.mail : '';
+  const extra = { acceso: accesoGuardado(true), funnel: FUNNEL, nivel: nivelElegido(), pagina, nombre, email: mail };
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'fbc', 'ttclid', 'gclid'].forEach((k) => { extra[k] = CAMPANA[k]; });
+  Object.keys(extra).forEach((k) => { const v = corto(extra[k]); if (v && !u.searchParams.has(k)) u.searchParams.set(k, v); });
+  return u.toString();
+}
+
+/* Un solo punto de pago: DATOS.pagoUrl tiene un link por precio (base, b1, b2). Con el link vacío no se cobra nada: se muestra «Todavía no abrimos el pago» y se cuenta el clic.
+   El clic viaja con funnel, página y campaña (sin datos personales). */
 function pagar(precio) {
-  window.__send('click', { precio, t: Date.now() });
-  if (DATOS.pagoUrl) { location.href = DATOS.pagoUrl; return; }
+  const clave = Object.keys(P).find((k) => P[k] === precio) || 'base';
+  const pagina = typeof PAGINA === 'string' ? PAGINA : '';
+  const clic = { precio, funnel: FUNNEL, pagina };
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbc'].forEach((k) => { if (CAMPANA[k]) clic[k] = corto(CAMPANA[k]); });
+  clic.t = Date.now();
+  window.__send('click', clic);
+  const base = DATOS.pagoUrl && DATOS.pagoUrl[clave];
+  const destino = base ? urlPago(base, pagina) : '';
+  if (destino) { location.href = destino; return; }
   const m = $('pg');
   if (m) m.innerHTML = '<b>Gracias por llegar hasta acá.</b><br><span style="color:var(--m);font-size:14px">Todavía no abrimos el pago, así que no se cobró nada. Registramos tu interés.</span>';
 }
@@ -624,7 +727,7 @@ function html() {
   const h = [];
   h.push(`<div class="tbar${esRescate ? ' up' : ''}"><span>${CFG.barra}</span> <b class="tm">10:00</b></div>`);
   h.push(bloqueEncabezado());
-  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline></video></div>`);
+  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture></video></div>`);
   h.push(bloqueHoyMeta());
   h.push(bloqueGrafico());
   h.push(`<div class="box sello">${I_ESCUDO}<div><b>Hecho para arrancar de cero</b><br><span style="color:var(--m);font-size:14px">No necesitás saber boxear ni tener equipo.</span></div></div>`);
@@ -691,7 +794,7 @@ piePesoOferta();
 /* Salida: al intentar irse, la persona pasa al siguiente rescate (otra página con su propia dirección). */
 if (CFG.siguiente) {
   let ido = false;
-  const salir = () => { if (ido) return; ido = true; location.replace(CFG.siguiente); };
+  const salir = () => { if (ido) return; ido = true; location.replace(CFG.siguiente + consultaCampana()); };
   try { history.pushState({ a: 1 }, ''); history.pushState({ a: 2 }, ''); } catch (e) {}
   window.addEventListener('popstate', salir);
   document.addEventListener('mouseleave', (e) => { if (e.clientY <= 0) salir(); });

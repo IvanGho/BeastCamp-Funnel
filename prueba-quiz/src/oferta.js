@@ -39,7 +39,7 @@ function html() {
   const h = [];
   h.push(`<div class="tbar${esRescate ? ' up' : ''}"><span>${CFG.barra}</span> <b class="tm">10:00</b></div>`);
   h.push(bloqueEncabezado());
-  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline></video></div>`);
+  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture></video></div>`);
   h.push(`<div class="box sello">${I_ESCUDO}<div><b>Rutinas probadas por profesionales, semiprofesionales y amateurs</b><br><span style="color:var(--m);font-size:14px">Entrenadas y ajustadas por peleadores de los tres niveles.</span></div></div>`);
   if (!esRescate) h.push(`<div class="box"><b>Por qué entrenar sin plan te frena</b><p style="margin:8px 0 0;color:var(--m);font-size:15px">Repetir los mismos golpes sin una guía fija los errores. Un plan por semanas te dice qué trabajar, cuánto y cuándo.</p></div>`);
   h.push(`<p>Plan de 4 semanas de shadowboxing en casa, en tu celu, con 4 niveles de carga (de 15 minutos por día a 90 minutos por día), timer de rounds y rutinas guiadas.</p>`);
@@ -74,7 +74,7 @@ pie();
 /* Salida: al intentar irse, la persona pasa al siguiente rescate (otra página con su propia dirección). */
 if (CFG.siguiente) {
   let ido = false;
-  const salir = () => { if (ido) return; ido = true; location.replace(CFG.siguiente); };
+  const salir = () => { if (ido) return; ido = true; location.replace(CFG.siguiente + consultaCampana()); };
   try { history.pushState({ a: 1 }, ''); history.pushState({ a: 2 }, ''); } catch (e) {}
   window.addEventListener('popstate', salir);
   document.addEventListener('mouseleave', (e) => { if (e.clientY <= 0) salir(); });

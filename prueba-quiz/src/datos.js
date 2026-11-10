@@ -36,13 +36,23 @@ const DATOS = {
     imagen: '',            // ruta de una imagen para la tarjeta, ej. '/media/noticia.jpg'
   },
 
-  /* Pago: único punto a reemplazar cuando exista el checkout (CAMP_SHOPIFY_CHECKOUT_URL). Vacío = no se cobra nada. */
-  pagoUrl: '',
+  /* Pago: único punto a reemplazar cuando exista el checkout de Hilvapay. Un link de pago por precio.
+     Cada clave es el precio de su página: base = /oferta, b1 = /back1 (20% OFF), b2 = /back2 (50% OFF); los dos funnels (peleadores y bajar de peso) usan los mismos.
+     Pegá el link completo de Hilvapay (con https). Al tocar «Ir al pago», la página le agrega sola: acceso, funnel, nivel, pagina, nombre, email y la campaña (utm_*, fbclid, fbc, ttclid, gclid).
+     Vacío = no se cobra nada: se muestra «Todavía no abrimos el pago» y se cuenta el clic. */
+  pagoUrl: { base: '', b1: '', b2: '' },
 
-  /* Dirección de la app donde entra el comprador (botón «Entrar a mi plan» de /gracias). Vacío = el botón no se muestra. */
-  appUrl: '',
+  /* Dirección de la app donde entra el comprador. El botón «Entrar a mi plan» de /gracias/ lleva a appUrl + acceso + '/'. Con barra al final. Vacío = el botón no se muestra. */
+  appUrl: '/app/',
 
-  /* Contacto para pedir el borrado de datos (se muestra en Privacidad). Vacío = texto genérico. */
+  /* Dirección final del sitio, con https y sin barra al final. Se usa para las etiquetas al compartir el link (og:image y og:url, que tienen que ser absolutas).
+     Vacío = esas etiquetas salen con rutas relativas y sin og:url. */
+  sitioUrl: '',
+
+  /* Responsable de los datos personales: nombre o razón social (se muestra en Privacidad). Vacío = no se muestra y queda un texto genérico. */
+  responsable: '',
+
+  /* Contacto para pedir el borrado de datos y la devolución (se muestra en Privacidad y en Términos). Vacío = texto genérico. */
   contacto: '',
 
   garantiaDias: 30,

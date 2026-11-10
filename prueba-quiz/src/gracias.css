@@ -1,0 +1,36 @@
+/* Solo /gracias/: festejo suave alrededor del tilde, el aviso del acceso personal y nada más. El resto sale de base.css. */
+.gracias{position:relative;padding-top:48px}
+.gracias .festejo{position:absolute;left:0;right:0;top:34px;height:130px;pointer-events:none}
+.gracias .festejo .aro{position:absolute;left:50%;top:50px;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;border:3px solid var(--g2);opacity:0;animation:gr-aro 1.8s .2s ease-out 2}
+.gracias .festejo .aro.dos{animation-delay:.7s}
+.gracias .festejo .cf{position:absolute;left:50%;top:50px;width:9px;height:14px;margin:-7px 0 0 -4px;border-radius:3px;background:var(--g);opacity:0;animation:gr-cf 1.5s .15s cubic-bezier(.2,.8,.3,1) forwards}
+.gracias .festejo .cf-b,.gracias .festejo .cf-e{background:var(--g2)}
+.gracias .festejo .cf-c,.gracias .festejo .cf-g{background:#fbbf24;width:8px;height:8px;border-radius:50%}
+.gracias .festejo .cf-d,.gracias .festejo .cf-h{background:var(--gd)}
+.gracias .festejo .cf-a{--x:-118px;--y:-34px;--r:-40deg}
+.gracias .festejo .cf-b{--x:-84px;--y:34px;--r:70deg}
+.gracias .festejo .cf-c{--x:-62px;--y:-52px;--r:0deg}
+.gracias .festejo .cf-d{--x:-132px;--y:22px;--r:25deg}
+.gracias .festejo .cf-e{--x:118px;--y:-30px;--r:40deg}
+.gracias .festejo .cf-f{--x:86px;--y:36px;--r:-70deg}
+.gracias .festejo .cf-g{--x:64px;--y:-54px;--r:0deg}
+.gracias .festejo .cf-h{--x:134px;--y:20px;--r:-25deg}
+.gracias .tick{position:relative;animation:gr-pop .55s cubic-bezier(.2,1.3,.4,1) both}
+.gracias .tick svg path{stroke-dasharray:24;stroke-dashoffset:24;animation:gr-trazo .45s .3s ease forwards}
+.gracias .tag{margin-top:4px}
+.gracias h1{font-size:27px}
+.gracias p{color:var(--m);margin:6px 0}
+.gracias p b{color:var(--t);overflow-wrap:anywhere}
+.gracias .cta{margin-top:18px}
+.gr-aviso{display:flex;align-items:center;gap:10px;text-align:left;font-size:14px;color:var(--m);margin:16px 0 0}
+.gr-aviso svg{flex:none;width:20px;height:20px;fill:none;stroke:var(--g);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@keyframes gr-aro{0%{transform:scale(.9);opacity:.55}100%{transform:scale(2.3);opacity:0}}
+@keyframes gr-cf{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.4)}15%{opacity:1}100%{opacity:.9;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1)}}
+@keyframes gr-pop{0%{opacity:0;transform:scale(.5)}100%{opacity:1;transform:none}}
+@keyframes gr-trazo{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){
+ .gracias .festejo .aro{display:none}
+ .gracias .festejo .cf{animation:none;opacity:.85;transform:translate(var(--x),var(--y)) rotate(var(--r))}
+ .gracias .tick,.gracias .tick svg path{animation:none}
+ .gracias .tick svg path{stroke-dashoffset:0}
+}

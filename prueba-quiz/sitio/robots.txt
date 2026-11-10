@@ -1,2 +1,23 @@
+# Sitio privado: sin indexar. Solo los bots de vista previa de links y de revisión de anuncios leen las páginas del funnel.
+
+User-agent: facebookexternalhit
+User-agent: Facebot
+User-agent: Twitterbot
+User-agent: WhatsApp
+User-agent: TelegramBot
+User-agent: LinkedInBot
+User-agent: Slackbot
+Allow: /quiz/
+Allow: /quiz-peso/
+Allow: /oferta/
+Allow: /oferta-peso/
+Allow: /back1/
+Allow: /back1-peso/
+Allow: /back2/
+Allow: /back2-peso/
+Allow: /img/
+Allow: /media/
+Disallow: /
+
 User-agent: *
 Disallow: /

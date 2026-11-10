@@ -30,7 +30,10 @@ const DATOS = {
     enlace: 'https://www.mdpi.com/2075-4663/14/1/5',
     imagen: '',
   },
-  pagoUrl: '',
+  pagoUrl: { base: '', b1: '', b2: '' },
+  appUrl: '/app/',
+  sitioUrl: '',
+  responsable: '',
   contacto: '',
   garantiaDias: 30,
   /* Precios y valor: los mismos que en prueba-quiz/src/datos.js (no son relleno). */
