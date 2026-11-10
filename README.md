@@ -2,6 +2,73 @@
 
 Quiz de shadowboxing (de la primera pregunta a la oferta), páginas de oferta y la **app del comprador** (`/app/`, una PWA que se instala en el celu). Es un sitio **estático**: HTML, CSS y JavaScript sin frameworks. Hay un servicio chico aparte (Node, sin dependencias) que guarda el mail y el clic de compra, recibe los avisos de pago de Hilvapay y le da al comprador su plan.
 
+## Qué falta para salir con anuncios
+
+El código está terminado y probado; qué se hizo y cómo se verificó está en [`docs/entrega.md`](docs/entrega.md). La rama para publicar es `main`.
+
+Falta lo que solo puede poner el dueño del negocio. Mientras no esté:
+
+- el botón de compra no cobra: dice «Todavía no abrimos el pago» y solo cuenta el clic;
+- no sale ningún mail de acceso.
+
+### 1. Datos y cuentas
+
+| Qué | Dónde va | Paso a paso |
+|---|---|---|
+| Los 3 links de pago de Hilvapay: oferta, rescate 1 y rescate 2 | `pagoUrl` en `prueba-quiz/src/datos.js` | [deploy, 7.1](deploy/README.md#71-los-tres-links-de-pago-uno-por-precio) |
+| En Hilvapay: la página de gracias `https://DOMINIO/gracias/` y los 3 avisos (pagado, reembolso y disputa), con su token | Hilvapay; el token también en `HILVAPAY_WEBHOOK_TOKEN` | [deploy, 7.2 a 7.5](deploy/README.md#7-hilvapay-paso-a-paso) |
+| El dominio | `sitioUrl` en `datos.js`, `BASE_URL` del servicio y `DOMINIO` en `nginx.conf` | [deploy, 3 a 6](deploy/README.md#3-carpetas-y-código) |
+| Nombre o razón social del responsable de los datos | `responsable` en `datos.js` | Lo usan los términos y la política de privacidad |
+| Mail de contacto para pedir el borrado de datos o la devolución | `contacto` en `datos.js` | Lo usan las legales |
+| Una cuenta de Resend con el dominio verificado | `RESEND_API_KEY` y `MAIL_DESDE` del servicio | [deploy, 8](deploy/README.md#8-resend-los-mails-de-acceso) |
+| El píxel de Meta y el token de la API de conversiones | `META_PIXEL_ID` y `META_CAPI_TOKEN` del servicio | [deploy, 9](deploy/README.md#9-meta-conversions-api) |
+| Un VPS con Node 22 o más nuevo, nginx y certbot | | [deploy, 1 y 2](deploy/README.md#1-requisitos) |
+
+Después de cambiar `datos.js`, correr `npm run construir` y `npm test`, hacer commit y subirlo (ver [Actualizar](deploy/README.md#actualizar)). Las claves van solo en el servidor, nunca en el repo.
+
+### 2. Fotos y videos
+
+El detalle está en `docs/pendientes-imagenes.md`.
+
+- **Videos de la app:** cada ejercicio, drill y sección de la guía tiene `video: ''`. Mientras tanto se ve el muñeco con las indicaciones. Cómo cargarlos: ver «App del comprador», más abajo.
+- **Foto del especialista** (`especialista.foto`): hoy se ven las iniciales.
+- **Imagen de la noticia** (`noticia.imagen`): hoy se ve un ícono.
+- **Si se pueden generar imágenes:**
+  - los 5 muñecos propios del funnel de peso, que no calzan del todo con los otros 35 (posición, piel y sombra);
+  - los 3 muñecos de las medidas, a 720×960;
+  - los pósters de los videos, a mejor resolución.
+- **Opcional, solo con datos reales y verificables:** cifra de personas, diagnósticos, estrellas y testimonios, y la matrícula, la universidad y los posgrados del especialista. Mientras estén vacíos, no se muestran.
+
+### 3. Revisión del plan por Juan Medina
+
+El plan completo, para leer sin código, está en `prueba-quiz/contenido/plan-para-revisar.md`. Quedan 5 preguntas para él:
+
+1. ¿Impulso y Fighter, de 4 a 6 días por semana y hasta 87 minutos por sesión, están bien para hombres de más de 30 que no entrenan hace tiempo?
+2. ¿Alcanza con el test del habla para medir la intensidad, sin pulsaciones?
+3. ¿Van bien en principiantes las flexiones con apoyo alto, la esquiva baja, el uppercut y el gancho?
+4. ¿Están bien los estiramientos de 20 a 30 segundos y la respiración 4-6?
+5. ¿Alcanza con el aviso de salud que va en la guía y en la bienvenida de la app?
+
+### 4. Pruebas antes de gastar en anuncios
+
+- **La [lista antes de lanzar](deploy/README.md#lista-antes-de-lanzar)** de la guía, con una compra real de punta a punta y su reembolso.
+- **Un iPhone y un Android de verdad.** Hasta ahora se probó con Chrome simulando celulares. Hay que revisar:
+  - que los videos arranquen solos y sin sonido;
+  - instalar la app (en iPhone, Compartir → Agregar a inicio);
+  - el sonido, la vibración y la voz del timer;
+  - que la pantalla no se apague durante la sesión.
+- **Opcional:** la [prueba de humo](deploy/prueba-de-humo/) con Docker, para ver nginx y el servicio andando juntos antes de subirlos.
+
+### 5. Detalles menores que quedaron abiertos
+
+Salen de la auditoría ([`docs/auditoria-funnels.md`](docs/auditoria-funnels.md)). Ninguno rompe nada.
+
+- **P2-10:** en 360×640, en las pantallas llenas del quiz (por ejemplo «cuerpo», «zonas» o el perfil) queda poco aire entre el botón y el pie legal. No se pisan.
+- **P3-7:** en el quiz de peso, en 360×640, el aviso crece un poco al escribir un peso bajo y mueve el campo.
+- **P3-3:** la barra de progreso y la franja de video animan el ancho y el alto en vez de usar `transform`. No se nota: van a 60 fps.
+- **P2-8:** el video de escritorio conserva su filtro de color.
+- **P3-9 y P3-10:** algunos muñecos de las opciones del quiz de peso no cuentan exactamente lo mismo que su texto. Se dejaron así a propósito.
+
 ## Qué hay en las carpetas
 
 | Carpeta o archivo | Qué es |
@@ -22,6 +89,11 @@ Quiz de shadowboxing (de la primera pregunta a la oferta), páginas de oferta y 
 | `prueba-quiz/api/` | Servicio (Node 22+, sin dependencias): mails y clics del funnel, avisos de Hilvapay, acceso a la app, mails de acceso y medición para Meta. |
 | `prueba-quiz/nginx.conf` | Configuración del servidor web para el VPS: HTTPS, reglas de seguridad, caché y rutas de la app y del servicio. |
 | `deploy/` | **Cómo publicarlo en un VPS** (paso a paso), servicio de systemd y lista de variables. |
+| `deploy/prueba-de-humo/` | Prueba de humo tipo producción con Docker (nginx real y el servicio, recorridos con Chrome) y Lighthouse. |
+| `docs/entrega.md` | **Qué se entregó y cómo se verificó:** estado de cada punto del pedido, tests, Lighthouse, prueba de humo, capturas de la app y decisiones tomadas. |
+| `docs/auditoria-funnels.md` | La auditoría visual de los dos funnels y en qué quedó cada punto. |
+| `docs/lighthouse/` | Los reportes de Lighthouse de los dos quiz, las dos ofertas y la app (se abren en el navegador). |
+| `docs/capturas/app/` | Capturas de las pantallas de la app. |
 | `docs/pendientes-imagenes.md` | Qué imágenes conviene rehacer cuando se puedan generar. |
 | `vista-previa-local/` | Servidor para verlo en tu compu, con datos de relleno y el servicio incluido. |
 | `tests/` | Pruebas automáticas. |
@@ -136,7 +208,9 @@ Todo lo que hay que hacer en el VPS está en [`deploy/README.md`](deploy/README.
 - Resend, para los mails de acceso;
 - Meta.
 
-Antes de salir con anuncios: cargar en `datos.js` los tres links de pago, `sitioUrl`, `responsable` y `contacto`, y correr `npm run construir`.
+Antes de salir con anuncios, ver [«Qué falta para salir con anuncios»](#qué-falta-para-salir-con-anuncios), al principio de este README.
+
+Para probar nginx y el servicio juntos en tu compu antes de subirlos, ver [`deploy/prueba-de-humo/`](deploy/prueba-de-humo/), que usa Docker.
 
 ## Qué NO hay que tocar
 
@@ -158,6 +232,7 @@ Antes de salir con anuncios: cargar en `datos.js` los tres links de pago, `sitio
 - Los datos de clientes.
 - Los scripts para generar imágenes con IA.
 - Los videos originales sin reprocesar.
+- Las capturas de trabajo de la auditoría y del pulido, unos 190 MB. Se vuelven a sacar con los tests (ver `docs/entrega.md`).
 - El historial anterior.
 
 Sí incluye la configuración de nginx y la guía para publicar todo en un VPS (`deploy/`).
