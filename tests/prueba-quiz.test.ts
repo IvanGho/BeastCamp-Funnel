@@ -189,4 +189,7 @@ test("quiz: nginx solo lee (GET/HEAD) en lo estático, el CSP solo permite el mi
   assert.match(n, /location \^~ \/media\/ \{[\s\S]*?expires 30d;/);
   assert.doesNotMatch(n.replace(/#.*$/gm, ""), /immutable/);
   assert.match(n, /gzip on;/);
+  // /app/<acceso> sin barra redirige con la captura con nombre: el `if` del método pisaría $1 con «GET» (visto en la prueba con nginx real)
+  assert.match(n, /\(\?<acceso>\[0-9a-f\]\{8\}[^"]*"[^{]*\{[^}]*\}[^}]*return 301 \/app\/\$acceso\/;/);
+  assert.doesNotMatch(n, /return 301 \/app\/\$1\//);
 });
