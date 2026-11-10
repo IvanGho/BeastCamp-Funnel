@@ -1,0 +1,55 @@
+# Servicio de BeastCamp (quiz, app y avisos de Hilvapay). Va en /etc/systemd/system/beastcamp-api.service
+# Ver deploy/README.md. Las claves viven en /etc/beastcamp/beastcamp-api.env (nunca en el repo).
+[Unit]
+Description=BeastCamp API (quiz, app y avisos de Hilvapay)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=beastcamp
+Group=beastcamp
+WorkingDirectory=/opt/beastcamp
+# Si node está en otra ruta: `command -v node`
+ExecStart=/usr/bin/node /opt/beastcamp/prueba-quiz/api/server.mjs
+EnvironmentFile=/etc/beastcamp/beastcamp-api.env
+# Escucha solo en 127.0.0.1:3000 (nginx es la única puerta). Los datos van a /var/lib/beastcamp (DATA_DIR).
+Environment=PORT=3000
+Environment=NODE_ENV=production
+Restart=always
+RestartSec=2
+# Sale ordenado con SIGTERM: termina los mails y avisos a Meta que estén en curso (hasta 10 s).
+TimeoutStopSec=10
+
+# Carpeta de datos propia: /var/lib/beastcamp (compras, leads, clics, progreso). Solo la usa este usuario.
+StateDirectory=beastcamp
+StateDirectoryMode=0700
+UMask=0077
+
+# Endurecimiento: el servicio no puede tocar nada fuera de su carpeta de datos.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+# (No se activa MemoryDenyWriteExecute: Node necesita memoria ejecutable para el JIT de V8.)
+MemoryMax=400M
+
+[Install]
+WantedBy=multi-user.target

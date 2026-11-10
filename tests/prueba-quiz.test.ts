@@ -153,12 +153,37 @@ test("api: valida con lista cerrada, límite por IP, 4 KB, solo POST y no loguea
   }
 });
 
-test("quiz: nginx solo lee (GET/HEAD) y el CSP solo permite conexiones al mismo origen", () => {
+test("quiz: nginx solo lee (GET/HEAD) en lo estático, el CSP solo permite el mismo origen y /api/ es lo único que llega al servicio", () => {
   const n = leer("prueba-quiz/nginx.conf");
+  // lo estático: solo GET/HEAD (405 para el resto), en cada location
   assert.match(n, /\$request_method !~ \^\(GET\|HEAD\)\$\) \{ return 405; \}/);
-  assert.match(n, /connect-src 'self'/);
-  assert.match(n, /form-action 'none'/);
-  assert.match(n, /default-src 'none'/);
-  assert.doesNotMatch(n, /proxy_pass|fastcgi|upstream/);
+  const https = n.slice(n.indexOf("listen 443"));
+  const estaticos = https.split(/^    location /m).slice(1).filter((b) => !/proxy_pass/.test(b));
+  assert.ok(estaticos.length >= 8, "hay varios location estáticos");
+  for (const b of estaticos) if (!/return 404;/.test(b)) assert.match(b, /\$request_method !~ \^\(GET\|HEAD\)\$\) \{ return 405; \}/, `location estático sin la regla de solo lectura: ${b.slice(0, 60)}`);
+  // CSP: solo mismo origen (más worker y manifest de la app), nada de terceros
+  const csp = n.match(/add_header Content-Security-Policy "([^"]+)" always;/)?.[1] ?? "";
+  for (const d of ["default-src 'none'", "script-src 'unsafe-inline'", "style-src 'unsafe-inline'", "img-src 'self' data:", "media-src 'self'", "connect-src 'self'", "form-action 'none'", "frame-ancestors 'none'", "base-uri 'none'", "worker-src 'self'", "manifest-src 'self'"]) assert.ok(csp.includes(d), `CSP sin ${d}`);
+  assert.doesNotMatch(csp, /https?:|\*/, "CSP sin hosts de terceros");
+  // HTTPS, HSTS y noindex
+  assert.match(n, /listen 443 ssl http2;/);
+  assert.match(n, /return 301 https:\/\/\$host\$request_uri;/);
+  assert.match(n, /Strict-Transport-Security "max-age=\d+"/);
+  assert.match(n, /ssl_certificate\s+\/etc\/letsencrypt\/live\/DOMINIO\/fullchain\.pem;/);
+  // la API: solo GET/POST/PUT, 64k, IP real y timeouts cortos; es el único proxy_pass (y /salud)
+  const api = n.match(/location \/api\/ \{[\s\S]*?\n    \}/)?.[0] ?? "";
+  assert.match(api, /\$request_method !~ \^\(GET\|POST\|PUT\)\$\) \{ return 405; \}/);
+  assert.match(api, /client_max_body_size 64k;/);
+  assert.match(api, /proxy_pass http:\/\/127\.0\.0\.1:3000;/);
+  assert.match(api, /proxy_set_header X-Real-IP \$remote_addr;/);
+  assert.match(api, /proxy_read_timeout 15s;/);
+  assert.deepEqual([...n.matchAll(/proxy_pass ([^;]+);/g)].map((m) => m[1]), ["http://127.0.0.1:3000", "http://127.0.0.1:3000"], "solo /api/ y /salud llegan al servicio");
+  assert.doesNotMatch(n, /fastcgi|upstream/);
+  // la app: UUID v4 para /app/<acceso>/ y su manifest; sw y manifest sin caché; img y media a 30 días sin immutable
+  assert.ok((n.match(/\[0-9a-f\]\{8\}-\[0-9a-f\]\{4\}-4\[0-9a-f\]\{3\}-\[89ab\]\[0-9a-f\]\{3\}-\[0-9a-f\]\{12\}/g) ?? []).length >= 3);
+  assert.match(n, /location = \/app\/sw\.js \{[\s\S]*?expires -1;/);
+  assert.match(n, /location \^~ \/img\/ \{[\s\S]*?expires 30d;/);
+  assert.match(n, /location \^~ \/media\/ \{[\s\S]*?expires 30d;/);
+  assert.doesNotMatch(n.replace(/#.*$/gm, ""), /immutable/);
+  assert.match(n, /gzip on;/);
 });
-
