@@ -15,6 +15,7 @@ Servicio ──► /var/lib/beastcamp  (compras, clics, leads y progreso de cada
 - Las páginas son archivos estáticos: nginx las sirve directo.
 - El servicio Node no tiene dependencias (nada de `npm install` en el servidor) y solo escucha en `127.0.0.1`: desde afuera se llega únicamente a través de nginx.
 - Lo único que no se puede perder es `/var/lib/beastcamp` (ver [Respaldo](#respaldo)).
+- Antes de subirlo podés probar esta misma configuración (nginx y el servicio) en tu compu, con Docker: [prueba de humo](prueba-de-humo/).
 
 ## 1. Requisitos
 
