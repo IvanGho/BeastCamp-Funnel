@@ -5,7 +5,7 @@
   "description": "Quiz y oferta de BeastCamp (sitio est\u00e1tico armado desde prueba-quiz/src)",
   "type": "module",
   "scripts": {
-    "construir": "node prueba-quiz/scripts/construir-quiz.mjs",
+    "construir": "node prueba-quiz/scripts/construir-quiz.mjs && node prueba-quiz/scripts/construir-app.mjs",
     "vista-previa": "node vista-previa-local/servir.mjs",
     "reporte": "node prueba-quiz/scripts/reporte.mjs",
     "compra-local": "node prueba-quiz/scripts/compra-local.mjs",

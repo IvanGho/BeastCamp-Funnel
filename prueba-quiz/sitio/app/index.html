@@ -1,0 +1,1770 @@
+<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#16A34A"><meta name="color-scheme" content="light"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="BeastCamp"><meta name="format-detection" content="telephone=no"><title>BeastCamp</title>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="/img/marca/favicon.svg" type="image/svg+xml"><link rel="icon" href="/img/marca/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/img/marca/apple-touch-icon.png">
+<style>:root{--g:#16A34A;--g2:#4ade80;--gd:#15803d;--t:#0b0f0c;--m:#5b665e;--line:#e5ebe6;--bg:#fff;--soft:#f4f7f5;--r:16px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--t);font:17px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{min-height:100dvh}
+button{font:inherit;color:inherit}
+/* progreso fijo arriba */
+.prog{position:fixed;top:0;left:0;right:0;height:6px;background:#e5ebe6;z-index:30}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--g),var(--g2));border-radius:0 6px 6px 0;transition:width .5s cubic-bezier(.3,.8,.3,1);box-shadow:0 0 12px rgba(74,222,128,.6)}
+/* estructura: en compu video a la izquierda; en celular franja arriba */
+.shell{display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr;min-height:100dvh}
+.shell:not(.conbg){grid-template-rows:1fr}
+#bg{position:relative;height:0;overflow:hidden;background:#dff3e6;transition:height .35s}
+#bg video{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;filter:saturate(1.15) contrast(1.03)}
+#bg:after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(transparent,#fff)}
+.shell.conbg #bg{height:clamp(72px,15dvh,150px);margin-top:6px}
+main{padding:10px 16px calc(var(--pie,64px) + 2px);width:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;justify-content:center}
+@media(min-width:900px){
+ .shell{grid-template-rows:1fr}.shell.conbg{grid-template-columns:1fr 1fr}
+ #bg{height:0;margin:0}.shell.conbg #bg{height:100dvh;position:sticky;top:0;margin-top:0}
+ #bg video{object-position:50% 35%}
+ #bg:after{left:auto;top:0;bottom:0;right:0;width:90px;height:auto;background:linear-gradient(90deg,transparent,#fff)}
+ main{padding:14px 28px calc(var(--pie,64px) + 2px)}
+ .shell:not(.conbg) main{max-width:560px}
+}
+/* ventanas altas: el video no se estira a toda la altura (se vería blando), queda en un recuadro de hasta 640 px, centrado */
+@media(min-width:900px) and (min-height:701px){
+ .shell.conbg #bg{height:min(100dvh,640px);top:max(0px,calc(50dvh - 320px));align-self:start;margin-top:max(0px,calc(50dvh - 320px));border-radius:var(--r)}
+ #bg:after{display:none}
+}
+/* pie legal fijo */
+.ft{position:fixed;left:0;right:0;bottom:0;z-index:20;text-align:center;color:#5b665e;font-size:11px;line-height:1.35;padding:14px 16px max(8px,env(safe-area-inset-bottom));background:linear-gradient(transparent,#fff 45%);pointer-events:none}
+.ft a{color:#5b665e;pointer-events:auto;display:inline-block;padding:8px 2px;margin:-8px -2px}
+/* en las ofertas el pie va al final de la página, sin posición fija: la barra de abajo no lo tapa */
+.ft.fin{position:static;background:none;pointer-events:auto;padding:18px 16px 24px}
+/* textos */
+h1{font-size:28px;line-height:1.15;margin:6px 0 8px}h2{font-size:23px;line-height:1.2;margin:4px 0 6px;text-align:center}
+p{margin:0 0 10px}.sub{text-align:center;color:var(--m);font-size:14px;margin:0 0 12px}
+.tag{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gd);font-weight:800;margin:0 0 6px}
+.cen{text-align:center}
+/* pill de prueba social / gatillos */
+.pill{align-self:center;display:inline-flex;gap:7px;align-items:center;font-size:12.5px;font-weight:700;color:var(--gd);background:#ecfdf3;border:1px solid #c8f1d6;border-radius:99px;padding:5px 12px;margin:4px 0 8px}
+.pill svg{width:15px;height:15px;stroke:var(--g);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.estr{color:#f5a623;letter-spacing:2px}
+.gift{margin:12px 0 0;font-size:12.5px;background:#fffbe6;border:1px solid #fde68a;border-radius:12px;padding:9px 12px;color:#854d0e;display:flex;gap:10px;align-items:center}
+.gift svg{width:26px;height:26px;flex:none;stroke:#b45309;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.gift svg .a{stroke:#b45309}
+/* globo de dato */
+.globo{position:relative;background:#f0fdf4;border:1px solid #c8f1d6;color:#14532d;border-radius:14px;padding:9px 12px 9px 38px;font-size:13px;margin:0 0 12px;line-height:1.35}
+.globo:before{content:"";position:absolute;left:12px;top:11px;width:16px;height:16px;border-radius:50%;background:var(--g)}
+.globo:after{content:"i";position:absolute;left:12px;top:11px;width:16px;height:16px;color:#fff;font:800 11px/16px system-ui;text-align:center}
+/* tarjetas de opciones */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.c{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:10px 8px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:clamp(96px,19dvh,156px);transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden}
+@media(hover:hover){.c:hover{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 18px rgba(22,163,74,.15)}}
+.c.on{border-color:var(--g);background:#f0fdf4;box-shadow:0 0 0 3px rgba(74,222,128,.25)}
+.c b{font-size:13.5px;line-height:1.25;font-weight:700}.c small{display:block;font-size:12px;color:var(--m);font-weight:500;margin-top:2px}
+.c svg{width:clamp(50px,11dvh,92px);height:clamp(50px,11dvh,92px);flex:none}
+.c.A svg *{fill:none;stroke:#0b0f0c;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}.c.A svg .a *,.c.A svg .a{stroke:var(--g)}
+
+@keyframes bob{50%{transform:translateY(-3px)}}.c.B svg .fig{animation:bob 1.7s ease-in-out infinite;transform-origin:50% 100%}.c.B:nth-child(2) .fig{animation-delay:.2s}.c.B:nth-child(3) .fig{animation-delay:.4s}.c.B:nth-child(4) .fig{animation-delay:.6s}
+.c.chico{min-height:clamp(80px,14.5dvh,118px);padding:6px 6px}.c.chico svg{width:clamp(42px,8.6dvh,72px);height:clamp(42px,8.6dvh,72px)}.c.chico b{font-size:12.5px}
+.c .chk{position:absolute;right:8px;top:8px;width:20px;height:20px;border-radius:6px;border:2px solid #cfd8d2;background:#fff}
+.c.on .chk{background:var(--g);border-color:var(--g)}.c.on .chk:after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+/* botones */
+.cta{display:block;width:100%;border:0;border-radius:14px;background:linear-gradient(180deg,var(--g),var(--gd) 60%);color:#fff;font-weight:800;font-size:19px;line-height:1.25;padding:16px;margin-top:12px;cursor:pointer;text-align:center;text-decoration:none;box-shadow:0 8px 20px rgba(21,128,61,.3);position:relative;overflow:hidden}
+/* el brillo solo se mueve con transform: no cuesta layout ni genera saltos de diseño */
+.cta:after{content:"";position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-150%) skewX(-20deg);animation:brillo 3.2s infinite}
+@keyframes brillo{0%{transform:translateX(-150%) skewX(-20deg)}60%,100%{transform:translateX(350%) skewX(-20deg)}}
+.cta.s{background:#fff;color:var(--t);border:2px solid var(--line);box-shadow:none}.cta.s:after{display:none}.cta[disabled]{opacity:.45;box-shadow:none}
+#pg:empty{display:none}
+.box{background:var(--soft);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin:12px 0}
+.row{display:flex;justify-content:space-between;gap:10px}
+input[type=text],input[type=email]{width:100%;padding:15px;font-size:17px;border:2px solid #dfe6e1;border-radius:14px;margin-bottom:10px;font-family:inherit}
+input:focus{border-color:var(--g)}
+.errc{color:#b91c1c;font-size:13px;font-weight:600;margin:-4px 0 8px;text-align:center}.errc:empty{display:none}
+:focus-visible{outline:3px solid #14773a;outline-offset:2px}.cta:focus-visible{outline-color:#0b0f0c}[tabindex="-1"]:focus{outline:0}
+/* entrada de pantallas */
+.scr{animation:entra .35s ease both}@keyframes entra{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.sale{opacity:0;transform:translateX(-18px);transition:opacity .16s,transform .16s}
+/* «Entrenar mal te frena» */
+.ill{display:flex;gap:12px;align-items:center;margin:8px 0;background:var(--soft);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px}
+.ill .esc3d{width:84px;height:84px;object-fit:contain;mix-blend-mode:multiply;flex:none}.ill b{display:block;font-size:15px}.ill span{font-size:13px;color:var(--m)}
+@keyframes sep{0%,100%{transform:translateX(0)}50%{transform:translateX(-5px)}}@keyframes sep2{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.esc .f1,.esc .p1{animation:sep 1.8s ease-in-out infinite}.esc .f2,.esc .p2{animation:sep2 1.8s ease-in-out infinite}
+@keyframes sube{0%,100%{transform:translateY(7px)}45%{transform:translateY(-4px)}}.esc .guante-g{animation:sube 1.5s ease-in-out infinite}
+@keyframes infla{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}.esc .pecho{animation:infla 2.4s ease-in-out infinite;transform-origin:48px 52px}
+@keyframes exhala{0%{opacity:0;transform:translate(-8px,6px)}40%{opacity:1}100%{opacity:0;transform:translate(8px,-8px)}}.esc .aire circle{animation:exhala 2.4s ease-out infinite}.esc .aire circle:nth-child(2){animation-delay:.3s}.esc .aire circle:nth-child(3){animation-delay:.6s}
+/* noticia */
+.nota{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.07)}
+.nota .im{height:120px;background:linear-gradient(135deg,#0b3d24,#16A34A 60%,#4ade80);display:flex;align-items:center;justify-content:center}
+.nota .im img{width:100%;height:100%;object-fit:cover;display:block}.nota .im svg{width:58px;height:58px;stroke:#fff;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.nota .tx{padding:12px 14px}.nota .et{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gd);font-weight:800}
+.nota h3{margin:4px 0 6px;font-size:17px;line-height:1.25}.nota p{font-size:13px;color:var(--m);margin:0 0 6px}.nota .fu{font-size:11.5px;color:#5b665e}.nota a{color:var(--gd);display:inline-block;padding:10px 0;margin:-10px 0}
+/* especialista */
+.exp{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;text-align:center;box-shadow:0 10px 26px rgba(0,0,0,.06)}
+.av{width:76px;height:76px;border-radius:50%;margin:0 auto 8px;background:linear-gradient(135deg,var(--g),#065f46);color:#fff;font-weight:800;font-size:25px;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 0 0 3px var(--g2);overflow:hidden}.av img{width:100%;height:100%;object-fit:cover}
+.exp .nm{font-size:18px;font-weight:800}.exp .ti{color:var(--m);font-size:14px}.exp .mt{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:800;background:#fef9c3;color:#854d0e;border-radius:99px;padding:2px 9px}
+.exp ul{list-style:none;margin:10px 0 0;padding:0;text-align:left;font-size:12.5px;color:var(--m)}.exp li{margin:5px 0;padding-left:16px;position:relative}.exp li:before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;background:var(--g)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:12px;color:var(--m)}.chips span{border:1px solid var(--line);border-radius:99px;padding:5px 10px;background:#f9fbf9;display:inline-flex;gap:5px;align-items:center}
+.chips svg{width:13px;height:13px;stroke:var(--g);fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+/* carga */
+.ring{position:relative;width:150px;height:150px;margin:6px auto 10px}.ring svg{transform:rotate(-90deg)}.ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px}
+.chkl{display:flex;gap:10px;align-items:center;margin:9px 0;font-size:15px;color:#6b756e;transition:color .3s}.chkl .ic{width:22px;height:22px;border-radius:50%;border:2px solid #d4dcd7;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;flex:none}
+.chkl.d{color:var(--t)}.chkl.d .ic{background:var(--gd);border-color:var(--gd)}
+.velo{position:fixed;inset:0;background:rgba(236,243,239,.78);backdrop-filter:blur(3px);z-index:60;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}@keyframes fade{from{opacity:0}}
+.hoja{background:#fff;width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:20px 18px 26px;animation:sube2 .3s}@keyframes sube2{from{transform:translateY(30px)}}
+.hoja .tag{text-align:center}.hoja h3{text-align:center;margin:4px 0 12px;font-size:19px}
+/* oferta */
+.tbar{position:sticky;top:6px;z-index:5;margin:0 0 10px;box-shadow:0 -6px 0 #fff;background:#0b0f0c;color:#fff;border-radius:12px;padding:9px 12px;font-size:13px;text-align:center}.tbar b{color:var(--g2);font-size:16px;font-variant-numeric:tabular-nums}
+.vid{position:relative;border-radius:var(--r);overflow:hidden;background:#000;margin:8px 0}.vid video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
+.sello{display:flex;gap:12px;align-items:center}.sello svg{width:40px;height:40px;flex:none;stroke:var(--g);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.vs{display:flex;gap:8px;margin-top:10px}.vs>div{flex:1;font-size:13px;line-height:1.7;color:var(--m);background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}.vs small{display:block;font-weight:800;letter-spacing:.08em;margin-bottom:4px;color:#b91c1c}.vs .on{border-color:var(--g);background:#f0fdf4;color:var(--t)}.vs .on small{color:var(--gd)}
+.st{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:14px}.st i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--gd);color:#fff;font-style:normal;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.sem{display:flex;gap:10px;margin:9px 0;font-size:14px}.sem b{flex:none;width:74px;color:var(--gd)}.sem span{color:var(--m)}
+.stack>div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}.stack s{color:var(--m);white-space:nowrap}.stack .tot{font-weight:800;border-bottom:0}
+.big{font-size:46px;font-weight:900;color:var(--g);line-height:1.1}.note{font-size:13px;color:var(--m);margin-top:4px}.badge{margin-top:10px;font-size:13px;font-weight:700;color:var(--gd)}
+.garantia{display:flex;gap:12px;align-items:center;background:#f0fdf4;border:1px solid #c8f1d6;border-radius:var(--r);padding:14px;margin:12px 0}.garantia svg{width:44px;height:44px;flex:none;stroke:var(--g);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.faq details[open]{padding-bottom:10px}.faq details{border-top:1px solid var(--line);padding:0;font-size:14px;color:var(--m)}.faq summary{font-weight:700;color:var(--t);cursor:pointer;font-size:15px;padding:12px 0}
+.test2{display:flex;gap:10px;align-items:center;margin-top:10px}.test2 .av{background:linear-gradient(135deg,var(--gd),#065f46)}.test2 span{color:var(--m);font-size:14px}
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:1px solid var(--line);padding:8px max(14px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));box-shadow:0 -6px 20px rgba(0,0,0,.08);display:flex;gap:10px;align-items:center;justify-content:center}
+.sticky span{font-size:12px;color:var(--m);flex:none;line-height:1.3}.sticky b{display:block;color:var(--gd);font-size:16px}.sticky .cta{margin:0;flex:0 1 360px}
+@media(min-width:520px){.sticky{padding-left:calc(50% - 244px);padding-right:calc(50% - 244px)}}
+@media(min-width:900px){.sticky{padding-left:calc(50% - 252px);padding-right:calc(50% - 252px)}}
+.oferta-main{padding-bottom:140px}.oferta-main .scr{animation:none}
+.legal{max-width:680px;margin:0 auto;padding:22px 18px 80px;font-size:15px}.legal h1{font-size:26px}.legal h2{text-align:left;font-size:18px;margin-top:22px}.legal a{color:var(--gd)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* pantallas bajas (celulares chicos): todo entra sin scroll */
+
+@media(max-height:700px){
+ h2{font-size:21px;margin:2px 0 4px}.sub{margin-bottom:8px}.pill{margin:2px 0 6px}.gift{margin-top:8px;padding:7px 10px}.globo{margin-bottom:8px;padding-top:7px;padding-bottom:7px}
+ .nota .im{height:60px}.nota .im svg{width:34px;height:34px}.nota .cu{display:none}.nota h3{font-size:16px}
+ .ill{margin:5px 0;padding:4px 10px}.ill .esc{width:74px;height:74px}
+ .experto .exp ul,.experto .exp p{display:none}.experto .av{width:58px;height:58px;font-size:19px}.experto .exp{padding:10px}.experto .chips{margin-top:8px}
+ .perfil .tag{display:none}.perfil .box{padding:7px 12px;margin:5px 0}.perfil .sem{margin:2px 0;font-size:12.5px}.perfil h2{font-size:19px}.perfil .cta{margin-top:8px;padding:12px}
+ .cta{padding:13px;margin-top:8px}.mail input{margin-bottom:7px}
+}
+@media(max-height:560px){.c b{font-size:12px}.c small{font-size:10.5px}.globo{display:none}.gift{display:none}}
+/* compu: las tarjetas y los muñecos crecen con la altura de la ventana (no hay franja de video arriba) */
+@media(min-width:900px){
+ .c{min-height:clamp(110px,24dvh,205px)}.c svg{width:clamp(56px,14dvh,128px);height:clamp(56px,14dvh,128px)}
+ .c.chico{min-height:clamp(88px,15.5dvh,140px)}.c.chico svg{width:clamp(46px,9.6dvh,84px);height:clamp(46px,9.6dvh,84px)}
+ .c b{font-size:clamp(13px,2.2dvh,16px)}
+ h2{font-size:clamp(22px,4.2dvh,30px)}
+}
+@media(min-width:900px) and (max-height:700px){.c{min-height:clamp(100px,21dvh,160px)}.c svg{width:clamp(54px,12.5dvh,100px);height:clamp(54px,12.5dvh,100px)}}
+.perfil .box span{font-size:14.5px}
+@media(min-width:900px){
+ .velo{align-items:center}.hoja{border-radius:22px;max-width:460px;animation:fade .25s}
+ .c.chico{flex-direction:row;justify-content:flex-start;gap:12px;padding:6px 14px;text-align:left}
+ .c.chico svg{width:clamp(62px,12.5dvh,104px);height:clamp(62px,12.5dvh,104px)}
+ .c.chico b{font-size:clamp(13px,2.3dvh,16px)}
+}
+
+/* muñecos 3D generados (por ahora 3 opciones de prueba) */
+.c img.im3d{width:clamp(50px,11.4dvh,92px);height:clamp(50px,11.4dvh,92px);object-fit:contain;mix-blend-mode:multiply;flex:none}
+@media(min-width:900px){.c img.im3d{width:clamp(64px,17dvh,150px);height:clamp(64px,17dvh,150px)}}
+@media(min-width:900px) and (max-height:700px){.c img.im3d{width:clamp(60px,15dvh,110px);height:clamp(60px,15dvh,110px)}}
+
+/* movimiento de las escenas 3D */
+@keyframes tambalea{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}.e-pies{animation:tambalea 2s ease-in-out infinite;transform-origin:50% 90%}
+@keyframes sube3{0%,100%{transform:translateY(2px)}50%{transform:translateY(-5px)}}.e-guardia{animation:sube3 1.6s ease-in-out infinite}
+@keyframes infla3{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}.e-resp{animation:infla3 2.4s ease-in-out infinite;transform-origin:50% 80%}
+@keyframes bob3{50%{transform:translateY(-3px)}}.c img.im3d{animation:bob3 2.2s ease-in-out infinite}.c:nth-child(2) img.im3d{animation-delay:.25s}.c:nth-child(3) img.im3d{animation-delay:.5s}.c:nth-child(4) img.im3d{animation-delay:.75s}
+@media(max-height:700px){.ill .esc3d{width:68px;height:68px}}
+.shell:not(.conbg) #bg{display:none}
+
+/* muñecos 3D: figura vertical a la izquierda y texto a la derecha, para que se vean grandes sin scroll */
+.c:has(img.im3d){flex-direction:row;justify-content:flex-start;gap:6px;padding:4px 8px 4px 4px;text-align:left}
+.c:has(img.im3d) b{flex:1;min-width:0}
+.c img.im3d{height:clamp(84px,17dvh,150px);width:auto;max-width:48%;aspect-ratio:3/4;object-fit:contain;mix-blend-mode:multiply;flex:none}
+@media(max-width:380px){.c:has(img.im3d){padding-right:12px}.c img.im3d{max-width:44%}}   /* celulares angostos: el texto no toca el borde de la tarjeta */
+.c.chico:has(img.im3d){padding:2px 8px 2px 2px}.c.chico img.im3d{height:clamp(62px,12.4dvh,112px)}
+@media(min-width:900px){.c:has(img.im3d){padding:6px 14px 6px 8px;gap:12px}.c img.im3d{height:clamp(100px,22dvh,190px)}.c.chico img.im3d{height:clamp(78px,15.5dvh,140px)}}
+@media(min-width:900px) and (max-height:700px){.c img.im3d{height:clamp(92px,20dvh,150px)}.c.chico img.im3d{height:clamp(70px,14.5dvh,110px)}}
+
+.toast{position:fixed;left:50%;top:22px;transform:translate(-50%,-20px);background:#0b0f0c;color:#fff;padding:11px 18px;border-radius:30px;font-weight:700;font-size:14.5px;opacity:0;transition:opacity .3s,transform .3s;z-index:90;box-shadow:0 8px 30px #0003;max-width:90vw;text-align:center}.toast.in{opacity:1;transform:translate(-50%,0)}
+/* en el quiz el aviso va abajo, sobre el pie legal, para no tapar el título (la app usa .toast sin .abajo) */
+.toast.abajo{top:auto;bottom:calc(var(--pie,64px) + 12px);transform:translate(-50%,20px)}.toast.abajo.in{transform:translate(-50%,0)}
+.tbar.up{text-transform:uppercase;letter-spacing:.03em;font-size:12.5px;background:#7f1d1d}.tbar.up b{color:#fff}
+.gracias{text-align:center;padding-top:8px}.gracias .tick{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1fbf5b,#15803d);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 10px 26px rgba(22,163,74,.35)}.gracias .tick svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.precio2{display:flex;justify-content:space-between;gap:10px;font-size:15px;margin-top:6px}
+
+/* Estilos propios de la app del comprador. base.css va primero (sin tocarlo) y de ahí salen la paleta, las tarjetas (.c, .box), el botón (.cta),
+   las etiquetas (.tag, .chips), la barra de progreso (.prog), el aviso (.toast) y la hoja inferior (.velo/.hoja). Acá va solo lo que la app necesita además. */
+:root{--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);--nav-h:64px;--amb:#fffbe6;--amb-b:#fde68a;--amb-t:#854d0e}
+body{overscroll-behavior-y:none;background:var(--bg)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+h1:focus,h1:focus-visible{outline:none}
+a{color:var(--gd)}
+.ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:none}
+img.im3d{object-fit:contain;mix-blend-mode:multiply;display:block;height:auto;max-width:100%}
+
+/* estructura: una columna centrada, con lugar para la barra inferior y el notch */
+main.ap{display:block;width:100%;max-width:560px;margin:0 auto;min-height:100dvh;padding:calc(14px + var(--safe-t)) max(16px,env(safe-area-inset-right)) calc(var(--nav-h) + var(--safe-b) + 28px) max(16px,env(safe-area-inset-left))}
+.pg{animation:entra .35s ease both}
+.pg.tab{animation:subeFade .3s ease both}
+@keyframes subeFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ap h1{font-size:28px;line-height:1.15;margin:4px 0 6px}
+.ap h2{text-align:left;font-size:19px;line-height:1.25;margin:24px 0 10px}
+.sub.l{text-align:left;margin:0}
+.sm{font-size:14px;color:var(--m);margin:0 0 10px}
+.err{color:#b91c1c;font-size:13.5px;font-weight:600;margin:-4px 0 8px}.err:empty{display:none}
+.ap button{cursor:pointer}
+.bt{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:0;background:transparent;border-radius:14px;padding:0;color:var(--t);transition:background .15s,transform .12s}
+.bt:hover{background:var(--soft)}.bt:active{transform:scale(.92)}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;transition:transform .12s,box-shadow .15s}
+.cta:active{transform:scale(.98)}
+.cta.s{background:#fff;color:var(--t)}
+.cta.chico{display:inline-flex;width:auto;min-height:44px;padding:10px 18px;font-size:15px;margin-top:8px}
+.c{font:inherit}.c:active{transform:scale(.98)}
+.c b{font-size:15px}
+.c.on{box-shadow:0 0 0 3px rgba(74,222,128,.3)}
+.tag{color:var(--gd)}
+.chips{margin-top:8px}.chips span{color:#4a554d}
+
+/* avisos fijos (el aviso breve va abajo, arriba de la barra de navegación: nunca tapa títulos) */
+#aviso{position:sticky;top:0;z-index:55}
+.aviso{display:flex;align-items:center;justify-content:center;gap:10px;padding:calc(6px + var(--safe-t)) 12px 6px;font-size:13.5px;font-weight:700;min-height:44px}
+.aviso .ic{width:18px;height:18px}
+.aviso.sin{background:#0b0f0c;color:#fff}.aviso.upd{background:var(--gd);color:#fff}
+.bt-aviso{min-height:44px;min-width:44px;padding:0 16px;border-radius:99px;border:2px solid #fff;background:transparent;color:#fff;font-weight:800}
+.toast{top:auto;bottom:calc(var(--nav-h) + var(--safe-b) + 14px);transform:translate(-50%,20px)}.toast.in{transform:translate(-50%,0)}
+.hoja{padding-bottom:calc(26px + var(--safe-b))}.hoja .cta{margin-top:10px}.hoja .sub{text-align:center}
+.hoja .niveles{margin-bottom:6px}
+body.jugando #aviso{display:none}
+
+main.ap.sinnav{padding-bottom:calc(var(--safe-b) + 16px)}
+/* barra inferior */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:0 env(safe-area-inset-right) var(--safe-b) env(safe-area-inset-left)}
+.nav[hidden]{display:none}
+.nav a{flex:1;max-width:150px;min-height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:#4a554d;font-size:12px;font-weight:700;position:relative;transition:color .15s}
+.nav a .ic{width:24px;height:24px;transition:transform .2s}
+.nav a[aria-current=page]{color:var(--gd)}.nav a[aria-current=page] .ic{transform:translateY(-2px);stroke-width:2.8}
+.nav a[aria-current=page]:before{content:"";position:absolute;top:0;width:30px;height:3px;border-radius:0 0 4px 4px;background:var(--g)}
+.nav a:active .ic{transform:scale(.88)}
+
+/* encabezados */
+.top{display:flex;align-items:center;gap:6px;margin:-6px 0 4px -10px}.top .tag{margin:0}
+.saludo{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:2px 0 14px}
+.saludo>div{min-width:0}
+.rach{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:99px;background:#fff;border:2px solid var(--line);font-weight:700;font-size:14px;color:#4a554d;text-decoration:none;flex:none;transition:transform .12s}
+.rach:active{transform:scale(.95)}
+.rach b{font-size:17px}
+.rach.on{background:var(--amb);border-color:var(--amb-b);color:var(--amb-t)}.rach.on .ic{stroke:#b45309;fill:#fde68a}
+.perf-im,.perf-im img{width:52px;height:70px}.perf-im{flex:none}
+
+/* tira de la semana */
+.sem7{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;list-style:none;margin:0 0 14px;padding:0}
+.dd{display:flex;flex-direction:column;align-items:center;gap:4px}
+.dd i{font-style:normal;font-size:11.5px;font-weight:700;color:#4a554d}
+.dd b{width:100%;max-width:44px;aspect-ratio:1;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#4a554d;background:#fff}
+.dd b .ic{width:18px;height:18px;stroke-width:3.2}
+.dd.ok b{background:var(--gd);border-color:var(--gd);color:#fff;animation:pop .45s cubic-bezier(.3,1.6,.5,1) both}
+.dd.hoy b{border-color:var(--g);color:var(--gd);box-shadow:0 0 0 3px rgba(74,222,128,.3)}.dd.hoy.ok b{color:#fff}
+.dd.fut b{opacity:.55}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+
+/* tarjeta grande «Tu sesión de hoy» */
+.hero{background:linear-gradient(160deg,#f0fdf4 0%,#e3f8ea 100%);border:2px solid var(--g2);border-radius:20px;padding:14px;box-shadow:0 10px 26px rgba(22,163,74,.14);margin:0 0 14px}
+.hero-t{display:flex;gap:10px;align-items:center}
+.hero-im{flex:none;width:33%;max-width:128px}
+.hero-im img{width:100%;aspect-ratio:3/4;animation:bob3 2.4s ease-in-out infinite}
+.hero-x{min-width:0;flex:1}
+.ap .hero h2{margin:2px 0 4px;font-size:20px}
+.hero .sm{margin:0}.hero .chips{justify-content:flex-start}
+.hero .cta{margin-top:12px}
+.hero.curso{border-color:var(--amb-b);background:linear-gradient(160deg,#fffdf0,#fff6cc)}.hero.curso .tag{color:var(--amb-t)}
+
+.bar{height:10px;background:#e5ebe6;border-radius:99px;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--g),var(--g2));transition:width .9s cubic-bezier(.3,.8,.3,1)}
+.box.semana{margin:0 0 4px}
+
+/* filas de lista */
+.lista{display:flex;flex-direction:column;gap:10px}
+.fila{display:flex;align-items:center;gap:12px;min-height:72px;width:100%;padding:8px 12px 8px 8px;background:#fff;border:2px solid var(--line);border-radius:var(--r);text-decoration:none;color:var(--t);text-align:left;font:inherit;transition:border-color .15s,transform .15s,box-shadow .15s}
+.fila:hover{border-color:var(--g);transform:translateY(-1px);box-shadow:0 8px 18px rgba(22,163,74,.12)}.fila:active{transform:scale(.99)}
+.fila-im{flex:none;width:52px;height:68px;display:flex;align-items:center;justify-content:center}
+.fila-im img{height:100%;width:auto}
+.fila-x{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.fila-x b{font-size:15.5px;line-height:1.25}.fila-x small{font-size:13px;color:var(--m);line-height:1.3}
+.chev{color:#7a857d;width:20px;height:20px}
+.ic-f{width:30px;height:30px;stroke:var(--gd)}
+
+/* plan */
+.nivel-actual{display:flex;align-items:center;gap:12px}
+.na-im{width:50px;height:66px;flex:none}.na-im img{height:100%;width:auto}
+.na-x{flex:1;min-width:0}.na-x .tag{margin:0}.na-x b{display:block;font-size:19px}.na-x small{color:var(--m);font-size:13px}
+.nivel-actual .cta.chico{margin:0;flex:none}
+.sem-c{border:2px solid var(--line);border-radius:18px;padding:14px;margin:12px 0;background:#fff}
+.sem-h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.sem-h .tag{margin:0 0 2px}.ap .sem-h h2{margin:0 0 4px;font-size:17px}
+.mini-anillo{width:48px;height:48px;flex:none}
+.mini-anillo .pista{fill:none;stroke:#e5ebe6;stroke-width:5}
+.mini-anillo .aro{fill:none;stroke:var(--g);stroke-width:5;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .9s cubic-bezier(.3,.8,.3,1)}
+.mini-anillo text{font:800 11px system-ui;fill:var(--t)}
+.ses{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ses-a{display:flex;align-items:center;gap:10px;min-height:56px;padding:8px 10px;border-radius:14px;background:var(--soft);border:2px solid transparent;text-decoration:none;color:var(--t);transition:transform .12s,border-color .15s}
+.ses-a:active{transform:scale(.985)}
+.ses-a.sig{background:#f0fdf4;border-color:var(--g)}.ses-a.hecha{background:#fff;border-color:var(--line)}
+.est{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid #b5c0b8;display:flex;align-items:center;justify-content:center;background:#fff}
+.est .ic{width:14px;height:14px;stroke-width:3.2}
+.hecha .est{background:var(--gd);border-color:var(--gd);color:#fff}.sig .est{border-color:var(--g);color:var(--gd)}
+.ses-x{flex:1;min-width:0}.ses-x b{font-size:14.5px;line-height:1.25;display:block}.ses-x small{font-size:12.5px;color:var(--m);display:block}
+.est-t{font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#4a554d;flex:none}.est-t.ok,.est-t.sig{color:var(--gd)}
+
+/* resumen de sesión */
+.res-im{display:flex;justify-content:center;background:linear-gradient(160deg,#f0fdf4,#e3f8ea);border-radius:20px;margin:4px 0 12px;padding:8px}
+.res-im img{height:min(25dvh,220px);width:auto;animation:bob3 2.4s ease-in-out infinite}
+.obj{color:var(--m);margin:10px 0}.resumen-s .chips{justify-content:flex-start}
+.bloques{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.bloques li{display:flex;gap:10px;align-items:flex-start}
+.bloques i,.pasos i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--gd);color:#fff;font-style:normal;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+.bloques b{display:block;font-size:15px}.bloques small{display:block;color:var(--m);font-size:13px}
+.cta-fija{position:sticky;bottom:0;z-index:5;padding:14px 0 calc(8px + var(--safe-b));margin-top:8px;background:linear-gradient(transparent,#fff 30%)}
+.cta-fija .cta{margin-top:8px}.cta-fija .cta:first-child{margin-top:0}
+.ok-box{display:flex;gap:10px;align-items:center;background:#f0fdf4;border-color:#c8f1d6}
+.ok-box .ic{stroke:var(--gd);width:26px}.ok-box small{display:block;color:var(--m);font-size:13px}
+.aviso-box{background:var(--amb);border-color:var(--amb-b)}.aviso-box .sm{color:var(--amb-t)}
+.pasos{list-style:none;margin:10px 0 0;padding:0}
+.pasos li{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:14.5px}
+.ic.inl{display:inline-block;vertical-align:-5px;width:20px;height:20px;stroke:var(--gd);margin:0 2px}
+
+/* guía */
+.gcard{margin:0 0 26px}.ap .gcard h2{margin-top:14px}
+.zona.sinvideo{display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#f0fdf4,#e3f8ea);border-radius:20px;aspect-ratio:16/10;position:relative;overflow:hidden}
+.zona.sinvideo img.im3d{height:92%;width:auto;animation:bob3 2.4s ease-in-out infinite}
+.zona.convideo{border-radius:20px;overflow:hidden;background:#0b0f0c;aspect-ratio:16/10}
+.zona video,.zona .zv{width:100%;height:100%;object-fit:cover;display:block}
+.zona-et{position:absolute;left:10px;top:10px;display:inline-flex;gap:6px;align-items:center;font-size:12px;font-weight:700;color:var(--gd);background:#fff;border:1px solid #c8f1d6;border-radius:99px;padding:4px 10px}
+.zona-et .ic{width:14px;height:14px}
+.checks{list-style:none;padding:0;margin:8px 0}
+.checks li{display:flex;gap:10px;margin:9px 0;font-size:14.5px}.checks .ic{stroke:var(--gd);width:20px;height:20px;margin-top:1px}
+
+/* progreso */
+.racha-g{display:flex;gap:12px;align-items:center;margin-top:0}
+.rg-im{width:62px;height:82px;flex:none}.rg-im img{height:100%;width:auto}
+.racha-g .tag{margin:0}.rg-n{font-size:15px}.rg-n b{font-size:40px;line-height:1;font-weight:900;color:var(--gd)}.racha-g small{color:var(--m);font-size:13px;display:block}
+.racha-g.on{background:var(--amb);border-color:var(--amb-b)}.racha-g.on .rg-n b,.racha-g.on .tag{color:var(--amb-t)}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#fff;border:2px solid var(--line);border-radius:var(--r);text-align:center;padding:12px 6px}
+.stat b{display:block;font-size:26px;font-weight:900;color:var(--gd);line-height:1.1}.stat small{font-size:12.5px;color:var(--m)}
+.vacio{display:flex;gap:12px;align-items:center}.vac-im{width:60px;height:80px;flex:none}.vac-im img{height:100%;width:auto}
+.vacio .sm{margin:2px 0 0}
+.cal-h,.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-h{margin-bottom:6px}.cal-h i{font-style:normal;text-align:center;font-size:11.5px;font-weight:700;color:#4a554d}
+.cd{aspect-ratio:1;border-radius:10px;border:2px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#4a554d}
+.cd .ic{width:16px;height:16px;stroke-width:3.2}
+.cd.ok{background:var(--gd);border-color:var(--gd);color:#fff}
+.cd.hoy{border-color:var(--g);color:var(--gd);box-shadow:0 0 0 3px rgba(74,222,128,.3)}.cd.hoy.ok{color:#fff}
+.cd.fut{opacity:.55;border-style:dashed}.cd.vacio-d{border:0;background:transparent}
+.avance{margin:0 0 14px}.avance:last-child{margin:0}.avance .m{color:var(--m);font-size:14px}.avance .bar{margin-top:6px}
+.rank{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:8px}
+.rk{display:flex;align-items:center;gap:10px;min-height:56px;padding:8px 12px;background:#fff;border:2px solid var(--line);border-radius:14px}
+.rk.yo{background:#f0fdf4;border-color:var(--g);box-shadow:0 0 0 3px rgba(74,222,128,.22)}
+.pos{width:22px;text-align:center;font-weight:900;color:#4a554d}
+.av2{width:36px;height:36px;border-radius:50%;background:#e5ebe6;color:#3b463f;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none}
+.rk.yo .av2{background:linear-gradient(135deg,var(--g),#065f46);color:#fff}
+.rn{flex:1;min-width:0;display:flex;flex-direction:column}.rn b{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vir{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#4a554d}.vir.tu{color:var(--gd)}
+.pt{font-weight:900;font-size:16px;font-variant-numeric:tabular-nums}.pt small{font-weight:600;color:var(--m);font-size:12px}
+
+/* perfil, formularios, interruptores */
+.campo{display:block;margin:0 0 6px}.campo b{display:block;margin-bottom:6px}.campo .sm{display:block}
+.ap input[type=text],.ap input[type=email]{margin-bottom:8px;min-height:52px}
+.box form,.box.f{margin:12px 0}
+.sws{padding:4px 14px}
+.sw{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;background:none;border:0;border-bottom:1px solid var(--line);text-align:left;padding:8px 0;font:inherit;color:inherit}
+.sw:last-child{border-bottom:0}
+.sw-ic{color:var(--gd);display:flex}
+.sw-t{flex:1;display:flex;flex-direction:column;min-width:0}.sw-t b{font-size:15.5px}.sw-t small{font-size:13px;color:var(--m)}
+.sw-k{flex:none;width:52px;height:30px;border-radius:99px;background:#8a948d;position:relative;transition:background .2s}
+.sw-k:after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .2s cubic-bezier(.3,1.4,.5,1)}
+.sw[aria-checked=true] .sw-k{background:var(--gd)}.sw[aria-checked=true] .sw-k:after{transform:translateX(22px)}
+.link-p{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;word-break:break-all;background:#fff;border:1px dashed #b5c0b8;border-radius:10px;padding:10px;margin:8px 0}
+.salir{margin-top:22px}.pie-p{font-size:11.5px;color:#5b665e;margin-top:14px}
+
+/* bienvenida */
+.bien-h{display:flex;gap:12px;align-items:center;margin-bottom:6px}.bien-h .tag{margin:0}
+.bien-im{width:88px;flex:none}.bien-im img{width:100%;aspect-ratio:3/4;animation:bob3 2.4s ease-in-out infinite}
+.resumen .row{padding:7px 0;border-bottom:1px dashed var(--line);font-size:14.5px}.resumen .row:last-child{border-bottom:0}
+.resumen .row span{color:var(--m);flex:none}.resumen .row b{text-align:right}
+.niveles{margin:8px 0 4px}
+
+/* mensajes a pantalla completa: pendiente, revocado, error, recuperar */
+.msg{text-align:center;display:flex;flex-direction:column;align-items:center;padding-top:4vh}
+.msg-im{position:relative;width:150px;height:190px;display:flex;align-items:center;justify-content:center}
+.msg-im img{height:172px;width:auto;animation:bob3 2.4s ease-in-out infinite}
+.msg.conanillo .msg-im{width:210px;height:210px}.msg.conanillo .msg-im img{height:150px}
+.msg.conanillo .msg-im:before{content:"";position:absolute;inset:6px;border-radius:50%;border:4px solid #e5ebe6}
+.gira{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);fill:none;stroke:var(--g);stroke-width:4;stroke-linecap:round;stroke-dasharray:90 260;animation:giro 1.4s linear infinite;transform-origin:50% 50%}
+@keyframes giro{to{transform:rotate(360deg)}}
+.msg h1{margin:8px 0 6px}.msg .sub{max-width:36ch}
+.msg .cta,.msg form{width:100%;max-width:380px}.msg form{text-align:left}
+.pasos-b{text-align:left;width:100%;max-width:420px}
+.rec .cta{margin-top:4px}
+.sk{height:16px;border-radius:8px;width:70%;margin:8px 0;background:linear-gradient(90deg,#eef2ef 25%,#f8faf8 50%,#eef2ef 75%);background-size:200% 100%;animation:brillo2 1.4s linear infinite}.sk2{width:48%}
+@keyframes brillo2{to{background-position:-200% 0}}
+
+/* reproductor: ocupa toda la ventana, sin scroll */
+body.jugando main.ap{height:100dvh;min-height:0;overflow:hidden;padding:calc(10px + var(--safe-t)) max(16px,env(safe-area-inset-right)) calc(10px + var(--safe-b)) max(16px,env(safe-area-inset-left))}
+.play{display:flex;flex-direction:column;gap:6px;height:100%;animation:entra .3s ease both}
+.ptop{display:flex;align-items:center;gap:2px;flex:none;margin:6px 0 0 -8px}
+.ptit{flex:1;min-width:0;padding:0 4px}.ptit b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ptit small{color:var(--m);font-size:12.5px}
+.bt[aria-pressed=true]{color:var(--gd)}.bt.apagado{color:#7a857d}
+.play .zona{flex:1 1 90px;min-height:84px;max-height:32dvh;display:flex;gap:10px;align-items:center;padding:6px 10px;border-radius:20px;position:relative;overflow:hidden;background:linear-gradient(160deg,#f0fdf4,#e3f8ea)}
+.play .zona.convideo{padding:0;background:#0b0f0c;display:block}
+.zona-m{flex:none;height:100%;aspect-ratio:3/4;max-width:38%}.zona-m img{height:100%;width:100%;animation:bob3 2.4s ease-in-out infinite}
+.zona-x{flex:1;min-width:0;font-size:12.5px;color:#2c372f;max-height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.zona-x::-webkit-scrollbar{display:none}
+.zona-x.mas{-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
+.zona-x .zona-et{position:static;margin-bottom:6px;display:inline-flex;white-space:nowrap}
+.zona-x ul{margin:0;padding-left:16px}.zona-x li{margin:0 0 3px;line-height:1.3}
+.cuid{margin:6px 0 0;font-size:12px;color:var(--amb-t)}
+.fase{display:flex;align-items:center;justify-content:center;gap:10px;flex:none}
+.faset{font-size:12.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:99px;background:var(--gd);color:#fff}
+.play[data-fase=descanso] .faset{background:var(--amb);color:var(--amb-t);border:1px solid var(--amb-b)}
+.play[data-fase=prep] .faset{background:#0b0f0c}
+.ronda{font-size:13.5px;color:var(--m);font-weight:600}
+.pnom{text-align:center;font-size:clamp(21px,3.7dvh,28px)!important;margin:0!important;line-height:1.15;flex:none}
+.combo{display:flex;justify-content:center;align-items:center;gap:6px;flex:none}.combo[hidden]{display:none}
+.combo i{min-width:40px;height:40px;padding:0 8px;border-radius:12px;background:#fff;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:900;font-size:19px;transition:background .15s,transform .15s,color .15s}
+.combo i.on{background:var(--gd);border-color:var(--gd);color:#fff;transform:scale(1.14)}
+.combo u{width:10px;height:2px;background:#b5c0b8}
+.nota-p{text-align:center;font-size:13.5px;color:var(--m);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:none;min-height:1.3em}
+.anillo-w{position:relative;width:clamp(120px,23dvh,210px);aspect-ratio:1;align-self:center;flex:none}
+.anillo{width:100%;height:100%;transform:rotate(-90deg)}
+.anillo .pista{fill:none;stroke:#e5ebe6;stroke-width:12}
+.anillo .aro{fill:none;stroke:url(#gr);stroke-width:12;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(74,222,128,.5))}
+.play[data-fase=descanso] .anillo .aro{stroke:#f5a623;filter:none}
+.anillo-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.anillo-c b{font-size:clamp(28px,5.3dvh,46px);font-variant-numeric:tabular-nums;font-weight:900;line-height:1}
+.anillo-c small{color:var(--m);font-size:13px;font-weight:600}
+.anillo-w.alerta .aro{animation:alerta .8s ease-in-out infinite}.anillo-w.alerta .anillo-c b{color:#b91c1c}
+@keyframes alerta{50%{stroke-width:16}}
+.play.pausado .anillo-c b{animation:parpadeo 1.2s steps(2,start) infinite}
+@keyframes parpadeo{50%{opacity:.35}}
+.sigue{display:flex;align-items:center;gap:10px;background:var(--soft);border:1px solid var(--line);border-radius:var(--r);padding:4px 12px;min-height:54px;flex:none}
+.sg-im{width:34px;height:46px;flex:none}.sg-im img{height:100%;width:auto}
+.sg-x{display:flex;flex-direction:column;min-width:0}.sg-x small{font-size:12px;color:var(--m)}.sg-x b{font-size:15px;line-height:1.2}
+.sg-t{display:flex;gap:8px;align-items:center}.sg-t .ic{stroke:var(--gd)}
+.ctl{display:flex;align-items:center;justify-content:center;gap:clamp(18px,8vw,44px);flex:none;padding:2px 0 0}
+.ctl-b{flex-direction:column;min-width:64px;min-height:64px;gap:1px;color:#2c372f}.ctl-b small{font-size:12px;font-weight:600;color:var(--m)}
+.bt.ctl-pp,.bt.ctl-pp:hover{width:76px;height:76px;border-radius:50%;background:linear-gradient(180deg,var(--g),var(--gd) 60%);color:#fff;box-shadow:0 8px 20px rgba(22,163,74,.35)}
+.ctl-pp .ic{width:32px;height:32px}
+.ctl-pp:active{transform:scale(.93)}
+
+/* celebración */
+.fiesta{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;padding-top:18px;min-height:calc(100dvh - 40px);overflow:hidden}
+.fiesta>*:not(.confeti){position:relative}
+.confeti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confeti i{position:absolute;top:-16px;width:9px;height:14px;border-radius:2px;background:var(--c);opacity:0;animation:cae var(--t) linear var(--d) 2 both}
+@keyframes cae{0%{opacity:1;transform:translate(0,-10px) rotate(var(--r))}100%{opacity:1;transform:translate(var(--x),105dvh) rotate(calc(var(--r) + 540deg))}}
+.check-w{width:104px;height:104px;margin:6px auto 8px}
+.c-pista{fill:#ecfdf3;stroke:#c8f1d6;stroke-width:6}
+.c-aro{fill:none;stroke:var(--g);stroke-width:6;stroke-linecap:round;stroke-dasharray:327;stroke-dashoffset:327;transform:rotate(-90deg);transform-origin:50% 50%;animation:trazo .8s ease .1s forwards}
+.c-tilde{fill:none;stroke:var(--gd);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:80;stroke-dashoffset:80;animation:trazo .5s ease .75s forwards}
+@keyframes trazo{to{stroke-dashoffset:0}}
+.pts-g b{font-size:64px;font-weight:900;color:var(--gd);line-height:1;font-variant-numeric:tabular-nums}.pts-g span{display:block;color:var(--m);font-weight:700;margin-top:2px}
+.fiesta .chips{justify-content:center}
+.f-mun{margin:8px 0}.f-mun img{height:min(22dvh,200px);width:auto;animation:salta 1.4s ease-in-out infinite}
+@keyframes salta{0%,100%{transform:translateY(0)}40%{transform:translateY(-10px)}}
+.f-bt{width:100%;max-width:420px;margin-top:auto;padding-bottom:8px}
+@media(prefers-reduced-motion:reduce){.c-aro,.c-tilde{stroke-dashoffset:0}.confeti{display:none}}
+
+/* pantallas bajas */
+@media(max-height:700px){
+ .ap h2{margin-top:18px}
+ .play .zona{min-height:72px}.anillo-w{width:clamp(108px,19.5dvh,210px)}.anillo-c b{font-size:clamp(24px,4.4dvh,46px)}.zona-m{max-width:30%}.play{gap:5px}.ptop{margin-top:2px}.ctl-b{min-height:56px}.bt.ctl-pp,.bt.ctl-pp:hover{width:68px;height:68px}
+ .sigue{min-height:48px}.nota-p{-webkit-line-clamp:1}
+ .f-mun img{height:16dvh}.check-w{width:80px;height:80px;margin:0 auto 4px}.pts-g b{font-size:50px}
+}
+@media(min-width:900px){main.ap{padding-top:28px}}
+</style></head>
+<body><div id="aviso"></div><main id="vista" class="ap"><section class="msg carga" role="status" aria-label="Cargando"><div class="msg-im"><img class="im3d" src="/img/muneco-m_golpes.webp" alt="" width="360" height="480"></div><div class="sk"></div><div class="sk sk2"></div><p class="sub">Preparando tu plan</p></section></main><nav id="nav" class="nav" aria-label="Secciones" hidden></nav><div id="anuncio" class="sr" role="status" aria-live="polite"></div><noscript><p style="padding:24px;text-align:center">Para usar BeastCamp activá JavaScript en tu navegador.</p></noscript>
+<script>
+/*DATOS-INICIO*/
+const DATOS = {"contacto":"","garantiaDias":30};
+/*DATOS-FIN*/
+/* Lógica pura de la app del comprador (sin DOM ni red): fechas, racha, puntos, ranking virtual, fusión de progreso y pasos del reproductor.
+   Se prueba en Node (tests/app-logica.test.ts) y en el navegador queda como la constante global NUCLEO. */
+const NUCLEO = (() => {
+  const DIA = 864e5;
+
+  /* Muñecos 3D (de /img/) que usa la propia app: se precargan en el service worker. Los de cada ejercicio llegan con el plan. */
+  const MUNECOS_APP = ['t1', 't2', 't3', 't4', 'm_golpes', 'f_tiempo', 'f_ayuda', 'o_competir', 'n_anios', 'm_const', 'n_mas', 'c_guardia', 'e_guardia', 'l_casa', 'o_sparring', 'e_resp', 'o_tecnica'];
+
+  /* ---------- fechas: el «día» es el día calendario del celu (índice entero, consecutivos) ---------- */
+  const idxDia = (ms) => { const d = new Date(ms); return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / DIA; };
+  const fechaDeIdx = (i) => new Date(i * DIA);                     // usar getUTC*: es la fecha local de ese día
+  const diaSemana = (i) => (fechaDeIdx(i).getUTCDay() + 6) % 7;     // 0 = lunes
+  const LETRAS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  const NOMBRES_DIA = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+
+  const mmss = (s) => { s = Math.max(0, Math.ceil(s)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+
+  /* ---------- progreso (formato versión 1 del contrato) ---------- */
+  const progVacio = (nivel, ahora, apodo = '') => ({ v: 1, apodo, nivel, inicio: ahora, sesiones: {}, drills: {}, ajustes: { sonido: true, voz: true, vibracion: true }, actualizado: ahora });
+
+  const APODO_RE = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9 _.\-]{0,20}$/;
+  const limpiarApodo = (s) => String(s ?? '').replace(/[^A-Za-zÀ-ÖØ-öø-ÿ0-9 _.\-]/g, '').replace(/\s+/g, ' ').trim().slice(0, 20);
+  const apodoValido = (s) => APODO_RE.test(String(s ?? ''));
+
+  /* Valida lo que viene del almacenamiento o del servidor, para no romper con datos viejos o rotos. */
+  function normalizarProg(p) {
+    if (!p || typeof p !== 'object' || p.v !== 1) return null;
+    const num = (x) => (Number.isFinite(x) ? x : 0);
+    const out = { v: 1, apodo: apodoValido(p.apodo) ? p.apodo : limpiarApodo(p.apodo), nivel: /^t[1-4]$/.test(p.nivel) ? p.nivel : 't1', inicio: num(p.inicio), sesiones: {}, drills: {}, ajustes: { sonido: true, voz: true, vibracion: true }, actualizado: num(p.actualizado) };
+    for (const [k, s] of Object.entries(p.sesiones || {})) if (s && typeof s === 'object') out.sesiones[k] = { fin: num(s.fin), min: num(s.min), pts: num(s.pts) };
+    for (const [k, d] of Object.entries(p.drills || {})) if (d && typeof d === 'object') out.drills[k] = { veces: num(d.veces), ultimo: num(d.ultimo), pts: num(d.pts) };
+    for (const k of ['sonido', 'voz', 'vibracion']) if (p.ajustes && typeof p.ajustes[k] === 'boolean') out.ajustes[k] = p.ajustes[k];
+    return out;
+  }
+
+  /* Fusión con lo del servidor: unión de sesiones y drills; para el resto gana el `actualizado` más nuevo. */
+  function fusionar(a, b) {
+    if (!a) return b || null;
+    if (!b) return a;
+    const nuevo = (b.actualizado || 0) > (a.actualizado || 0) ? b : a;
+    const sesiones = { ...a.sesiones };
+    for (const [k, s] of Object.entries(b.sesiones)) if (!sesiones[k] || s.fin < sesiones[k].fin) sesiones[k] = s;   // queda la primera vez que se hizo
+    const drills = { ...a.drills };
+    for (const [k, d] of Object.entries(b.drills)) {
+      const x = drills[k];
+      drills[k] = x ? { veces: Math.max(x.veces, d.veces), ultimo: Math.max(x.ultimo, d.ultimo), pts: Math.max(x.pts, d.pts) } : d;
+    }
+    const ini = [a.inicio, b.inicio].filter((x) => x > 0);
+    return { v: 1, apodo: nuevo.apodo, nivel: nuevo.nivel, inicio: ini.length ? Math.min(...ini) : 0, sesiones, drills, ajustes: { ...nuevo.ajustes }, actualizado: Math.max(a.actualizado || 0, b.actualizado || 0) };
+  }
+
+  /* ---------- racha, puntos y bonus ---------- */
+  function diasActivos(prog) {
+    const s = new Set();
+    Object.values(prog.sesiones).forEach((x) => x.fin && s.add(idxDia(x.fin)));
+    Object.values(prog.drills).forEach((x) => x.ultimo && s.add(idxDia(x.ultimo)));
+    return s;
+  }
+  /* Días seguidos con alguna sesión o drill. Sigue viva si ayer entrenaste aunque hoy todavía no. */
+  function racha(prog, ahora) {
+    const act = diasActivos(prog), hoy = idxDia(ahora);
+    let d = act.has(hoy) ? hoy : hoy - 1, n = 0;
+    while (act.has(d)) { n++; d--; }
+    let mejor = 0, cur = 0, prev = null;
+    [...act].sort((x, y) => x - y).forEach((x) => { cur = prev !== null && x === prev + 1 ? cur + 1 : 1; prev = x; if (cur > mejor) mejor = cur; });
+    return { dias: n, hoy: act.has(hoy), mejor: Math.max(mejor, n) };
+  }
+  /* Bonus de racha: 10 puntos por cada día seguido después del primero, hasta 60 (día 7 en adelante). Una vez por día. */
+  const bonusRacha = (dias) => Math.min(Math.max(dias - 1, 0), 6) * 10;
+
+  /* Registra una sesión terminada. Si ya estaba hecha no suma de nuevo. `min` son los minutos que entrenó de verdad. */
+  function completarSesion(prog, ses, ahora, min) {
+    if (prog.sesiones[ses.id]) return { repetida: true, base: 0, bonus: 0, pts: 0, racha: racha(prog, ahora) };
+    const antes = racha(prog, ahora);
+    const bonus = antes.hoy ? 0 : bonusRacha(antes.dias + 1);
+    const base = Math.max(0, ses.puntos | 0), pts = base + bonus;
+    prog.sesiones[ses.id] = { fin: ahora, min: Math.max(1, Math.round(min)), pts };
+    prog.actualizado = ahora;
+    return { repetida: false, base, bonus, pts, racha: racha(prog, ahora) };
+  }
+  /* Un drill suma sus puntos una vez por día (se puede repetir las veces que quieras). */
+  function completarDrill(prog, dr, ahora) {
+    const prev = prog.drills[dr.id];
+    const yaHoy = prev && idxDia(prev.ultimo) === idxDia(ahora);
+    const pts = yaHoy ? 0 : Math.max(0, dr.puntos | 0);
+    prog.drills[dr.id] = { veces: (prev ? prev.veces : 0) + 1, ultimo: ahora, pts: (prev ? prev.pts : 0) + pts };
+    prog.actualizado = ahora;
+    return { repetida: !!yaHoy, base: pts, bonus: 0, pts, racha: racha(prog, ahora) };
+  }
+  function totales(prog) {
+    const s = Object.values(prog.sesiones), d = Object.values(prog.drills);
+    return { sesiones: s.length, minutos: s.reduce((a, x) => a + x.min, 0), puntos: s.reduce((a, x) => a + x.pts, 0) + d.reduce((a, x) => a + x.pts, 0), drills: d.reduce((a, x) => a + x.veces, 0) };
+  }
+
+  /* ---------- tira de la semana (lunes a domingo) y calendario de 28 días ---------- */
+  function semanaDe(prog, ahora) {
+    const act = diasActivos(prog), hoy = idxDia(ahora), lunes = hoy - diaSemana(hoy);
+    return LETRAS.map((letra, i) => ({ idx: lunes + i, letra, nombre: NOMBRES_DIA[i], n: fechaDeIdx(lunes + i).getUTCDate(), hecho: act.has(lunes + i), hoy: lunes + i === hoy, futuro: lunes + i > hoy }));
+  }
+  function calendario(prog, ahora) {
+    const act = diasActivos(prog), hoy = idxDia(ahora), ini = prog.inicio ? idxDia(prog.inicio) : hoy;
+    const desde = hoy - ini >= 28 ? hoy - 27 : ini;
+    return Array.from({ length: 28 }, (_, i) => ({ idx: desde + i, n: fechaDeIdx(desde + i).getUTCDate(), num: desde + i - ini + 1, hecho: act.has(desde + i), hoy: desde + i === hoy, futuro: desde + i > hoy }));
+  }
+  const numeroDeDia = (prog, ahora) => (prog.inicio ? idxDia(ahora) - idxDia(prog.inicio) + 1 : 1);
+
+  /* ---------- plan ---------- */
+  const nivelDe = (plan, id) => (plan.niveles || []).find((n) => n.id === id) || (plan.niveles || [])[0] || null;
+  /* Todas las sesiones del nivel en orden, cada una con su semana. */
+  function sesionesDe(nivel) {
+    const out = [];
+    (nivel ? nivel.semanas : []).forEach((sem) => (sem.sesiones || []).forEach((s) => out.push({ ...s, semana: sem.n, tituloSemana: sem.titulo })));
+    return out;
+  }
+  const siguienteSesion = (nivel, prog) => sesionesDe(nivel).find((s) => !prog.sesiones[s.id]) || null;
+  function buscarSesion(plan, id) {
+    for (const nv of plan.niveles || []) { const s = sesionesDe(nv).find((x) => x.id === id); if (s) return { ...s, nivelId: nv.id }; }
+    return null;
+  }
+  const buscarDrill = (plan, id) => (plan.drills || []).find((d) => d.id === id) || null;
+  const nombreTipo = (t) => ({ tecnica: 'Técnica', cardio: 'Cardio', mixta: 'Mixta', suave: 'Suave' }[t] || 'Sesión');
+  const ejercicio = (plan, id) => (plan.ejercicios && plan.ejercicios[id]) || { nombre: String(id || 'Ejercicio').replace(/[-_]+/g, ' ').replace(/^./, (c) => c.toUpperCase()), como: [], cuidado: '', muneco: 'm_golpes', video: '' };
+
+  /* El muñeco que representa una sesión o un drill: el del primer ejercicio de técnica (o el primero que haya). */
+  function munecoDe(plan, item) {
+    if (item.muneco) return item.muneco;
+    const bloques = item.bloques || [{ tipo: 'tecnica', pasos: item.pasos || [] }];
+    const b = bloques.find((x) => x.tipo === 'tecnica' || x.tipo === 'rounds') || bloques[0];
+    const p = b && b.pasos && b.pasos[0];
+    return p ? ejercicio(plan, p.ej).muneco : 'm_golpes';
+  }
+  /* Claves de muñeco y rutas de video de todo el plan, para guardarlos y verlos sin conexión. */
+  function munecosDelPlan(plan) {
+    return [...new Set(Object.values(plan.ejercicios || {}).map((e) => e.muneco).concat((plan.guia && plan.guia.secciones || []).map((s) => s.muneco), (plan.drills || []).map((d) => d.muneco)).filter(Boolean))].sort();
+  }
+
+  /* Lista plana de pasos del reproductor: un paso de «trabajo» por cada ronda y un «descanso» entre ellos.
+     Un paso con `seg` corre solo; un paso con `reps` espera el «Hecho». Regla del plan: un paso dura rondas × (seg + descanso), el descanso de la última ronda también cuenta (así salen los `minutos` de cada sesión). */
+  const SEG_POR_REP = 3;
+  function pasosDe(item, plan) {
+    const bloques = item.bloques || [{ tipo: 'tecnica', titulo: item.titulo, pasos: item.pasos || [] }];
+    const out = [];
+    bloques.forEach((b, bi) => (b.pasos || []).forEach((p) => {
+      const rondas = Math.max(1, p.rondas | 0 || 1), ej = ejercicio(plan, p.ej);
+      for (let r = 1; r <= rondas; r++) {
+        out.push({ t: 'trabajo', ej: p.ej, nombre: ej.nombre, seg: p.seg > 0 ? p.seg : 0, reps: p.seg > 0 ? 0 : (p.reps | 0 || 10), ronda: r, rondas, combo: p.combo || '', nota: p.nota || '', bloque: b.titulo || '', bloqueTipo: b.tipo || '', bi });
+        if (p.descanso > 0) out.push({ t: 'descanso', ej: p.ej, seg: p.descanso, ronda: r, rondas, bloque: b.titulo || '', bi });
+      }
+    }));
+    return out;
+  }
+  const segDe = (p) => (p.seg > 0 ? p.seg : p.reps * SEG_POR_REP);
+  const segTotales = (pasos) => pasos.reduce((a, p) => a + segDe(p), 0);
+  /* Paso de trabajo que viene después de i (saltando descansos). */
+  const proximoTrabajo = (pasos, i) => { for (let k = i + 1; k < pasos.length; k++) if (pasos[k].t === 'trabajo') return pasos[k]; return null; };
+  const minutosDe = (pasos) => Math.max(1, Math.round(segTotales(pasos) / 60));
+
+  /* ---------- ranking con rivales virtuales (determinista a partir del acceso y la fecha) ---------- */
+  const hash32 = (s) => { let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h; };
+  const semilla = (a) => () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const ALIAS = ['Rayo_Sur', 'Guardia Alta', 'Jab.Veloz', 'Pie Ligero', 'Sombra 07', 'Gancho_Zurdo', 'Ritmo Fino', 'Cinta Verde', 'Doble Jab', 'Paso Corto', 'Fuerza Tranquila', 'Round Final', 'Pivot_9', 'Esquiva Norte', 'Codo Firme', 'Cadencia'];
+  /* Puntos por día que suma alguien que sigue el plan al ritmo previsto (promedio de todos los niveles). */
+  function ritmoRef(plan) {
+    const r = (plan.niveles || []).map((n) => {
+      const ss = sesionesDe(n); if (!ss.length) return 0;
+      return ((n.sesionesPorSemana || 3) * ss.reduce((a, s) => a + (s.puntos || 0), 0) / ss.length) / 7;
+    }).filter((x) => x > 0);
+    return r.length ? r.reduce((a, b) => a + b, 0) / r.length : 45;
+  }
+  /* 7 rivales virtuales. Cada uno tiene su ritmo y sus días de descanso; los puntos de hoy son la suma de lo que «hizo» desde el día 1 del comprador. */
+  function rivales(acceso, hoy, ini, ritmo) {
+    const rnd = semilla(hash32('r:' + acceso));
+    const nombres = ALIAS.map((n) => [rnd(), n]).sort((a, b) => a[0] - b[0]).slice(0, 7).map((x) => x[1]);
+    const dias = Math.min(90, Math.max(1, hoy - ini + 1));
+    return nombres.map((nombre, i) => {
+      const factor = 0.4 + rnd() * 0.9;
+      let pts = 0;
+      for (let d = 0; d < dias; d++) {
+        const r = semilla(hash32(acceso + ':' + i + ':' + (ini + d)));
+        if (r() > 0.24) pts += ritmo * factor * (0.6 + r() * 0.8);
+      }
+      return { nombre, pts: Math.round(pts / 5) * 5, virtual: true };
+    });
+  }
+  /* Ranking completo: los 7 virtuales y el comprador con su apodo; ordenado por puntos (a igualdad, primero el comprador). */
+  function ranking(acceso, plan, prog, nombre, ahora) {
+    const yo = { nombre: prog.apodo || nombre || 'Vos', pts: totales(prog).puntos, virtual: false };
+    const lista = rivales(acceso, idxDia(ahora), idxDia(prog.inicio || ahora), ritmoRef(plan)).concat(yo);
+    lista.sort((a, b) => b.pts - a.pts || (a.virtual ? 1 : 0) - (b.virtual ? 1 : 0) || (a.nombre < b.nombre ? -1 : 1));
+    return lista.map((x, i) => ({ ...x, pos: i + 1 }));
+  }
+
+  return { MUNECOS_APP, DIA, idxDia, fechaDeIdx, diaSemana, LETRAS, NOMBRES_DIA, mmss, progVacio, limpiarApodo, apodoValido, normalizarProg, fusionar, diasActivos, racha, bonusRacha, completarSesion, completarDrill, totales, semanaDe, calendario, numeroDeDia, nivelDe, sesionesDe, siguienteSesion, buscarSesion, buscarDrill, nombreTipo, ejercicio, munecoDe, munecosDelPlan, pasosDe, segDe, segTotales, proximoTrabajo, minutosDe, hash32, ritmoRef, rivales, ranking };
+})();
+
+/* Piezas de interfaz compartidas: íconos SVG, muñecos, escape de HTML, avisos y hoja inferior. Sin emojis: todo es SVG o imagen. */
+const $ = (id) => document.getElementById(id);
+const $$ = (sel, ra = document) => [...ra.querySelectorAll(sel)];
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const movimientoReducido = () => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
+
+/* Íconos de línea (mismo trazo que los del quiz). */
+const TRAZOS = {
+  hoy: '<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/>',
+  plan: '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M8 14h3M8 17h6"/>',
+  progreso: '<path d="M5 20V12M12 20V5M19 20v-5"/>',
+  perfil: '<circle cx="12" cy="8" r="4"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6"/>',
+  flama: '<path d="M12 3c.6 3.4 5 5.2 5 10a5 5 0 0 1-10 0c0-1.9.9-3.3 2-4.2.1 1.6.9 2.6 2 2.8C10.4 8.6 10.6 5.4 12 3z"/>',
+  play: '<path d="M8 5.5l11 6.5-11 6.5z" style="fill:currentColor"/>',
+  pausa: '<path d="M8.5 5.5v13M15.5 5.5v13" style="stroke-width:3.6"/>',
+  siguiente: '<path d="M6 5.5l9.5 6.5L6 18.5z"/><path d="M19 5.5v13"/>',
+  anterior: '<path d="M18 5.5L8.5 12l9.5 6.5z"/><path d="M5 5.5v13"/>',
+  cerrar: '<path d="M6 6l12 12M18 6L6 18"/>',
+  tilde: '<path d="M5 12.5l4.5 4.5L19 7"/>',
+  atras: '<path d="M15 5l-7 7 7 7"/>',
+  der: '<path d="M9 5l7 7-7 7"/>',
+  compartir: '<path d="M12 15V3.5"/><path d="M8 7l4-4 4 4"/><path d="M8 10H6.5A2.5 2.5 0 0 0 4 12.5v6A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5v-6a2.5 2.5 0 0 0-2.5-2.5H16"/>',
+  agregar: '<rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M12 8v8M8 12h8"/>',
+  copiar: '<rect x="9" y="9" width="11" height="11" rx="3"/><path d="M15 9V6.5A2.5 2.5 0 0 0 12.5 4h-6A2.5 2.5 0 0 0 4 6.5v6A2.5 2.5 0 0 0 6.5 15H9"/>',
+  sonido: '<path d="M4 10v4h3.5l5 4V6l-5 4z"/><path d="M16 9.5c1.4 1.4 1.4 3.6 0 5M18.6 7c2.8 2.8 2.8 7.2 0 10"/>',
+  silencio: '<path d="M4 10v4h3.5l5 4V6l-5 4z"/><path d="M16.5 9.5l4 5M20.5 9.5l-4 5"/>',
+  voz: '<path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-5 4v-4H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M8 10h8M8 13h5"/>',
+  vibra: '<rect x="8" y="3" width="8" height="18" rx="2.5"/><path d="M4 8v8M20 8v8"/>',
+  reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  rayo: '<path d="M13 3L5.5 13H11l-1 8L18.5 11H13z"/>',
+  sinred: '<path d="M3 9a14 14 0 0 1 4-2.5M21 9a14 14 0 0 0-9-3.5M6.5 12.5a9 9 0 0 1 3-1.8M17.5 12.5a9 9 0 0 0-2.2-1.6M10 16a3.5 3.5 0 0 1 4 0"/><circle cx="12" cy="19" r=".8"/><path d="M4 4l16 16"/>',
+  reintentar: '<path d="M20 11a8 8 0 1 0-2.3 6"/><path d="M20 4.5V11h-6.5"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  candado: '<rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  salir: '<path d="M10 4H6.5A2.5 2.5 0 0 0 4 6.5v11A2.5 2.5 0 0 0 6.5 20H10"/><path d="M15 8l4 4-4 4M19 12H9"/>',
+  instalar: '<path d="M12 4v11M7.5 11L12 15.5 16.5 11M5 20h14"/>',
+  libro: '<path d="M5 4.5h10a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h10"/>',
+  copa: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M8.5 20h7"/>',
+  guante: '<path d="M7 11V7a3 3 0 0 1 6 0v1h2a3 3 0 0 1 3 3v3a6 6 0 0 1-6 6h-1a5 5 0 0 1-5-5z"/><path d="M7 15h8"/>',
+  ayuda: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1 1-1.1 1.8M12 17h.01"/>',
+  mail: '<rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="M4 8l8 5.5L20 8"/>',
+};
+const ico = (k, cl = '') => `<svg class="ic ${cl}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${TRAZOS[k] || ''}</svg>`;
+
+/* Muñeco 3D (mismo archivo que usa el quiz; fondo blanco, se funde con la tarjeta por mix-blend-mode). */
+const mun = (k, cl = 'im3d', ancho = 360, alto = 480) => `<img class="${cl}" src="/img/muneco-${esc(k)}.webp" alt="" width="${ancho}" height="${alto}" decoding="async">`;
+
+const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+const primerNombre = (s) => String(s || '').trim().split(/\s+/)[0] || '';
+
+/* Aviso breve (el mismo .toast del quiz). */
+function toast(m) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = m; t.setAttribute('role', 'status');
+  document.body.appendChild(t);
+  setTimeout(() => t.classList.add('in'), 20);
+  setTimeout(() => { t.classList.remove('in'); setTimeout(() => t.remove(), 300); }, 2200);
+  vibrar(8);
+}
+function vibrar(p = 12) { try { if (AJ().vibracion && navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
+const AJ = () => (typeof PROG !== 'undefined' && PROG && PROG.ajustes) || { sonido: true, voz: true, vibracion: true };
+
+/* Anuncio para lectores de pantalla (cambios de pantalla y de fase). */
+function anunciar(txt) {
+  const a = $('anuncio'); if (!a) return;
+  a.textContent = txt;
+}
+
+/* Hoja inferior (la misma .velo/.hoja del quiz). Devuelve una función para cerrarla. */
+function hoja(html, { alCerrar } = {}) {
+  const previo = document.activeElement;
+  const v = document.createElement('div');
+  v.className = 'velo';
+  v.innerHTML = `<div class="hoja" role="dialog" aria-modal="true">${html}</div>`;
+  const cerrar = () => { v.remove(); document.removeEventListener('keydown', tecla); if (previo && previo.focus) previo.focus(); if (alCerrar) alCerrar(); };
+  const tecla = (e) => {
+    if (e.key === 'Escape') cerrar();
+    if (e.key === 'Tab') {   // el foco se queda dentro de la hoja
+      const f = $$('button,a[href],input', v).filter((x) => !x.disabled);
+      if (!f.length) return;
+      const a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  };
+  v.addEventListener('click', (e) => { if (e.target === v) cerrar(); });
+  document.addEventListener('keydown', tecla);
+  document.body.appendChild(v);
+  const primero = $$('[autofocus],button', v)[0]; if (primero) primero.focus({ preventScroll: true });
+  return { cerrar, el: v };
+}
+
+/* Anima las barras y los anillos de progreso después de pintar la pantalla (con movimiento reducido salta directo). */
+function animarBarras(raiz = document) {
+  const ir = () => {
+    $$('[data-w]', raiz).forEach((e) => { e.style.width = e.dataset.w + '%'; });
+    $$('[data-p]', raiz).forEach((e) => { const r = +e.getAttribute('r'), c = 2 * Math.PI * r; e.style.strokeDasharray = c; e.style.strokeDashoffset = c * (1 - Math.min(1, Math.max(0, +e.dataset.p))); });
+  };
+  if (movimientoReducido()) ir(); else requestAnimationFrame(() => requestAnimationFrame(ir));
+}
+const barra = (pct, cl = '') => `<div class="bar ${cl}" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct)}"><i data-w="${Math.round(pct)}"></i></div>`;
+
+/* Cuenta de 0 al número (puntos que suben). */
+function contar(el, hasta, ms = 1100) {
+  if (!el) return;
+  if (movimientoReducido() || hasta <= 0) { el.textContent = hasta; return; }
+  const t0 = performance.now();
+  let listo = false;
+  const paso = () => { if (listo) return; const k = Math.min(1, (performance.now() - t0) / ms), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(hasta * e); if (k < 1) requestAnimationFrame(paso); };
+  requestAnimationFrame(paso);
+  setTimeout(() => { listo = true; el.textContent = hasta; }, ms + 60);   // el número final siempre queda, aunque la pantalla estuviera en segundo plano
+}
+
+/* Copiar al portapapeles (con respaldo para navegadores viejos). */
+async function copiarTexto(t) {
+  try { await navigator.clipboard.writeText(t); return true; } catch (e) {}
+  try {
+    const a = document.createElement('textarea'); a.value = t; a.setAttribute('readonly', ''); a.style.cssText = 'position:fixed;opacity:0;top:0';
+    document.body.appendChild(a); a.select(); const ok = document.execCommand('copy'); a.remove(); return ok;
+  } catch (e) { return false; }
+}
+
+/* Estado de la app: acceso, almacenamiento local, llamadas a la API, progreso con subida diferida y cola sin conexión,
+   instalación (Android, iPhone, navegador de Instagram o Facebook) y service worker. */
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+const ACC = (() => { const m = location.pathname.match(/^\/app\/([^/]+)\/?/); return m && UUID.test(m[1]) ? m[1] : ''; })();
+const K = { ultimo: 'bc_app_ultimo', estado: `bc_app_${ACC}_estado`, prog: `bc_app_${ACC}_prog`, cola: `bc_app_${ACC}_cola`, plan: `bc_app_${ACC}_plan`, curso: `bc_app_${ACC}_curso` };
+
+const ls = {
+  get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+  /* bc_app_ultimo es texto plano (lo escribe también /gracias/): sin JSON */
+  getRaw(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } },
+  setRaw(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+};
+
+let ESTADO = null;   // { estado, nombre, funnel, nivel, ts }
+let PLAN = null;     // lo que devuelve GET /api/app/<acceso>/plan
+let PROG = null;     // progreso (versión 1 del contrato)
+let ENLINEA = navigator.onLine !== false;
+
+function marcarRed(ok) {
+  if (ok === ENLINEA) return;
+  ENLINEA = ok;
+  if (typeof pintarAviso === 'function') pintarAviso();
+}
+
+/* Pedido a la API: nunca lanza. status 0 = sin red o tiempo agotado. `cache` = lo sirvió el service worker desde su copia. */
+async function api(ruta, { metodo = 'GET', cuerpo, plazo = 8000 } = {}) {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), plazo);
+  try {
+    const r = await fetch(ruta, { method: metodo, headers: cuerpo ? { 'content-type': 'application/json' } : undefined, body: cuerpo ? JSON.stringify(cuerpo) : undefined, signal: ctl.signal, cache: 'no-store', credentials: 'omit', keepalive: metodo !== 'GET' });
+    let datos = null;
+    if (r.status !== 204) { try { datos = await r.json(); } catch (e) {} }
+    const cache = !!r.headers.get('x-bc-cache');
+    marcarRed(!cache);
+    return { ok: r.ok, status: r.status, datos, cache };
+  } catch (e) {
+    marcarRed(false);
+    return { ok: false, status: 0, datos: null, red: true };
+  } finally { clearTimeout(t); }
+}
+
+/* ---------- progreso ---------- */
+let subidaT = 0, subiendo = false, esperaReintento = 5000;
+function guardarProg() {
+  PROG.actualizado = Date.now();
+  ls.set(K.prog, PROG);
+  programarSubida();
+}
+function programarSubida(demora = 1500) { clearTimeout(subidaT); subidaT = setTimeout(subir, demora); }
+/* Sube el progreso entero (PUT). Hasta que el servidor confirma queda copia en la cola; si no hay red, se reintenta al volver. */
+async function subir() {
+  subidaT = 0;
+  if (!PROG || !PROG.inicio || !ACC) return;
+  if (subiendo) { programarSubida(800); return; }
+  subiendo = true;
+  const foto = JSON.stringify(PROG);
+  ls.set(K.cola, { ts: Date.now(), prog: PROG });
+  const r = await api(`/api/app/${ACC}/progreso`, { metodo: 'PUT', cuerpo: PROG });
+  subiendo = false;
+  if (r.ok) { ls.del(K.cola); esperaReintento = 5000; if (JSON.stringify(PROG) !== foto) programarSubida(300); return; }
+  if (r.status >= 400 && r.status < 500 && r.status !== 408 && r.status !== 429) {
+    ls.del(K.cola);                               // el servidor no lo va a aceptar nunca: no trabar la cola
+    if (r.status === 403 && typeof revisarAcceso === 'function') revisarAcceso();
+    return;
+  }
+  programarSubida(esperaReintento);                 // sin red o servidor caído: queda en la cola y se reintenta, cada vez más espaciado
+  esperaReintento = Math.min(60000, esperaReintento * 2);
+}
+const hayCola = () => !!ls.get(K.cola);
+function vaciarCola() { if (hayCola()) subir(); }
+addEventListener('online', () => { marcarRed(true); vaciarCola(); });
+addEventListener('offline', () => marcarRed(false));
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { vaciarCola(); if (typeof alVolver === 'function') alVolver(); } else if (subidaT) { clearTimeout(subidaT); subir(); } });
+addEventListener('pagehide', () => { if (subidaT) { clearTimeout(subidaT); subir(); } });
+
+/* ---------- estado y plan ---------- */
+async function pedirEstado() { return api(`/api/app/${ACC}`); }
+async function pedirPlan() { return api(`/api/app/${ACC}/plan`, { plazo: 10000 }); }
+
+/* Guarda lo que dijo el servidor y lo fusiona con el progreso local. */
+function aplicarEstado(d) {
+  ESTADO = { estado: d.estado, nombre: primerNombre(d.nombre || ''), funnel: d.funnel === 'peleador' ? 'peleador' : 'peso', nivel: /^t[1-4]$/.test(d.nivel) ? d.nivel : 't1', ts: Date.now() };
+  ls.set(K.estado, ESTADO);
+  const sp = NUCLEO.normalizarProg(d.progreso);
+  if (sp) {
+    const f = NUCLEO.fusionar(PROG, sp);
+    const cambio = JSON.stringify(f) !== JSON.stringify(PROG);
+    PROG = f;
+    if (cambio) ls.set(K.prog, PROG);
+    if (JSON.stringify(f) !== JSON.stringify(sp)) programarSubida(600);   // lo local tiene algo que el servidor no
+  }
+}
+function planValido(p) { return p && Array.isArray(p.niveles) && p.niveles.length && p.niveles.every((n) => n && Array.isArray(n.semanas)) && p.ejercicios && typeof p.ejercicios === 'object'; }
+function guardarPlan(p) { ls.set(K.plan, p); }
+function planGuardado() { const p = ls.get(K.plan); return planValido(p) ? p : null; }
+
+/* Pide al service worker que guarde los muñecos del plan para usarlos sin conexión. */
+function precargarMunecos() {
+  if (!PLAN || !navigator.serviceWorker) return;
+  const urls = NUCLEO.munecosDelPlan(PLAN).map((k) => `/img/muneco-${k}.webp`);
+  navigator.serviceWorker.ready.then((reg) => reg.active && reg.active.postMessage({ type: 'precache', urls })).catch(() => {});
+}
+
+/* Borra todo lo de este acceso en este celu (progreso ya subido). */
+async function olvidarEnEsteCelu() {
+  Object.values(K).forEach((k) => { if (k !== K.ultimo || ls.getRaw(K.ultimo) === ACC) ls.del(k); });
+  try {
+    const c = await caches.open('bc-app-datos');
+    await Promise.all([`/api/app/${ACC}`, `/api/app/${ACC}/plan`].map((u) => c.delete(u)));
+  } catch (e) {}
+}
+
+/* ---------- instalación ---------- */
+const UA = navigator.userAgent || '';
+const ES_INAPP = /FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|musical_ly|TikTok|Snapchat/i.test(UA);
+const ES_IOS = /iPad|iPhone|iPod/.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const ES_ANDROID = /Android/i.test(UA);
+const instalada = () => { try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { return false; } };
+let promptInstalar = null;
+addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); promptInstalar = e; repintarInstalar(); });
+addEventListener('appinstalled', () => { promptInstalar = null; repintarInstalar(); if (typeof toast === 'function') toast('App instalada'); });
+async function instalar() {
+  if (!promptInstalar) return 'no';
+  const e = promptInstalar; promptInstalar = null;
+  try { await e.prompt(); const r = await e.userChoice; repintarInstalar(); return r.outcome; } catch (x) { return 'no'; }
+}
+const linkPersonal = () => location.origin + '/app/' + ACC + '/';
+
+/* ---------- service worker (aviso de versión nueva, sin saltear la espera a ciegas) ---------- */
+let swEsperando = null, actualizando = false;
+function registrarSW() {
+  if (!('serviceWorker' in navigator)) return;
+  const nuevo = (w) => { swEsperando = w; if (typeof pintarAviso === 'function') pintarAviso(); };
+  navigator.serviceWorker.register('/app/sw.js', { scope: '/app/' }).then((reg) => {
+    if (reg.waiting && navigator.serviceWorker.controller) nuevo(reg.waiting);
+    reg.addEventListener('updatefound', () => {
+      const w = reg.installing;
+      if (w) w.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) nuevo(w); });
+    });
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+  }).catch(() => {});
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (actualizando) location.reload(); });
+}
+function actualizarApp() {
+  if (!swEsperando) return;
+  actualizando = true;
+  swEsperando.postMessage({ type: 'actualizar' });
+}
+
+/* Pantallas de la app: cada función devuelve el HTML de una vista. Los toques se resuelven en app.js (data-a="accion"). */
+const N = NUCLEO;
+const fnum = (n) => Number(n || 0).toLocaleString('es-AR');
+const MEDIO_LEGAL = () => (DATOS.contacto ? `escribinos a ${esc(DATOS.contacto)}` : 'escribinos por el mismo medio por el que llegaste a esta página');
+const FUNNEL_TXT = { peso: 'Bajar de peso con shadowboxing en casa', peleador: 'Shadowboxing en casa para entrenar como peleador' };
+
+/* ---------- piezas ---------- */
+const cab = (titulo, { atras = true, extra = '' } = {}) => `<header class="top">${atras ? `<button class="bt atras" data-a="volver" aria-label="Volver">${ico('atras')}</button>` : ''}<p class="tag">${esc(titulo)}</p>${extra}</header>`;
+const chipsSes = (s, min) => `<div class="chips"><span>${ico('reloj')} ${min || s.minutos} min</span><span>${esc(N.nombreTipo(s.tipo))}</span><span>${ico('rayo')} ${fnum(s.puntos)} pts</span></div>`;
+
+/* Mensaje a pantalla completa (pendiente, revocado, error, sin conexión, enlace inválido). */
+function vMensaje({ mun: m = 'f_ayuda', tag = '', titulo, texto = '', extra = '', acciones = '', rol = '', anillo = false }) {
+  return `<section class="msg ${anillo ? 'conanillo' : ''}" ${rol ? `role="${rol}"` : ''}>
+    <div class="msg-im">${anillo ? '<svg class="gira" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/></svg>' : ''}${mun(m)}</div>
+    ${tag ? `<p class="tag">${esc(tag)}</p>` : ''}<h1 tabindex="-1">${esc(titulo)}</h1>${texto ? `<p class="sub">${texto}</p>` : ''}${extra}${acciones}</section>`;
+}
+
+/* Instalar: según dónde estés (Android, iPhone, navegador de Instagram o Facebook, ya instalada). */
+function bloqueInstalar() {
+  if (instalada()) return `<div class="box ok-box">${ico('tilde')}<div><b>App instalada</b><small>Ya la tenés en la pantalla de inicio.</small></div></div>`;
+  if (ES_INAPP) return `<div class="box aviso-box"><b>Abrí este link en tu navegador</b><p class="sm">Estás en el navegador de Instagram o Facebook y desde ahí no se puede instalar. Tocá los tres puntos y elegí «Abrir en Safari» o «Abrir en Chrome», o copiá el link y pegalo en tu navegador.</p><button class="cta s" data-a="copiar">${ico('copiar')} Copiar mi link</button></div>`;
+  if (promptInstalar) return `<div class="box"><b>Instalá la app</b><p class="sm">Entrás con un toque desde tu pantalla de inicio y funciona aunque no tengas señal.</p><button class="cta" data-a="instalar">${ico('instalar')} Instalar la app</button></div>`;
+  if (ES_IOS) return `<div class="box"><b>Instalala en tu iPhone</b><ol class="pasos">
+      <li><i>1</i><span>Tocá <b>Compartir</b> ${ico('compartir', 'inl')} en la barra de Safari.</span></li>
+      <li><i>2</i><span>Elegí <b>Agregar a inicio</b> ${ico('agregar', 'inl')}.</span></li>
+      <li><i>3</i><span>Tocá <b>Agregar</b>. Listo: la abrís desde el ícono.</span></li></ol></div>`;
+  return `<div class="box"><b>Instalala en tu celu</b><p class="sm">Desde el menú del navegador elegí «Instalar app» o «Agregar a la pantalla de inicio». Así la abrís con un toque y anda sin conexión.</p></div>`;
+}
+
+const cardsNivel = (sel, accion) => `<div class="grid niveles" role="radiogroup" aria-label="Nivel de carga">${PLAN.niveles.map((n) => `<button type="button" class="c ${n.id === sel ? 'on' : ''}" role="radio" aria-checked="${n.id === sel}" data-a="${accion}" data-n="${esc(n.id)}">${mun(n.id)}<b>${esc(n.nombre)}<small>${esc(n.dias)} · ${esc(n.minutos)}</small></b></button>`).join('')}</div>`;
+
+function fila(href, im, titulo, meta, extra = '') {
+  return `<a class="fila" href="${href}"><span class="fila-im">${im}</span><span class="fila-x"><b>${esc(titulo)}</b><small>${meta}</small></span>${extra || ico('der', 'chev')}</a>`;
+}
+
+/* ---------- bienvenida ---------- */
+function vBienvenida(sel, apodo) {
+  const nv = N.nivelDe(PLAN, sel);
+  const nombre = ESTADO.nombre || 'campeón';
+  return `<section class="bien">
+    <div class="bien-h"><div class="bien-im">${mun(nv.id)}</div><div><p class="tag">Tu plan está listo</p><h1 tabindex="-1">Hola, ${esc(nombre)}</h1></div></div>
+    <div class="box resumen"><div class="row"><span>Perfil</span><b>${esc(FUNNEL_TXT[ESTADO.funnel] || FUNNEL_TXT.peso)}</b></div>
+      <div class="row"><span>Nivel</span><b id="b-nivel">${esc(nv.nombre)} · ${esc(nv.dias)}</b></div>
+      <div class="row"><span>Duración</span><b>4 semanas · ${esc(nv.minutos)} por sesión</b></div></div>
+    <h2>Tu apodo para el ranking</h2>
+    <label class="campo" for="apodo"><span class="sm">Así aparecés frente a los rivales virtuales. Podés cambiarlo cuando quieras.</span>
+      <input id="apodo" type="text" maxlength="20" autocomplete="nickname" autocapitalize="words" value="${esc(apodo)}" aria-describedby="apodo-err"></label>
+    <p class="err" id="apodo-err" role="alert"></p>
+    <h2>Confirmá tu nivel</h2>
+    <p class="sm">Elegiste el que mejor se ajusta a tu tiempo. Si querés otro, tocalo.</p>
+    ${cardsNivel(sel, 'nivel-bien')}
+    <h2>Instalá la app</h2>
+    <div data-instalar>${bloqueInstalar()}</div>
+    <p class="sm cen pie-p">Si tenés una lesión o una condición médica, consultá a tu médico antes de empezar.</p>
+    <div class="cta-fija"><button class="cta" data-a="empezar-app">Empezar</button></div>
+  </section>`;
+}
+
+/* ---------- hoy ---------- */
+const ahoraSemana = (prog, ahora) => {
+  const s = N.semanaDe(prog, ahora), a = s[0].idx, z = s[6].idx;
+  return Object.values(prog.sesiones).filter((x) => { const d = N.idxDia(x.fin); return d >= a && d <= z; }).length;
+};
+function cursoVigente() {
+  const c = ls.get(K.curso);
+  if (!c || !c.id || Date.now() - c.ts > 36 * 36e5) return null;
+  const item = c.k === 'd' ? N.buscarDrill(PLAN, c.id) : N.buscarSesion(PLAN, c.id);
+  if (!item) return null;
+  const pasos = N.pasosDe(item, PLAN);
+  if (c.idx >= pasos.length) return null;
+  return { ...c, item, total: pasos.filter((p) => p.t === 'trabajo').length, hecho: pasos.slice(0, c.idx).filter((p) => p.t === 'trabajo').length };
+}
+
+function vHoy() {
+  const ahora = Date.now(), nv = N.nivelDe(PLAN, PROG.nivel), r = N.racha(PROG, ahora);
+  const sig = N.siguienteSesion(nv, PROG), curso = cursoVigente(), tot = N.totales(PROG);
+  const primera = tot.sesiones === 0 && tot.drills === 0;
+  const dia = N.numeroDeDia(PROG, ahora);
+  const nombre = ESTADO.nombre || PROG.apodo || 'campeón';
+  const semana = N.semanaDe(PROG, ahora);
+  const hechas = ahoraSemana(PROG, ahora), meta = nv.sesionesPorSemana || 3;
+  const proximas = N.sesionesDe(nv).filter((s) => !PROG.sesiones[s.id] && (!sig || s.id !== sig.id)).slice(0, 3);
+  const drill = (PLAN.drills || []).length ? PLAN.drills[N.idxDia(ahora) % PLAN.drills.length] : null;
+
+  const rach = `<a class="rach ${r.dias ? 'on' : ''}" href="#/progreso" aria-label="${r.dias ? `Racha de ${plural(r.dias, 'día', 'días')}. Ver progreso` : 'Todavía sin racha. Ver progreso'}">${ico('flama')}<span>${r.dias ? `<b>${r.dias}</b> ${r.dias === 1 ? 'día' : 'días'}` : 'Sin racha'}</span></a>`;
+  const tira = `<ol class="sem7" aria-label="Tu semana">${semana.map((d) => `<li class="dd ${d.hecho ? 'ok' : ''} ${d.hoy ? 'hoy' : ''} ${d.futuro ? 'fut' : ''}" aria-label="${d.nombre}${d.hoy ? ' (hoy)' : ''}: ${d.hecho ? 'entrenaste' : d.futuro ? 'por venir' : 'sin entrenar'}"><i>${d.letra}</i><b>${d.hecho ? ico('tilde') : d.n}</b></li>`).join('')}</ol>`;
+
+  let hero;
+  if (curso) {
+    const it = curso.item;
+    hero = `<section class="hero curso" aria-label="Seguí donde quedaste"><div class="hero-t"><div class="hero-im">${mun(N.munecoDe(PLAN, it))}</div><div class="hero-x"><p class="tag">Seguí donde quedaste</p><h2>${esc(it.titulo)}</h2><p class="sm">Llevás ${curso.hecho} de ${curso.total} pasos.</p></div></div>
+      <button class="cta" data-a="retomar">Retomar</button></section>`;
+  } else if (sig) {
+    hero = `<section class="hero" aria-label="Tu sesión de hoy"><div class="hero-t"><div class="hero-im">${mun(N.munecoDe(PLAN, sig))}</div><div class="hero-x"><p class="tag">${primera ? 'Tu primera sesión' : 'Tu sesión de hoy'}</p><h2>${esc(sig.titulo)}</h2><p class="sm">Semana ${sig.semana} · Sesión ${sig.n}</p>${chipsSes(sig)}</div></div>
+      <a class="cta" href="#/sesion/${esc(sig.id)}">Empezar sesión</a></section>`;
+  } else {
+    hero = `<section class="hero" aria-label="Plan completo"><div class="hero-t"><div class="hero-im">${mun('o_competir')}</div><div class="hero-x"><p class="tag">Plan completo</p><h2>Terminaste las 4 semanas</h2><p class="sm">Repetí las sesiones que más te gusten o probá un drill.</p></div></div><a class="cta" href="#/plan">Ver el plan</a></section>`;
+  }
+
+  return `<section>
+    <header class="saludo"><div><h1 tabindex="-1">Hola, ${esc(nombre)}</h1><p class="sub l">${primera ? 'Tu racha empieza con la primera sesión.' : `Día ${dia} de tu plan`}</p></div>${rach}</header>
+    ${tira}
+    ${hero}
+    <div class="box semana"><div class="row"><b>Esta semana</b><span>${Math.min(hechas, meta)} de ${meta} sesiones</span></div>${barra(Math.min(100, (hechas / meta) * 100))}</div>
+    ${proximas.length ? `<h2>Próximas sesiones</h2><div class="lista">${proximas.map((s) => fila(`#/sesion/${esc(s.id)}`, mun(N.munecoDe(PLAN, s), 'im3d mini', 120, 160), s.titulo, `Semana ${s.semana} · ${s.minutos} min · ${esc(N.nombreTipo(s.tipo))}`)).join('')}</div>` : ''}
+    ${drill ? `<h2>Drill del día</h2><div class="lista">${fila(`#/drill/${esc(drill.id)}`, mun(N.munecoDe(PLAN, drill), 'im3d mini', 120, 160), drill.titulo, `${drill.minutos} min · ${fnum(drill.puntos)} pts`)}${fila('#/drills', ico('guante', 'ic-f'), 'Todos los drills', 'Práctica corta para cualquier momento')}</div>` : ''}
+    ${PLAN.guia ? `<h2>Tu guía</h2><div class="lista">${fila('#/guia', mun('e_guardia', 'im3d mini', 120, 160), PLAN.guia.titulo, 'Postura, golpes y defensa, paso a paso')}</div>` : ''}
+  </section>`;
+}
+
+/* ---------- plan ---------- */
+function vPlan() {
+  const nv = N.nivelDe(PLAN, PROG.nivel), sig = N.siguienteSesion(nv, PROG);
+  return `<section>
+    <header class="saludo"><div><h1 tabindex="-1">Tu plan</h1><p class="sub l">4 semanas, a tu ritmo</p></div></header>
+    <div class="box nivel-actual"><div class="na-im">${mun(nv.id, 'im3d mini', 120, 160)}</div><div class="na-x"><p class="tag">Tu nivel</p><b>${esc(nv.nombre)}</b><small>${esc(nv.dias)} por semana · ${esc(nv.minutos)}</small></div><button class="cta s chico" data-a="nivel">Cambiar</button></div>
+    ${nv.semanas.map((sem) => {
+      const ses = sem.sesiones || [], hechas = ses.filter((s) => PROG.sesiones[s.id]).length;
+      return `<section class="sem-c" aria-labelledby="sem-${sem.n}"><div class="sem-h"><div><p class="tag">Semana ${sem.n}</p><h2 id="sem-${sem.n}">${esc(sem.titulo)}</h2></div>
+        <svg class="mini-anillo" viewBox="0 0 44 44" role="img" aria-label="${hechas} de ${ses.length} sesiones hechas"><circle class="pista" cx="22" cy="22" r="18"/><circle class="aro" cx="22" cy="22" r="18" data-p="${ses.length ? hechas / ses.length : 0}"/><text x="22" y="26.5" text-anchor="middle">${hechas}/${ses.length}</text></svg></div>
+        ${sem.foco ? `<p class="sm">${esc(sem.foco)}</p>` : ''}
+        <ul class="ses">${ses.map((s) => {
+          const ok = PROG.sesiones[s.id], es = sig && sig.id === s.id;
+          return `<li><a class="ses-a ${ok ? 'hecha' : ''} ${es ? 'sig' : ''}" href="#/sesion/${esc(s.id)}"><span class="est" aria-hidden="true">${ok ? ico('tilde') : es ? ico('play') : ''}</span><span class="ses-x"><b>${esc(s.titulo)}</b><small>${s.minutos} min · ${esc(N.nombreTipo(s.tipo))} · ${fnum(s.puntos)} pts</small></span><em class="est-t ${ok ? 'ok' : es ? 'sig' : ''}">${ok ? 'Hecha' : es ? 'Siguiente' : 'Por hacer'}</em></a></li>`;
+        }).join('')}</ul></section>`;
+    }).join('')}
+  </section>`;
+}
+
+/* ---------- resumen de una sesión o un drill ---------- */
+function vResumen(item, kind) {
+  const pasos = N.pasosDe(item, PLAN), ahora = Date.now(), r = N.racha(PROG, ahora);
+  const hecha = kind === 's' ? PROG.sesiones[item.id] : null;
+  const bloques = (item.bloques || [{ titulo: item.titulo, pasos: item.pasos }]).map((b, i) => {
+    const ps = pasos.filter((p) => p.bi === i), ejs = [...new Set(ps.filter((p) => p.t === 'trabajo').map((p) => p.nombre))];
+    return { titulo: b.titulo, n: ejs.length, min: N.minutosDe(ps), ejs };
+  });
+  const bonus = kind === 's' && !hecha && !r.hoy ? N.bonusRacha(r.dias + 1) : 0;
+  const curso = cursoVigente(), retoma = curso && curso.id === item.id;
+  const min = item.minutos || N.minutosDe(pasos);
+  const trab = pasos.filter((p) => p.t === 'trabajo').length;
+  return `<section class="resumen-s">
+    ${cab(kind === 's' ? `Semana ${item.semana} · Sesión ${item.n}` : 'Drill')}
+    <div class="res-im">${mun(N.munecoDe(PLAN, item))}</div>
+    <h1 tabindex="-1">${esc(item.titulo)}</h1>
+    ${kind === 's' ? chipsSes(item, min) : `<div class="chips"><span>${ico('reloj')} ${min} min</span><span>${ico('rayo')} ${fnum(item.puntos)} pts</span></div>`}
+    ${item.objetivo || item.foco ? `<p class="obj">${esc(item.objetivo || item.foco)}</p>` : ''}
+    ${hecha ? `<div class="box ok-box">${ico('tilde')}<div><b>Ya la hiciste</b><small>Podés repetirla, pero no suma puntos otra vez.</small></div></div>` : ''}
+    ${kind === 'd' && PROG.drills[item.id] && N.idxDia(PROG.drills[item.id].ultimo) === N.idxDia(ahora) ? `<div class="box ok-box">${ico('tilde')}<div><b>Hoy ya lo hiciste</b><small>Los puntos de este drill se suman una vez por día.</small></div></div>` : ''}
+    <div class="box"><b>Qué vas a hacer</b><p class="sm">${trab} pasos en total. Escuchás un pitido en cada cambio.</p>
+      <ol class="bloques">${bloques.map((b, i) => `<li><i>${i + 1}</i><span><b>${esc(b.titulo)}</b><small>${esc(b.ejs.slice(0, 3).join(', '))}${b.ejs.length > 3 ? ` y ${b.ejs.length - 3} más` : ''} · ${b.min} min</small></span></li>`).join('')}</ol></div>
+    ${bonus ? `<div class="globo">Si entrenás hoy, tu racha suma <b>+${bonus} puntos</b> a los de la sesión.</div>` : ''}
+    <div class="cta-fija">${retoma ? `<button class="cta" data-a="retomar">Retomar desde el paso ${curso.hecho + 1}</button><button class="cta s" data-a="empezar">Empezar de cero</button>` : `<button class="cta" data-a="empezar">${hecha ? 'Hacerla otra vez' : 'Empezar'}</button>`}</div>
+  </section>`;
+}
+
+/* ---------- drills ---------- */
+function vDrills() {
+  const hoy = N.idxDia(Date.now());
+  return `<section>${cab('Práctica corta')}
+    <h1 tabindex="-1">Drills</h1><p class="sub l">Rutinas cortas para sumar práctica y puntos cuando tengas un rato. Suman una vez por día cada una.</p>
+    <div class="lista">${(PLAN.drills || []).map((d) => {
+      const p = PROG.drills[d.id], hoyHecho = p && N.idxDia(p.ultimo) === hoy;
+      return fila(`#/drill/${esc(d.id)}`, mun(N.munecoDe(PLAN, d), 'im3d mini', 120, 160), d.titulo, `${d.minutos} min · ${fnum(d.puntos)} pts${p ? ` · hecho ${plural(p.veces, 'vez', 'veces')}` : ''}`, hoyHecho ? `<em class="est-t ok">Hoy</em>` : ico('der', 'chev'));
+    }).join('')}</div></section>`;
+}
+
+/* ---------- guía ---------- */
+function vGuia() {
+  const g = PLAN.guia || { titulo: 'Guía', secciones: [] };
+  return `<section>${cab('Tu guía')}<h1 tabindex="-1">${esc(g.titulo)}</h1><p class="sub l">Lo básico para que cada golpe y cada paso salgan bien.</p>
+    ${g.secciones.map((s) => `<article class="gcard" id="g-${esc(s.id)}"><div class="zona ${s.video ? 'convideo' : 'sinvideo'}">${s.video ? `<video src="${esc(s.video)}" controls playsinline preload="metadata"></video>` : `${mun(s.muneco || 'e_guardia')}<span class="zona-et">${ico('guante')} Postura y técnica</span>`}</div>
+      <h2>${esc(s.titulo)}</h2>${(s.texto || []).map((t) => `<p>${esc(t)}</p>`).join('')}
+      ${(s.puntos || []).length ? `<ul class="checks">${s.puntos.map((t) => `<li>${ico('tilde')}<span>${esc(t)}</span></li>`).join('')}</ul>` : ''}</article>`).join('')}
+  </section>`;
+}
+
+/* ---------- progreso ---------- */
+function vProgreso() {
+  const ahora = Date.now(), r = N.racha(PROG, ahora), tot = N.totales(PROG), nv = N.nivelDe(PLAN, PROG.nivel);
+  const vacio = tot.sesiones === 0 && tot.drills === 0;
+  const cal = N.calendario(PROG, ahora), off = N.diaSemana(cal[0].idx);
+  const rk = N.ranking(ACC, PLAN, PROG, ESTADO.nombre, ahora), yo = rk.find((x) => !x.virtual);
+  const ord = ['primero', 'segundo', 'tercero', 'cuarto', 'quinto', 'sexto', 'séptimo', 'octavo'];
+  return `<section>
+    <header class="saludo"><div><h1 tabindex="-1">Tu progreso</h1><p class="sub l">${vacio ? 'Todavía no hay nada que contar. Eso cambia hoy.' : `Día ${N.numeroDeDia(PROG, ahora)} de tu plan`}</p></div></header>
+    <div class="box racha-g ${r.dias ? 'on' : ''}"><div class="rg-im">${mun('n_anios', 'im3d mini', 120, 160)}</div><div><p class="tag">Tu racha</p><div class="rg-n"><b>${r.dias}</b> ${r.dias === 1 ? 'día' : 'días'}</div><small>${r.dias ? (r.hoy ? 'Ya entrenaste hoy.' : 'Entrená hoy para no cortarla.') : 'Con tu primera sesión arranca.'}${r.mejor > 1 ? ` Mejor racha: ${r.mejor} días.` : ''}</small></div></div>
+    <div class="stats3"><div class="stat"><b>${fnum(tot.sesiones)}</b><small>${tot.sesiones === 1 ? 'sesión' : 'sesiones'}</small></div><div class="stat"><b>${fnum(tot.minutos)}</b><small>minutos</small></div><div class="stat"><b>${fnum(tot.puntos)}</b><small>puntos</small></div></div>
+    ${vacio ? `<div class="box vacio"><div class="vac-im">${mun('m_const', 'im3d mini', 120, 160)}</div><div><b>Tu calendario está esperando</b><p class="sm">Cada día que entrenes se marca acá. Hacé tu primera sesión y arrancás.</p><a class="cta chico" href="#/hoy">Ir a Hoy</a></div></div>` : ''}
+    <h2>Tus 28 días</h2>
+    <div class="box cal-b"><div class="cal" role="grid" aria-label="Calendario de 28 días"><div class="cal-h" aria-hidden="true">${N.LETRAS.map((l) => `<i>${l}</i>`).join('')}</div><div class="cal-g">${'<span class="cd vacio-d" aria-hidden="true"></span>'.repeat(off)}${cal.map((d) => `<span class="cd ${d.hecho ? 'ok' : ''} ${d.hoy ? 'hoy' : ''} ${d.futuro ? 'fut' : ''}" role="gridcell" aria-label="Día ${d.n}${d.hoy ? ', hoy' : ''}: ${d.hecho ? 'entrenaste' : d.futuro ? 'todavía no' : 'sin entrenar'}">${d.hecho ? ico('tilde') : d.n}</span>`).join('')}</div></div></div>
+    <h2>Avance por semana</h2>
+    <div class="box">${nv.semanas.map((sem) => { const ss = sem.sesiones || [], h = ss.filter((s) => PROG.sesiones[s.id]).length; return `<div class="avance"><div class="row"><span><b>Semana ${sem.n}</b></span><span class="m">${h} de ${ss.length}</span></div>${barra(ss.length ? (h / ss.length) * 100 : 0)}</div>`; }).join('')}</div>
+    <h2>Ranking</h2>
+    <div class="globo">Los rivales son virtuales: los genera la app para que tengas contra quién medirte. No son otras personas.</div>
+    <ol class="rank" aria-label="Ranking contra rivales virtuales">${rk.map((x) => `<li class="rk ${x.virtual ? '' : 'yo'}" ${x.virtual ? '' : 'aria-current="true"'}><span class="pos">${x.pos}</span><span class="av2" aria-hidden="true">${esc(String(x.nombre)[0].toUpperCase())}</span><span class="rn"><b>${esc(x.nombre)}</b><em class="vir ${x.virtual ? '' : 'tu'}">${x.virtual ? 'Virtual' : 'Vos'}</em></span><span class="pt">${fnum(x.pts)}<small> pts</small></span></li>`).join('')}</ol>
+    <p class="sm cen">${tot.puntos === 0 ? 'Sumá tu primera sesión para empezar a subir.' : `Vas ${ord[yo.pos - 1] || yo.pos + '.º'} entre los rivales virtuales.`}</p>
+    <p class="sm cen">Puntos = los de cada sesión o drill. Si entrenás varios días seguidos, la racha suma hasta 60 puntos extra por día, una vez por día.</p>
+  </section>`;
+}
+
+/* ---------- perfil ---------- */
+const interruptor = (k, ic, titulo, desc) => `<button type="button" class="sw" role="switch" aria-checked="${!!PROG.ajustes[k]}" data-a="ajuste" data-k="${k}"><span class="sw-ic">${ico(ic)}</span><span class="sw-t"><b>${titulo}</b><small>${desc}</small></span><i class="sw-k" aria-hidden="true"></i></button>`;
+function vPerfil() {
+  const nv = N.nivelDe(PLAN, PROG.nivel), nombre = ESTADO.nombre || '';
+  const mail = DATOS.contacto && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(DATOS.contacto) ? DATOS.contacto : '';
+  return `<section>
+    <header class="saludo"><div><h1 tabindex="-1">Tu perfil</h1><p class="sub l">${nombre ? esc(nombre) + ' · ' : ''}Nivel ${esc(nv.nombre)}</p></div><div class="perf-im">${mun(nv.id, 'im3d mini', 120, 160)}</div></header>
+    <h2>Tus datos</h2>
+    <form class="box" data-f="apodo" novalidate><label class="campo" for="apodo"><b>Apodo en el ranking</b><input id="apodo" type="text" maxlength="20" autocomplete="nickname" value="${esc(PROG.apodo)}" aria-describedby="apodo-err"></label><p class="err" id="apodo-err" role="alert"></p><button class="cta s chico" type="submit">Guardar apodo</button></form>
+    <div class="lista"><button type="button" class="fila fila-b" data-a="nivel"><span class="fila-im">${mun(nv.id, 'im3d mini', 120, 160)}</span><span class="fila-x"><b>Nivel: ${esc(nv.nombre)}</b><small>${esc(nv.dias)} · ${esc(nv.minutos)} · Cambiar</small></span>${ico('der', 'chev')}</button></div>
+    <h2>Durante la sesión</h2>
+    <div class="box sws">${interruptor('sonido', 'sonido', 'Sonido', 'Pitidos en los cambios y en la cuenta final')}${interruptor('voz', 'voz', 'Voz', 'Te dice cada ejercicio, en español')}${interruptor('vibracion', 'vibra', 'Vibración', 'Un toque en cada cambio de fase')}</div>
+    <h2>Instalar</h2><div data-instalar>${bloqueInstalar()}</div>
+    <h2>Guardá tu link</h2>
+    <div class="box"><p class="sm">Este link es tu acceso a BeastCamp: entrás desde cualquier celu sin usuario ni clave. Guardalo y no lo compartas.</p><p class="link-p" id="mi-link">${esc(linkPersonal())}</p><button class="cta s" data-a="copiar">${ico('copiar')} Copiar mi link</button></div>
+    <h2>Ayuda y contacto</h2>
+    <div class="box"><p class="sm">¿Algo no anda o tenés una duda? ${MEDIO_LEGAL().replace(/^./, (c) => c.toUpperCase())}. Tenés ${DATOS.garantiaDias} días de garantía desde tu compra.</p>${mail ? `<a class="cta s" href="mailto:${esc(mail)}">${ico('mail')} Escribirnos</a>` : ''}</div>
+    <div class="lista"><a class="fila" href="/legal/terminos/"><span class="fila-im">${ico('info', 'ic-f')}</span><span class="fila-x"><b>Términos y condiciones</b></span>${ico('der', 'chev')}</a><a class="fila" href="/legal/privacidad/"><span class="fila-im">${ico('candado', 'ic-f')}</span><span class="fila-x"><b>Política de privacidad</b></span>${ico('der', 'chev')}</a></div>
+    <button class="cta s salir" data-a="salir">${ico('salir')} Salir en este celu</button>
+    <p class="sm cen pie-p">Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.</p>
+  </section>`;
+}
+
+/* ---------- acceso: sin acceso, pendiente, revocado, error ---------- */
+function vRecuperar(estado = 'form', msg = '') {
+  if (estado === 'listo') return vMensaje({ mun: 'f_tiempo', tag: 'Revisá tu mail', titulo: 'Listo, mirá tu casilla', texto: 'Si ese mail tiene una compra de BeastCamp, te mandamos el link a tu plan. Puede tardar unos minutos y a veces cae en correo no deseado.', acciones: `<button class="cta s" data-a="recuperar-otra">Probar con otro mail</button>` });
+  return `<section class="msg"><div class="msg-im">${mun('f_ayuda')}</div><p class="tag">Tu plan BeastCamp</p><h1 tabindex="-1">Recuperá tu link</h1>
+    <p class="sub">${msg ? esc(msg) : 'Escribí el mail con el que compraste y te reenviamos el link a tu plan.'}</p>
+    <form class="rec" data-f="recuperar" novalidate><label class="campo" for="mail"><span class="sm">Mail de la compra</span><input id="mail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="tu@mail.com"></label><p class="err" id="mail-err" role="alert"></p>
+    <button class="cta" type="submit" id="rec-b">Mandame el link</button></form></section>`;
+}
+function vPendiente(largo) {
+  if (!largo) return vMensaje({ mun: 'f_tiempo', anillo: true, tag: 'Pago', titulo: 'Estamos confirmando tu pago', texto: 'Suele tardar unos segundos. No cierres esta pantalla: apenas se confirme, entrás solo.', rol: 'status' });
+  return vMensaje({ mun: 'f_tiempo', anillo: true, tag: 'Pago', titulo: 'Está tardando más de lo normal', rol: 'status', texto: 'Seguimos revisando solo, no hace falta que toques nada.',
+    extra: `<div class="box pasos-b"><b>Mientras tanto</b><ol class="pasos"><li><i>1</i><span>Mirá tu mail, también el correo no deseado: cuando se confirma el pago te llega el link a tu plan.</span></li><li><i>2</i><span>Algunos medios de pago tardan un poco más en confirmarse.</span></li><li><i>3</i><span>Si pasaron más de 15 minutos, ${MEDIO_LEGAL()} con el mail de la compra.</span></li></ol></div>`,
+    acciones: `<button class="cta" data-a="reintentar">${ico('reintentar')} Revisar ahora</button><button class="cta s" data-a="ir-recuperar">Recibir el link por mail</button>` });
+}
+const vRevocado = () => vMensaje({ mun: 'f_ayuda', tag: 'Acceso', titulo: 'Este acceso ya no está activo', texto: `Se desactivó por un reembolso o una disputa del pago. Si creés que es un error, ${MEDIO_LEGAL()}.`, acciones: `<button class="cta s" data-a="ir-recuperar">Probar con otro mail</button>` });
+const vError = (txt = 'No pudimos conectarnos. Revisá tu conexión e intentá de nuevo.') => vMensaje({ mun: 'f_ayuda', tag: 'Sin conexión', titulo: 'No pudimos cargar tu plan', texto: esc(txt), rol: 'alert', acciones: `<button class="cta" data-a="reintentar">${ico('reintentar')} Reintentar</button>` });
+const vCarga = () => `<section class="msg carga" role="status" aria-label="Cargando"><div class="msg-im">${mun('m_golpes')}</div><div class="sk sk1"></div><div class="sk sk2"></div><p class="sub">Preparando tu plan</p></section>`;
+
+/* Reproductor de sesiones y drills: timer por fases, pitidos (Web Audio), vibración, voz, pantalla prendida y celebración final.
+   El tiempo se calcula contra el reloj (no contando ticks): anda igual con la pantalla apagada o la pestaña en segundo plano. */
+let R = null;   // reproductor activo
+const CIRC = 2 * Math.PI * 88;
+const PREP_SEG = 5;
+
+/* ---------- sonido, voz, vibración, pantalla prendida ---------- */
+let AC = null;
+function audioDesbloquear() {
+  try { const C = window.AudioContext || window.webkitAudioContext; if (!C) return; AC = AC || new C(); if (AC.state === 'suspended') AC.resume(); } catch (e) {}
+}
+function tono(f, dur = 0.18, vol = 0.25, t0 = 0) {
+  if (!AC || !AJ().sonido) return;
+  try {
+    const t = AC.currentTime + t0, o = AC.createOscillator(), g = AC.createGain();
+    o.type = 'sine'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + dur + 0.02);
+  } catch (e) {}
+}
+const SON = {
+  cuenta: () => tono(880, 0.12),
+  trabajo: () => { tono(988, 0.14); tono(1319, 0.3, 0.25, 0.16); },
+  descanso: () => { tono(587, 0.2); tono(440, 0.35, 0.22, 0.2); },
+  aviso: () => { tono(740, 0.1); tono(740, 0.1, 0.25, 0.17); },
+  fin: () => [523, 659, 784, 1047].forEach((f, i) => tono(f, 0.3, 0.25, i * 0.18)),
+};
+function hablar(t) {
+  if (!AJ().voz || !('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t), vs = speechSynthesis.getVoices();
+    u.lang = 'es-AR'; u.rate = 1.05;
+    const v = vs.find((x) => /^es[-_]AR/i.test(x.lang)) || vs.find((x) => /^es/i.test(x.lang));
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+let wake = null;
+async function pedirWake() {
+  try { if (navigator.wakeLock && document.visibilityState === 'visible') { wake = await navigator.wakeLock.request('screen'); wake.addEventListener('release', () => { wake = null; }); } } catch (e) { wake = null; }
+}
+function soltarWake() { try { if (wake) wake.release(); } catch (e) {} wake = null; }
+document.addEventListener('visibilitychange', () => { if (R && document.visibilityState === 'visible' && !wake) pedirWake(); });
+
+/* ---------- armado ---------- */
+function iniciarReproductor(item, kind, desde = 0) {
+  const pasos = [{ t: 'prep', seg: PREP_SEG, ej: '' }].concat(NUCLEO.pasosDe(item, PLAN));
+  if (pasos.length < 2) { toast('Esta sesión no tiene ejercicios'); return; }
+  detenerReproductor(false);
+  audioDesbloquear();
+  const ahora = Date.now();
+  R = { item, kind, pasos, i: -1, corriendo: true, finMs: ahora, restanteMs: 0, total: 0, t0: ahora, activoMs: 0, ultimoSeg: null, aviso10: false, raf: 0, intv: 0, claveZona: '', fin: false, totTrab: pasos.filter((p) => p.t === 'trabajo').length, sigueCombo: -1 };
+  pedirWake();
+  pintarReproductor();
+  entrar(desde > 0 && desde < pasos.length ? desde : 0, false);
+  R.intv = setInterval(tick, 250);
+  const raf = () => { if (!R) return; tick(); R.raf = requestAnimationFrame(raf); };
+  R.raf = requestAnimationFrame(raf);
+}
+function detenerReproductor(guardarCurso = true) {
+  if (!R) return;
+  if (guardarCurso && !R.fin) guardarCursoActual();
+  clearInterval(R.intv); cancelAnimationFrame(R.raf);
+  soltarWake();
+  try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch (e) {}
+  const v = document.querySelector('#p-zona video'); if (v) v.pause();
+  document.body.classList.remove('jugando');
+  R = null;
+}
+function guardarCursoActual() {
+  if (!R) return;
+  if (R.i <= 0) { ls.del(K.curso); return; }
+  ls.set(K.curso, { k: R.kind, id: R.item.id, idx: R.i, ts: Date.now() });
+}
+
+const restanteMs = () => (R.corriendo ? Math.max(0, R.finMs - Date.now()) : R.restanteMs);
+const esUltimo = () => !R.pasos.slice(R.i + 1).some((p) => p.t === 'trabajo');
+
+/* Tiempo que de verdad se entrenó en el paso actual (para los minutos del progreso). */
+function sumarActivo(auto) {
+  const p = R.pasos[R.i];
+  if (!p || p.t === 'prep') return;
+  const tot = N.segDe(p) * 1000;
+  const usado = auto ? tot : p.seg > 0 ? tot - restanteMs() : Math.min(tot, Date.now() - R.t0);
+  R.activoMs += Math.max(0, Math.min(tot, usado));
+}
+/* Entra a un paso. `auto`: terminó solo el anterior, el tiempo sigue contando desde donde debía (aunque la pantalla estuviera apagada). */
+function entrar(i, auto) {
+  const ahora = Date.now();
+  if (R.i >= 0) sumarActivo(auto);
+  R.i = i;
+  const p = R.pasos[i], base = auto && R.corriendo ? R.finMs : ahora;
+  R.ultimoSeg = null; R.aviso10 = false; R.t0 = base;
+  if (p.seg > 0) { R.total = p.seg * 1000; R.restanteMs = R.total; R.finMs = base + R.total; } else { R.total = 0; R.restanteMs = 0; }
+  const reciente = ahora - base < 1500;   // si se atrasó mucho (pantalla apagada) no suena ni habla cada paso salteado
+  pintarPaso();
+  if (p.t !== 'prep') guardarCursoActual();
+  if (reciente || !auto) efectosDePaso(p);
+  tick();
+}
+function efectosDePaso(p) {
+  if (p.t === 'trabajo') {
+    SON.trabajo(); vibrar([120, 60, 120]);
+    hablar(p.seg > 0 ? `${p.nombre}. ${p.seg} segundos.` : `${p.nombre}. ${p.reps} repeticiones.`);
+    anunciar(`Trabajo. ${p.nombre}. ${p.seg > 0 ? p.seg + ' segundos' : p.reps + ' repeticiones'}.${p.rondas > 1 ? ` Ronda ${p.ronda} de ${p.rondas}.` : ''}`);
+  } else if (p.t === 'descanso') {
+    SON.descanso(); vibrar(220);
+    const sig = N.proximoTrabajo(R.pasos, R.i);
+    hablar(`Descanso. ${p.seg} segundos.`);
+    anunciar(`Descanso. ${p.seg} segundos.${sig ? ' Sigue: ' + sig.nombre + '.' : ''}`);
+  } else {
+    SON.cuenta(); hablar('Preparate'); anunciar(`Preparate. Empezamos en ${p.seg} segundos.`);
+  }
+}
+function siguiente(auto = false) {
+  if (!R || R.fin) return;
+  if (R.i >= R.pasos.length - 1) { sumarActivo(auto); terminarSesion(); return; }
+  entrar(R.i + 1, auto);
+}
+function atras() {
+  if (!R) return;
+  const enPaso = R.total ? R.total - restanteMs() : Date.now() - R.t0;
+  entrar(enPaso > 3000 ? R.i : Math.max(0, R.i - 1), false);   // si ya avanzó, vuelve al inicio del paso; si recién empezó, al anterior
+}
+function pausaPlay() {
+  if (!R) return;
+  const p = R.pasos[R.i];
+  if (p.t === 'trabajo' && !(p.seg > 0)) return hecho();
+  if (R.corriendo) { R.restanteMs = Math.max(0, R.finMs - Date.now()); R.corriendo = false; try { speechSynthesis.cancel(); } catch (e) {} anunciar('En pausa'); }
+  else { R.finMs = Date.now() + R.restanteMs; R.corriendo = true; pedirWake(); audioDesbloquear(); anunciar('Seguimos'); }
+  pintarControles(); tick();
+}
+function hecho() { if (R) siguiente(false); }
+
+/* ---------- reloj ---------- */
+let ultimoPintado = '';
+function tick() {
+  if (!R || R.fin) return;
+  const p = R.pasos[R.i];
+  if (!p) return;
+  if (R.corriendo && p.seg > 0) {
+    let guarda = 0;
+    while (R && !R.fin && R.corriendo && R.pasos[R.i].seg > 0 && R.finMs <= Date.now() && guarda++ < 400) siguiente(true);
+    if (!R || R.fin) return;
+  }
+  const q = R.pasos[R.i];
+  const resto = q.seg > 0 ? restanteMs() : 0, s = Math.ceil(resto / 1000);
+  if (q.seg > 0) {
+    const tt = document.getElementById('p-t');
+    if (tt) {
+      const txt = N.mmss(s);
+      if (txt !== ultimoPintado) { tt.textContent = txt; ultimoPintado = txt; }
+      tt.dataset.restante = s;
+    }
+    const aro = document.getElementById('p-aro');
+    if (aro && !document.hidden) {
+      const frac = movimientoReducido() ? s * 1000 / R.total : resto / R.total;
+      aro.style.strokeDashoffset = CIRC * (1 - Math.min(1, Math.max(0, frac)));
+    }
+    if (R.corriendo) avisos(q, s);
+    combo(q);
+  }
+}
+/* Cuenta de 3, 2, 1 y aviso 10 segundos antes del final (de la fase, o de la sesión si es el último ejercicio). */
+function avisos(p, s) {
+  if (s !== R.ultimoSeg) {
+    R.ultimoSeg = s;
+    if (s >= 1 && s <= 3 && p.seg > 4) { SON.cuenta(); vibrar(25); }
+  }
+  if (!R.aviso10 && s <= 10 && s > 3 && p.seg >= 25) {
+    R.aviso10 = true;
+    const ult = p.t === 'trabajo' && esUltimo();
+    SON.aviso();
+    hablar(ult ? 'Diez segundos para terminar' : 'Diez segundos');
+    anunciar(ult ? 'Diez segundos para terminar la sesión' : 'Diez segundos para el final de esta fase');
+    const w = document.getElementById('anillo-w'); if (w) w.classList.add('alerta');
+  }
+}
+/* El combo se «marca» golpe a golpe a ritmo parejo (solo informativo: ayuda a llevar la cadencia). */
+function combo(p) {
+  const c = document.getElementById('p-combo');
+  if (!c || p.t !== 'trabajo' || !p.combo || movimientoReducido()) return;
+  const k = Math.floor((Date.now() - R.t0) / 800) % p.combo.split('-').length;
+  if (k !== R.sigueCombo) { R.sigueCombo = k; [...c.children].forEach((e, i) => e.classList.toggle('on', i === k)); }
+}
+
+/* ---------- pantalla ---------- */
+function pintarReproductor() {
+  document.body.classList.add('jugando');
+  $('nav').hidden = true;
+  const m = $('vista');
+  m.className = 'ap';
+  m.innerHTML = `<div class="pg play" id="play"><div class="prog" aria-hidden="true"><i id="barra"></i></div>
+    <header class="ptop"><button class="bt" data-a="p-salir" aria-label="Salir de la sesión">${ico('cerrar')}</button>
+      <div class="ptit"><b>${esc(R.item.titulo)}</b><small id="p-cont" aria-live="off"></small></div>
+      <button class="bt" data-a="p-sonido" aria-label="Sonido" aria-pressed="${!!AJ().sonido}"></button><button class="bt" data-a="p-voz" aria-label="Voz" aria-pressed="${!!AJ().voz}"></button></header>
+    <div class="zona" id="p-zona"></div>
+    <div class="fase"><span class="faset" id="p-ftag"></span><span class="ronda" id="p-ronda"></span></div>
+    <h1 class="pnom" id="p-nom" tabindex="-1"></h1>
+    <div class="combo" id="p-combo" hidden></div>
+    <p class="nota-p" id="p-nota"></p>
+    <div class="anillo-w" id="anillo-w"><svg class="anillo" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><circle class="pista" cx="100" cy="100" r="88"/><circle class="aro" id="p-aro" cx="100" cy="100" r="88" style="stroke-dasharray:${CIRC};stroke-dashoffset:0"/></svg>
+      <div class="anillo-c"><b id="p-t" role="timer" aria-live="off">00:00</b><small id="p-ts"></small></div></div>
+    <div class="sigue" id="p-sigue"></div>
+    <div class="ctl"><button class="bt ctl-b" data-a="p-atras" aria-label="Paso anterior">${ico('anterior')}<small>Atrás</small></button>
+      <button class="bt ctl-pp" id="p-pp" data-a="p-pp" aria-label="Pausar"></button>
+      <button class="bt ctl-b" data-a="p-sig" aria-label="Saltar este paso">${ico('siguiente')}<small>Saltar</small></button></div></div>`;
+  pintarAjustesTop();
+  scrollTo(0, 0);
+}
+function pintarAjustesTop() {
+  const s = document.querySelector('[data-a="p-sonido"]'), v = document.querySelector('[data-a="p-voz"]');
+  if (s) { s.innerHTML = ico(AJ().sonido ? 'sonido' : 'silencio'); s.setAttribute('aria-pressed', !!AJ().sonido); s.setAttribute('aria-label', AJ().sonido ? 'Sonido activado' : 'Sonido apagado'); }
+  if (v) { v.innerHTML = ico('voz'); v.classList.toggle('apagado', !AJ().voz); v.setAttribute('aria-pressed', !!AJ().voz); v.setAttribute('aria-label', AJ().voz ? 'Voz activada' : 'Voz apagada'); }
+}
+function pintarControles() {
+  const b = document.getElementById('p-pp'), p = R.pasos[R.i];
+  if (!b) return;
+  const reps = p.t === 'trabajo' && !(p.seg > 0);
+  b.innerHTML = reps ? ico('tilde') : ico(R.corriendo ? 'pausa' : 'play');
+  b.setAttribute('aria-label', reps ? 'Hecho' : R.corriendo ? 'Pausar' : 'Seguir');
+  b.classList.toggle('en-pausa', !R.corriendo && !reps);
+  const play = document.getElementById('play'); if (play) play.classList.toggle('pausado', !R.corriendo && !reps);
+}
+function zonaDe(ej, mostrarVideo) {
+  const como = ej.como || [];
+  if (mostrarVideo && ej.video) return `<video class="zv" src="${esc(ej.video)}" muted loop playsinline preload="metadata"></video>`;
+  return `<div class="zona-m">${mun(ej.muneco || 'm_golpes')}</div><div class="zona-x" tabindex="0" role="region" aria-label="Cómo se hace ${esc(ej.nombre || 'el ejercicio')}"><span class="zona-et">${ico('guante')} Cómo se hace</span><ul>${como.map((c) => `<li>${esc(c)}</li>`).join('')}</ul>${ej.cuidado ? `<p class="cuid"><b>Cuidado:</b> ${esc(ej.cuidado)}</p>` : ''}</div>`;
+}
+function pintarPaso() {
+  const p = R.pasos[R.i], pl = PLAN;
+  const sig = N.proximoTrabajo(R.pasos, R.i), actual = p.t === 'prep' ? sig : p.t === 'descanso' ? (sig || p) : p;
+  const ej = actual ? N.ejercicio(pl, actual.ej) : { como: [], muneco: 'm_golpes' };
+  const play = document.getElementById('play');
+  play.dataset.fase = p.t;
+  play.classList.remove('alerta');
+  const aw = document.getElementById('anillo-w'); if (aw) aw.classList.remove('alerta');
+  // zona de video o muñeco con indicaciones: solo se rearma si cambió el ejercicio o el tipo de fase
+  const clave = (p.t === 'trabajo' ? 'T' : 'D') + (actual ? actual.ej : '');
+  const zona = document.getElementById('p-zona');
+  if (clave !== R.claveZona) {
+    R.claveZona = clave;
+    zona.className = 'zona ' + (p.t === 'trabajo' && ej.video ? 'convideo' : 'sinvideo');
+    zona.innerHTML = zonaDe(ej, p.t === 'trabajo');
+    const v = zona.querySelector('video'); if (v) { const j = v.play(); if (j && j.catch) j.catch(() => {}); }
+    avisoDeScroll();
+  } else { const v = zona.querySelector('video'); if (v && R.corriendo) { const j = v.play(); if (j && j.catch) j.catch(() => {}); } }
+  const trabHechos = R.pasos.slice(0, R.i + (p.t === 'trabajo' ? 1 : 0)).filter((x) => x.t === 'trabajo').length;
+  document.getElementById('p-cont').textContent = p.t === 'prep' ? `${R.totTrab} pasos` : `Paso ${Math.max(1, trabHechos)} de ${R.totTrab}`;
+  document.getElementById('p-ftag').textContent = p.t === 'trabajo' ? 'Trabajo' : p.t === 'descanso' ? 'Descanso' : 'Preparate';
+  document.getElementById('p-ronda').textContent = p.t !== 'prep' && p.rondas > 1 ? `Ronda ${p.ronda} de ${p.rondas}` : '';
+  const nom = document.getElementById('p-nom');
+  nom.textContent = p.t === 'trabajo' ? p.nombre : p.t === 'descanso' ? 'Respirá y soltá' : (sig ? `Primero: ${sig.nombre}` : 'Preparate');
+  const c = document.getElementById('p-combo');
+  if (p.t === 'trabajo' && p.combo) {
+    const toks = p.combo.split('-');
+    c.hidden = false; c.setAttribute('aria-label', 'Combo: ' + toks.join(', '));
+    c.innerHTML = toks.map((t) => `<i>${esc(t)}</i>`).join('<u aria-hidden="true"></u>');
+    R.sigueCombo = -1;
+  } else { c.hidden = true; c.innerHTML = ''; }
+  document.getElementById('p-nota').textContent = p.t === 'trabajo' ? p.nota || '' : p.t === 'descanso' ? 'Tomá aire por la nariz y soltalo despacio.' : 'Ponete en guardia. Arrancamos enseguida.';
+  const tt = document.getElementById('p-t'), ts = document.getElementById('p-ts');
+  if (p.seg > 0) { ts.textContent = 'segundos'; tt.classList.remove('reps'); }
+  else { tt.textContent = p.reps; ts.textContent = 'repeticiones'; tt.classList.add('reps'); ultimoPintado = ''; document.getElementById('p-aro').style.strokeDashoffset = 0; }
+  // qué sigue
+  const prox = R.pasos[R.i + 1], sg = document.getElementById('p-sigue');
+  if (!prox) sg.innerHTML = `<span class="sg-t">${ico('tilde')}<b>Último paso. ¡Casi está!</b></span>`;
+  else {
+    const t = p.t === 'descanso' || p.t === 'prep' ? prox : (prox.t === 'descanso' ? N.proximoTrabajo(R.pasos, R.i) : prox);
+    const m2 = N.ejercicio(pl, t ? t.ej : '').muneco;
+    sg.innerHTML = t ? `<span class="sg-im">${mun(m2, 'im3d mini', 120, 160)}</span><span class="sg-x"><small>${p.t === 'descanso' || p.t === 'prep' ? 'Sigue' : prox.t === 'descanso' ? `Descanso de ${prox.seg} s y sigue` : 'Sigue'}</small><b>${esc(t.nombre)}</b><small>${t.seg > 0 ? t.seg + ' s' : t.reps + ' repeticiones'}${t.combo ? ' · combo ' + esc(t.combo) : ''}</small></span>` : `<span class="sg-t">${ico('tilde')}<b>Último paso. ¡Casi está!</b></span>`;
+  }
+  pintarControles();
+  // barra de avance de toda la sesión, por tiempo
+  const tot = N.segTotales(R.pasos.slice(1)) || 1, hechoS = N.segTotales(R.pasos.slice(1, Math.max(1, R.i)));
+  const b = document.getElementById('barra'); if (b) b.style.width = Math.min(100, (hechoS / tot) * 100) + '%';
+}
+
+/* Si las indicaciones no entran en el cuadro, se desplazan; un degradado abajo avisa que hay más y se va al llegar al final. */
+function avisoDeScroll() {
+  const x = document.querySelector('#p-zona .zona-x');
+  if (!x) return;
+  const f = () => x.classList.toggle('mas', x.scrollHeight > x.clientHeight + 2 && x.scrollTop + x.clientHeight < x.scrollHeight - 2);
+  x.addEventListener('scroll', f, { passive: true });
+  f(); requestAnimationFrame(f); setTimeout(f, 300);
+}
+addEventListener('resize', () => { if (R) avisoDeScroll(); });
+
+/* ---------- final y celebración ---------- */
+function terminarSesion() {
+  if (!R || R.fin) return;
+  R.fin = true;
+  const { item, kind } = R, min = Math.min(R.activoMs / 60000, (item.minutos || 60) * 1.5);
+  const ahora = Date.now();
+  const res = kind === 's' ? N.completarSesion(PROG, item, ahora, min) : N.completarDrill(PROG, item, ahora);
+  guardarProg();
+  ls.del(K.curso);
+  detenerReproductor(false);
+  SON.fin(); vibrar([200, 80, 200, 80, 400]); hablar('Sesión completa. Muy bien.');
+  pintarFiesta(res, item, kind, Math.max(1, Math.round(min)));
+}
+function pintarFiesta(res, item, kind, min) {
+  $('nav').hidden = true;
+  const nombre = ESTADO.nombre || PROG.apodo || 'campeón';
+  const conf = Array.from({ length: 30 }, (_, i) => `<i style="left:${(i * 37 + 11) % 100}%;--d:${((i * 53) % 18) / 10}s;--t:${2.6 + ((i * 29) % 14) / 10}s;--c:${['#16A34A', '#4ade80', '#f5a623', '#0b0f0c', '#fde68a'][i % 5]};--x:${((i * 17) % 40) - 20}px;--r:${(i * 47) % 360}deg"></i>`).join('');
+  const m = $('vista'); m.className = 'ap sinnav';
+  m.innerHTML = `<div class="pg fiesta" role="region" aria-label="Sesión completa"><div class="confeti" aria-hidden="true">${conf}</div>
+    <div class="check-w"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="c-pista" cx="60" cy="60" r="52"/><circle class="c-aro" cx="60" cy="60" r="52"/><path class="c-tilde" d="M37 62l15 15 31-33"/></svg></div>
+    <p class="tag">${kind === 's' ? 'Sesión completa' : 'Drill completo'}</p>
+    <h1 tabindex="-1">¡Muy bien, ${esc(nombre)}!</h1>
+    <div class="pts-g"><b id="f-pts" aria-hidden="true">0</b><span>${res.pts ? 'puntos sumados' : 'puntos'}</span></div>
+    <span class="sr">Sumaste ${res.pts} puntos.</span>
+    <p class="sm cen">${res.repetida ? (kind === 's' ? 'Ya tenías esta sesión hecha: repetirla suma práctica, no puntos.' : 'Hoy ya habías sumado los puntos de este drill.') : (res.bonus ? `${fnum(res.base)} de la ${kind === 's' ? 'sesión' : 'práctica'} + ${res.bonus} de bonus por tu racha.` : `${fnum(res.base)} por completar ${kind === 's' ? 'la sesión' : 'el drill'}.`)}</p>
+    <div class="chips"><span>${ico('flama')} Racha: ${plural(res.racha.dias, 'día', 'días')}</span><span>${ico('reloj')} ${min} min</span><span>${ico('rayo')} ${fnum(N.totales(PROG).puntos)} pts en total</span></div>
+    <div class="f-mun">${mun('o_competir')}</div>
+    <div class="f-bt"><button class="cta" data-a="ir-hoy">Volver a Hoy</button><a class="cta s" href="#/progreso">Ver mi progreso</a></div></div>`;
+  scrollTo(0, 0);
+  contar($('f-pts'), res.pts);
+  anunciar(`Sesión completa. Sumaste ${res.pts} puntos. Racha de ${res.racha.dias} días.`);
+  const h = m.querySelector('h1'); if (h) h.focus({ preventScroll: true });
+}
+
+/* Arranque, rutas por hash, acciones (data-a) y avisos de la app. */
+const NAV = [['hoy', 'Hoy'], ['plan', 'Plan'], ['progreso', 'Progreso'], ['perfil', 'Perfil']];
+const NAV_DE = { hoy: 'hoy', plan: 'plan', progreso: 'progreso', perfil: 'perfil', drills: 'hoy', guia: 'hoy' };
+const TITULOS = { hoy: 'Hoy', plan: 'Tu plan', progreso: 'Tu progreso', perfil: 'Tu perfil', drills: 'Drills', guia: 'Tu guía', bienvenida: 'Bienvenida', sesion: 'Sesión', drill: 'Drill' };
+let navCount = 0, claveRepro = '', BIEN = null, PEDIDO = null, ultimaRevalid = 0;
+
+/* ---------- pintar ---------- */
+function pintar(html, { nav = null, titulo = '' } = {}) {
+  const m = $('vista');
+  m.className = nav ? 'ap' : 'ap sinnav';
+  m.innerHTML = `<div class="pg ${nav ? 'tab' : ''}">${html}</div>`;
+  document.body.classList.remove('jugando');
+  $('nav').hidden = !nav;
+  if (nav) $$('#nav a').forEach((a) => (a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
+  document.title = (titulo ? titulo + ' · ' : '') + 'BeastCamp';
+  scrollTo(0, 0);
+  animarBarras(m);
+  const h = m.querySelector('h1'); if (h) h.focus({ preventScroll: true });
+}
+
+/* Avisos fijos arriba: sin conexión y versión nueva. */
+function pintarAviso() {
+  const a = $('aviso'); if (!a) return;
+  a.innerHTML = (ENLINEA ? '' : `<div class="aviso sin" role="status">${ico('sinred')}<span>Sin conexión. Usás tus datos guardados.</span></div>`) +
+    (swEsperando ? `<div class="aviso upd" role="status"><span>Hay una versión nueva</span><button type="button" class="bt-aviso" data-a="actualizar">Actualizar</button></div>` : '');
+}
+function repintarInstalar() { $$('[data-instalar]').forEach((e) => { e.innerHTML = bloqueInstalar(); }); }
+
+/* ---------- rutas ---------- */
+function rutaActual() {
+  const h = location.hash.replace(/^#\/?/, '');
+  const [r, ...resto] = h.split('/');
+  let id = ''; try { id = decodeURIComponent(resto.join('/')); } catch (e) {}
+  return { r: r || 'hoy', id };
+}
+const ir = (r, reemplazar = false) => { if (reemplazar) location.replace('#/' + r); else location.hash = '#/' + r; };
+
+function render() {
+  if (!PLAN || !PROG || !ESTADO || ESTADO.estado !== 'activo') return;
+  const { r, id } = rutaActual();
+  const clave = r + '/' + id;
+  if (R) { if (clave === claveRepro) return; detenerReproductor(true); }
+  if (!PROG.inicio && r !== 'bienvenida') return ir('bienvenida', true);
+  if (PROG.inicio && r === 'bienvenida') return ir('hoy', true);
+  switch (r) {
+    case 'bienvenida':
+      BIEN = BIEN || { nivel: PROG.nivel || ESTADO.nivel, apodo: PROG.apodo };
+      return pintar(vBienvenida(BIEN.nivel, BIEN.apodo), { titulo: TITULOS.bienvenida });
+    case 'plan': return pintar(vPlan(), { nav: 'plan', titulo: TITULOS.plan });
+    case 'progreso': return pintar(vProgreso(), { nav: 'progreso', titulo: TITULOS.progreso });
+    case 'perfil': return pintar(vPerfil(), { nav: 'perfil', titulo: TITULOS.perfil });
+    case 'drills': return pintar(vDrills(), { nav: 'hoy', titulo: TITULOS.drills });
+    case 'guia': return pintar(vGuia(), { nav: 'hoy', titulo: TITULOS.guia });
+    case 'sesion':
+    case 'drill': {
+      const kind = r === 'sesion' ? 's' : 'd';
+      const item = kind === 's' ? N.buscarSesion(PLAN, id) : N.buscarDrill(PLAN, id);
+      if (!item) return pintar(vMensaje({ mun: 'f_ayuda', titulo: kind === 's' ? 'No encontramos esa sesión' : 'No encontramos ese drill', texto: 'Puede que haya cambiado el plan. Volvé a Hoy y elegí otra.', acciones: '<a class="cta" href="#/hoy">Ir a Hoy</a>' }), { titulo: 'No encontrado' });
+      if (PEDIDO) { const d = PEDIDO.idx; PEDIDO = null; return arrancarSesion(item, kind, r + '/' + id, d); }
+      return pintar(vResumen(item, kind), { titulo: item.titulo });
+    }
+    default: return pintar(vHoy(), { nav: 'hoy', titulo: TITULOS.hoy });
+  }
+}
+function arrancarSesion(item, kind, clave, desde = 0) {
+  claveRepro = clave;
+  iniciarReproductor(item, kind, desde);
+  if (!R) { claveRepro = ''; render(); }
+}
+
+/* ---------- acceso ---------- */
+function sinAcceso(msg = '') {
+  const u = ls.getRaw(K.ultimo);
+  if (!msg && UUID.test(u)) { location.replace('/app/' + u + '/' + location.hash); return; }
+  pintar(vRecuperar('form', msg), { titulo: 'Recuperar mi link' });
+}
+let pendT = 0, pendLargoT = 0, pendIni = 0, pendLargo = false;
+function pararSondeo() { clearTimeout(pendT); clearTimeout(pendLargoT); pendT = pendLargoT = 0; }
+function esperarPago() {
+  pararSondeo(); pendIni = Date.now(); pendLargo = false;
+  pintar(vPendiente(false), { titulo: 'Confirmando tu pago' });
+  pendLargoT = setTimeout(() => { pendLargo = true; if (document.querySelector('.msg.conanillo')) pintar(vPendiente(true), { titulo: 'Confirmando tu pago' }); }, 45000);
+  sondear();
+}
+function sondear() {
+  clearTimeout(pendT);
+  pendT = setTimeout(async () => {
+    const r = await pedirEstado();
+    if (r.ok && r.datos && r.datos.estado !== 'pendiente') { pararSondeo(); return cargar(); }
+    if (pendT) sondear();
+  }, pendLargo ? 8000 : 2500);
+}
+
+async function cargar() {
+  pararSondeo();
+  pintar(vCarga(), { titulo: 'Cargando' });
+  const r = await pedirEstado();
+  if (r.status === 400) return sinAcceso('Ese link no es válido. Escribí tu mail y te mandamos el correcto.');
+  if (!r.ok || !r.datos || !r.datos.estado) return pintar(vError(r.status === 429 ? 'Hubo muchos pedidos seguidos. Esperá un momento e intentá de nuevo.' : 'No pudimos conectarnos. Revisá tu conexión e intentá de nuevo.'), { titulo: 'Sin conexión' });
+  const d = r.datos;
+  if (d.estado === 'pendiente') return esperarPago();
+  if (d.estado === 'revocado') { ESTADO = { estado: 'revocado', nombre: '', funnel: 'peso', nivel: 't1', ts: Date.now() }; return pintar(vRevocado(), { titulo: 'Acceso desactivado' }); }
+  aplicarEstado(d);
+  let plan = null;
+  const rp = await pedirPlan();
+  if (rp.ok && planValido(rp.datos)) { plan = rp.datos; guardarPlan(plan); }
+  else if (rp.status === 403) return cargar();
+  else plan = planGuardado();
+  if (!plan) return pintar(vError('No pudimos descargar tu plan. Revisá tu conexión e intentá de nuevo.'), { titulo: 'Sin conexión' });
+  entrarALaApp(plan);
+}
+function entrarALaApp(plan) {
+  PLAN = plan;
+  if (!PROG) PROG = NUCLEO.progVacio(ESTADO.nivel, 0, NUCLEO.limpiarApodo(ESTADO.nombre));
+  if (!PLAN.niveles.some((n) => n.id === PROG.nivel)) PROG.nivel = PLAN.niveles[0].id;
+  ultimaRevalid = Date.now();
+  render();
+  precargarMunecos();
+  vaciarCola();
+}
+/* Con datos guardados la app abre al toque y se pone al día en segundo plano. */
+async function revalidar() {
+  ultimaRevalid = Date.now();
+  const r = await pedirEstado();
+  if (!r.ok || !r.datos) return;
+  const d = r.datos;
+  if (d.estado !== 'activo') { if (r.cache) return; detenerReproductor(true); ESTADO = { ...ESTADO, estado: d.estado }; return d.estado === 'pendiente' ? esperarPago() : pintar(vRevocado(), { titulo: 'Acceso desactivado' }); }
+  aplicarEstado(d);
+  const rp = await pedirPlan();
+  if (rp.ok && planValido(rp.datos) && JSON.stringify(rp.datos) !== JSON.stringify(PLAN)) {
+    guardarPlan(rp.datos); PLAN = rp.datos;
+    if (!R && !/^(sesion|drill)$/.test(rutaActual().r)) render();
+    precargarMunecos();
+  } else if (!R && r.ok && PROG) { const { r: ru } = rutaActual(); if (ru === 'progreso' || ru === 'hoy' || ru === '') render(); }
+  vaciarCola();
+}
+const revisarAcceso = () => { if (ESTADO && ESTADO.estado === 'activo') revalidar(); };
+const alVolver = () => { if (ESTADO && ESTADO.estado === 'activo' && !R && Date.now() - ultimaRevalid > 60000) revalidar(); };
+
+/* ---------- acciones ---------- */
+const accion = {
+  volver() { if (navCount > 0) history.back(); else ir('hoy'); },
+  'ir-hoy'() { ir('hoy'); },
+  reintentar() { cargar(); },
+  'ir-recuperar'() { pararSondeo(); pintar(vRecuperar('form'), { titulo: 'Recuperar mi link' }); },
+  'recuperar-otra'() { pintar(vRecuperar('form'), { titulo: 'Recuperar mi link' }); },
+  actualizar() { actualizarApp(); },
+  copiar: async () => { toast((await copiarTexto(linkPersonal())) ? 'Link copiado' : 'No pudimos copiarlo. Mantené apretado el link para copiarlo.'); },
+  instalar: async () => { const r = await instalar(); if (r === 'no') toast('Usá el menú del navegador para instalarla'); },
+  'nivel-bien'(b) {
+    BIEN.nivel = b.dataset.n;
+    $$('.niveles .c').forEach((c) => { const on = c.dataset.n === BIEN.nivel; c.classList.toggle('on', on); c.setAttribute('aria-checked', on); });
+    const nv = N.nivelDe(PLAN, BIEN.nivel); $('b-nivel').textContent = `${nv.nombre} · ${nv.dias}`;
+    document.querySelector('.bien-im').innerHTML = mun(nv.id);
+    vibrar(8);
+  },
+  'empezar-app'() {
+    const a = $('apodo'), v = N.limpiarApodo(a.value);
+    if (a.value.trim() !== '' && !N.apodoValido(a.value.trim())) { $('apodo-err').textContent = 'Usá solo letras, números, espacios y _ . - (hasta 20).'; a.focus(); return; }
+    PROG.apodo = v; PROG.nivel = BIEN.nivel; PROG.inicio = Date.now(); BIEN = null;
+    guardarProg(); ir('hoy');
+  },
+  nivel() {
+    const h = hoja(`<p class="tag">Nivel de carga</p><h3>Elegí cómo entrenar</h3>${cardsNivel(PROG.nivel, 'nivel-set')}<button class="cta s" data-a="cerrar-hoja">Cancelar</button>`);
+    HOJA = h;
+  },
+  'nivel-set'(b) {
+    if (b.dataset.n !== PROG.nivel) { PROG.nivel = b.dataset.n; guardarProg(); toast('Nivel: ' + N.nivelDe(PLAN, PROG.nivel).nombre); }
+    if (HOJA) HOJA.cerrar(); render();
+  },
+  'cerrar-hoja'() { if (HOJA) HOJA.cerrar(); },
+  ajuste(b) {
+    const k = b.dataset.k; PROG.ajustes[k] = !PROG.ajustes[k]; guardarProg();
+    b.setAttribute('aria-checked', !!PROG.ajustes[k]);
+    if (k === 'sonido' && PROG.ajustes.sonido) { audioDesbloquear(); SON.cuenta(); }
+    if (k === 'vibracion' && PROG.ajustes.vibracion) vibrar(40);
+    if (k === 'voz' && PROG.ajustes.voz) hablar('Voz activada');
+  },
+  salir() {
+    HOJA = hoja(`<p class="tag">Salir</p><h3>¿Salir en este celu?</h3><p class="sub">Se borran tus datos de este teléfono. Tu progreso queda guardado: para volver a entrar usá tu link o pedilo con tu mail.${hayCola() ? ' Todavía hay progreso sin subir: conectate antes de salir.' : ''}</p><button class="cta" data-a="salir-ok">Salir</button><button class="cta s" data-a="cerrar-hoja">Cancelar</button>`);
+  },
+  async 'salir-ok'() {
+    if (HOJA) HOJA.cerrar();
+    if (hayCola()) await subir();
+    await olvidarEnEsteCelu();
+    location.replace('/app/');
+  },
+  empezar() {
+    const { r, id } = rutaActual(), kind = r === 'sesion' ? 's' : 'd';
+    const item = kind === 's' ? N.buscarSesion(PLAN, id) : N.buscarDrill(PLAN, id);
+    if (item) { ls.del(K.curso); arrancarSesion(item, kind, r + '/' + id, 0); }
+  },
+  retomar() {
+    const c = cursoVigente(); if (!c) return accion.empezar();
+    PEDIDO = { idx: c.idx };
+    const h = `#/${c.k === 's' ? 'sesion' : 'drill'}/${c.id}`;
+    if (location.hash === h) render(); else location.hash = h;
+  },
+  'p-salir'() {
+    if (!R) return;
+    const estaba = R.corriendo; if (estaba) pausaPlay();
+    HOJA = hoja(`<p class="tag">En curso</p><h3>¿Salir de la sesión?</h3><p class="sub">Tu avance queda guardado y podés retomar desde acá cuando quieras.</p><button class="cta" data-a="p-seguir">Seguir entrenando</button><button class="cta s" data-a="p-salir-ok">Salir y guardar</button>`, { alCerrar: () => { if (R && !R.corriendo && estaba) pausaPlay(); } });
+  },
+  'p-seguir'() { if (HOJA) HOJA.cerrar(); },
+  'p-salir-ok'() { const h = HOJA; HOJA = null; detenerReproductor(true); claveRepro = ''; if (h) h.cerrar(); ir('hoy'); },
+  'p-pp'() { audioDesbloquear(); pausaPlay(); },
+  'p-sig'() { audioDesbloquear(); siguiente(false); },
+  'p-atras'() { audioDesbloquear(); atras(); },
+  'p-sonido'() { PROG.ajustes.sonido = !PROG.ajustes.sonido; guardarProg(); pintarAjustesTop(); if (PROG.ajustes.sonido) { audioDesbloquear(); SON.cuenta(); } },
+  'p-voz'() { PROG.ajustes.voz = !PROG.ajustes.voz; guardarProg(); pintarAjustesTop(); if (PROG.ajustes.voz) hablar('Voz activada'); else { try { speechSynthesis.cancel(); } catch (e) {} } },
+};
+let HOJA = null;
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-a]');
+  if (!b || b.disabled) return;
+  const f = accion[b.dataset.a];
+  if (f) { e.preventDefault(); if (R) audioDesbloquear(); f(b, e); }
+});
+document.addEventListener('submit', async (e) => {
+  const f = e.target.closest('[data-f]'); if (!f) return;
+  e.preventDefault();
+  if (f.dataset.f === 'recuperar') {
+    const inp = $('mail'), err = $('mail-err'), btn = $('rec-b'), mail = inp.value.trim();
+    err.textContent = '';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)) { err.textContent = 'Revisá que el mail esté bien escrito.'; inp.focus(); return; }
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    const r = await api('/api/app/recuperar', { metodo: 'POST', cuerpo: { mail } });
+    if (r.ok) return pintar(vRecuperar('listo'), { titulo: 'Revisá tu mail' });
+    btn.disabled = false; btn.textContent = 'Mandame el link';
+    err.textContent = r.status === 429 ? 'Hiciste varios pedidos seguidos. Esperá unos minutos y probá de nuevo.' : r.status === 0 ? 'No hay conexión. Probá de nuevo en un rato.' : 'No pudimos procesarlo. Probá de nuevo en un rato.';
+  }
+  if (f.dataset.f === 'apodo') {
+    const a = $('apodo'), v = a.value.trim();
+    if (v !== '' && !N.apodoValido(v)) { $('apodo-err').textContent = 'Usá solo letras, números, espacios y _ . - (hasta 20).'; a.focus(); return; }
+    $('apodo-err').textContent = '';
+    PROG.apodo = v; guardarProg(); toast(v ? 'Apodo guardado' : 'Apodo borrado');
+  }
+});
+addEventListener('hashchange', () => { navCount++; render(); });
+
+/* ---------- arranque ---------- */
+function construirNav() {
+  $('nav').innerHTML = NAV.map(([k, t]) => `<a href="#/${k}" data-nav="${k}">${ico(k)}<span>${t}</span></a>`).join('');
+}
+async function arrancar() {
+  construirNav();
+  if (!ACC) return sinAcceso();
+  ls.setRaw(K.ultimo, ACC);
+  registrarSW();
+  PROG = N.normalizarProg(ls.get(K.prog));
+  const est = ls.get(K.estado), plan = planGuardado();
+  if (est && est.estado === 'activo' && plan) { ESTADO = est; entrarALaApp(plan); revalidar(); return; }
+  cargar();
+}
+arrancar();
+
+</script></body></html>

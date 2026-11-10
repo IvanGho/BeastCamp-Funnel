@@ -103,7 +103,7 @@ test("vista previa: el relleno vive fuera del sitio y nunca llega al sitio publi
   assert.ok(!existsSync("prueba-quiz/vista-previa-local") && !existsSync("prueba-quiz/src/datos-vista-previa.js"), "no está dentro de prueba-quiz/");
   const marcas = ["__VISTA_PREVIA__", "MN 00000", "Universidad de relleno", "Posgrado de relleno", "Martín R.", "Lucía P.", "Diego F.", "3.200", "vista=1", "datos-vista-previa"];
   for (const [nombre, h] of Object.entries({ ...paginas, raiz })) for (const m of marcas) assert.ok(!h.includes(m), `${nombre} no debe contener «${m}»`);
-  assert.match(leer("vista-previa-local/servir.mjs"), /listen\(PUERTO, "127\.0\.0\.1"/, "solo en la PC");
+  assert.match(leer("vista-previa-local/servir.mjs"), /listen\((?:PUERTO|puerto), "127\.0\.0\.1"/, "solo en la PC");
 });
 
 test("quiz: el sitio publicado sale exacto de prueba-quiz/src (volver a armarlo no cambia nada)", async () => {

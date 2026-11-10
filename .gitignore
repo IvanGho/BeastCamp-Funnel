@@ -4,3 +4,5 @@ node_modules/
 *.jsonl
 *.log
 .DS_Store
+# Datos locales de la vista previa (compras de prueba, progreso): nunca van al repo
+vista-previa-local/.datos/
