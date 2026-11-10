@@ -150,7 +150,7 @@ const I_ESCUDO = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5l15 
 const I_REGALO = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="26" width="44" height="28" rx="4" fill="#fde68a"/><path d="M10 36h44M32 26v28"/><path d="M32 26c-5-12-16-8-12-3 2 3 8 3 12 3zM32 26c5-12 16-8 12-3-2 3-8 3-12 3z" fill="#fbbf24"/></svg>';
 
 const estrellas = () => (DATOS.estrellas ? `<span class="estr">★★★★★</span> <b>${esc(DATOS.estrellas)}</b>` : '');
-const pillPersonas = (txt = 'personas ya lo probaron') => (DATOS.personas ? `<div class="pill">${estrellas()} <span><b>+${esc(DATOS.personas)}</b> ${txt}</span></div>` : '');
+const pillPersonas = (txt = 'personas ya lo probaron') => (DATOS.personas ? `<div class="pill pill-c">${estrellas()} <span><b>+${esc(DATOS.personas)}</b> ${txt}</span></div>` : '');
 const regaloFranja = () => `<div class="gift">${I_REGALO}<span>Al terminar el diagnóstico <b>te dejamos un regalo</b>. Ya está reservado para vos.</span></div>`;
 
 function tarjetaEspecialista(compacta = false) {
