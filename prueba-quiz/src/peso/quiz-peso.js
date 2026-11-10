@@ -2,14 +2,6 @@
    tarjetas con muñeco 3D y todo entra sin scroll. Va dentro de una función para no chocar con nombres de otros archivos que se inlinean en la misma página.
    Las respuestas quedan en sessionStorage (A). Del quiz no sale ningún dato al servidor: ni nombre, ni peso, ni altura, ni edad (el servicio de leads exige un mail y este quiz ya no lo pide). */
 
-/* Pie propio: mismo texto que pie(), pero los enlaces legales abren en otra pestaña para no perder el quiz. */
-function piePeso() {
-  const f = document.createElement('footer');
-  f.className = 'ft';
-  f.innerHTML = '<a href="/legal/terminos/" target="_blank" rel="noopener">Términos y condiciones</a> · <a href="/legal/privacidad/" target="_blank" rel="noopener">Política de privacidad</a> · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.';
-  document.body.appendChild(f);
-}
-
 (() => {
   const F = DATOS_PESO.fuentes || {};
   const fuenteOk = (k) => !!(F[k] && F[k].verificada && F[k].url);
@@ -123,7 +115,7 @@ function piePeso() {
     S.forEach((x) => {
       if (x.o) x.o.forEach((o) => urls.push(`/img/muneco-${o[1]}.webp`));
       if (ESCENAS[x.t]) ESCENAS[x.t].forEach((e) => urls.push(`/img/muneco-${e[0]}.webp`));
-      if (x.muneco) urls.push(`/img/muneco-${x.muneco}.webp`);
+      if (x.muneco) urls.push(`/img/muneco-${x.muneco}${window.devicePixelRatio >= 1.5 && CON_2X.includes(x.muneco) ? '@2x' : ''}.webp`);
     });
     urls.forEach((u) => { const i = new Image(); i.src = u; precargadas.push(i); });
     if (navigator.connection && navigator.connection.saveData) return;   // con ahorro de datos solo imágenes: el póster reemplaza al video
@@ -147,7 +139,7 @@ function piePeso() {
   /* ---------- Piezas ---------- */
   /* Igual que tarjeta() de quiz.js: muñeco a la izquierda y texto a la derecha; chico cuando hay 5 o 6 opciones. */
   function tarjeta(o, i, chico, multi) {
-    return `<button class="c B${chico ? ' chico' : ''}" data-i="${i}"${multi ? ' aria-pressed="false"' : ''}>${multi ? '<span class="chk"></span>' : ''}${img3d(o[1])}<b>${esc(o[0])}${o[2] ? `<small>${esc(o[2])}</small>` : ''}</b></button>`;
+    return `<button class="c B${chico ? ' chico' : ''}" data-i="${i}"${multi ? ' aria-pressed="false"' : ''}>${multi ? '<span class="chk"></span>' : ''}${img3d(o[1])}<b>${esc(o[0])}${o[2] ? `<small>${esc(detalleSinCortes(o[2]))}</small>` : ''}</b></button>`;
   }
   /* Regalo de la primera pantalla: la misma franja .gift de quiz.js, con lo que este plan sí incluye. */
   const regaloPeso = () => `<div class="gift">${I_REGALO}<span>Con tu plan te llevás <b>de regalo</b> la guía de guardia y desplazamientos.</span></div>`;
@@ -166,7 +158,7 @@ function piePeso() {
 
   /* Proyección de peso de hoy a la meta con CALC.curva. */
   function grafico(peso, meta, fechaTxt) {
-    const W = 320, H = window.innerHeight < 700 ? 106 : 134, pl = 16, pr = 16, pt = 34, pb = 34;   // más baja en celulares chicos para que el perfil entre sin scroll
+    const W = 320, H = window.innerHeight < 700 ? 90 : 134, pl = 16, pr = 16, pt = 34, pb = 34;   // más baja en celulares chicos para que el perfil entre sin scroll
     const pts = CALC.curva(peso, meta, 40);
     const rango = Math.max(1, peso - meta);
     const X = (x) => +(pl + x * (W - pl - pr)).toFixed(1);
@@ -231,7 +223,7 @@ function piePeso() {
   function dibuja() {
     const x = S[s];
     bloqueado = false;
-    setBg(x.video);
+    if (x.t !== 'carga') setBg(x.video);   // la carga conserva la franja de video: así «perfil» no cambia el alto de la página al aparecer
     forma.classList.toggle('alto', !!(x.alto || x.filas));   // «cuerpo», «meta» y «zonas» ocupan todo el alto de la ventana (peso.css)
     const llena = LLENAS[x.k] || (FIJAS.includes(x.t) ? 'fijo' : '');
     if (llena) forma.classList.add('alto');
@@ -263,9 +255,9 @@ function piePeso() {
       const previo = A[x.k] ? String(A[x.k]) : '';
       h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p>${img3d(x.muneco, 'mu')}<div class="nbox"><input id="n" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" placeholder="${esc(x.ph)}" aria-label="${esc(x.titulo)}" value="${esc(previo)}"><span>${esc(x.unidad)}</span></div><div class="msg" id="msg" role="status" aria-live="polite"></div><button class="cta" id="seguir" disabled>Seguir</button>`;
     } else if (x.t === 'experto') {
-      h = `<div class="tag cen">Tu plan personalizado</div><h2>Tu análisis está casi listo</h2><p class="sub">Con tus respuestas ajustamos tu plan de 4 semanas al tiempo que tenés.</p>${tarjetaEspecialista()}${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi análisis →</button>`;
+      h = `<div class="tag cen">Tu plan personalizado</div><h2>Tu análisis ya está en marcha</h2><p class="sub">Con tus respuestas ajustamos tu plan de 4 semanas al tiempo que tenés.</p>${tarjetaEspecialista()}${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi análisis →</button>`;
     } else if (x.t === 'mail') {
-      h = `<div class="tag cen">Ya casi</div><h2>Tu plan está casi listo</h2><p class="sub">Decinos cómo te llamás para personalizar tu plan.</p><input id="nm" type="text" placeholder="Tu nombre o apodo" autocomplete="given-name" value="${esc(A.nombre || '')}">${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi plan</button>`;
+      h = `<div class="tag cen">Ya casi</div><h2>Tu plan está casi listo</h2><p class="sub">Decinos cómo te llamás para personalizar tu plan.</p><input id="nm" type="text" placeholder="Tu nombre o apodo" aria-label="Tu nombre o apodo" autocomplete="given-name" value="${esc(A.nombre || '')}">${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi plan</button>`;
     } else if (x.t === 'carga') {
       return cargando();
     } else if (x.t === 'perfil') {
@@ -274,12 +266,13 @@ function piePeso() {
     raiz.innerHTML = `<div class="scr ${x.t}${x.video === 'hook' ? ' hook' : ''}${x.alto ? ' alto' : ''}${x.filas ? ' filas' : ''}${llena ? ' ' + llena : ''}">${h}</div>`;
     window.scrollTo(0, 0);
     enlaza(x);
+    if (s > 0 && x.t !== 'medida') enfocaTitulo(raiz);
   }
 
   function perfil() {
     const nom = esc(A.nombre || 'Campeón');
     const tienePeso = A.peso && A.altura;
-    let h = `<div class="tag cen">Tu perfil</div><h2>${nom}, así queda tu plan</h2>`;
+    let h = `<div class="tag cen">Tu perfil</div><h2><span class="nom">${nom}</span>, así queda tu plan</h2>`;
     if (tienePeso) {
       const imc = imc1(CALC.imc(A.peso, A.altura));
       h += `<div class="box"><div class="row"><b>Tu punto de partida</b><span class="vimc">IMC ${coma(imc)} · ${NOMBRE_CAT[CALC.categoria(imc)]}</span></div>${barraImc(imc)}</div>`;
@@ -345,7 +338,7 @@ function piePeso() {
         A[x.k] = valor; guardaA(); siguiente();
       };
       revisa();
-      try { inp.focus({ preventScroll: true }); } catch (e) {}
+      enfocaTitulo(raiz, inp);   // en compu enfoca el campo; en celular el título (enfocar el campo abriría el teclado solo)
     } else if (x.t === 'mail') {
       /* Solo el nombre, y es opcional: sin nombre queda «Campeón». No se manda nada al servidor (el lead exige un mail y ya no se pide). */
       const sigue = () => {
@@ -377,6 +370,7 @@ function piePeso() {
     ];
     raiz.innerHTML = `<div class="scr carga"><h2>${esc(nom)}, estamos preparando tu plan</h2><div class="ring"><svg width="150" height="150"><circle cx="75" cy="75" r="64" stroke="#e5ebe6" stroke-width="11" fill="none"/><circle id="rc" cx="75" cy="75" r="64" stroke="#16A34A" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="${R}" stroke-dashoffset="${R}"/></svg><b id="pc">0%</b></div>${msgs.map((m, i) => `<div class="chkl" id="c${i}"><div class="ic"></div>${esc(m)}</div>`).join('')}</div>`;
     window.scrollTo(0, 0);
+    enfocaTitulo(raiz);
     let p = 0, pausa = false;
     const paso = 100 / msgs.length;                 // cada mensaje ocupa un sexto del avance
     const hitos = [
@@ -402,7 +396,7 @@ function piePeso() {
 
   /* El pie legal es fijo y su alto cambia con el ancho de la ventana: las pantallas a todo el alto (peso.css) llegan justo hasta él. */
   const ajustaPie = () => { const f = document.querySelector('.ft'); if (f) forma.style.setProperty('--pie', f.offsetHeight + 'px'); };
-  piePeso();
+  pie(false, true);      // pie de comun.js, con los enlaces en pestaña nueva para no perder el quiz
   ajustaPie();
   window.addEventListener('resize', ajustaPie, { passive: true });
   dibuja();

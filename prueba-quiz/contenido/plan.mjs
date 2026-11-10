@@ -36,7 +36,7 @@ export const NIVELES = [
 // Títulos de semana: los mismos que prometen las ofertas (oferta.js y oferta-peso.js). Un test los compara.
 const TITULOS = {
   peleador: ['Pies, guardia, jab y cross', 'Esquivas y sombra', 'Combinaciones y ritmo', 'Rounds completos de 3 minutos'],
-  peso: ['Postura, pies y tus dos primeros golpes', 'Esquivas y boxeo al aire', 'Combinaciones y ritmo', 'Rondas completas de 3 minutos, con descanso'],
+  peso: ['Postura, pies y tus dos primeros golpes', 'Esquivas y boxeo al aire', 'Combinaciones y ritmo', 'Rounds completos de 3 minutos, con descanso'],
 };
 const SEMANAS = { peleador: SEMANAS_PELEADOR, peso: SEMANAS_PESO };
 

@@ -1,6 +1,8 @@
 /* Ilustraciones del quiz: muñecos 3D (un boxeador-mascota con cinta verde o Mongkon de Muay Thai) generados con Vertex.
    Cada opción apunta a una imagen de /img/muneco-<clave>.webp. Sin emojis. */
-const img3d = (k, clase = 'im3d') => `<img class="${clase}" src="/img/muneco-${k}.webp" alt="" width="360" height="480" loading="eager" decoding="async">`;
+/* Los tres muñecos de las pantallas de medidas (altura, peso y meta) se dibujan grandes: tienen una versión @2x (720×960, remuestreada con Lanczos y un afilado suave a partir del mismo archivo) que solo usa .mu. */
+const CON_2X = ['c_guardia', 'o_peso', 'o_tecnica'];
+const img3d = (k, clase = 'im3d') => `<img class="${clase}" src="/img/muneco-${k}.webp"${clase === 'mu' && CON_2X.includes(k) ? ` srcset="/img/muneco-${k}@2x.webp 2x"` : ''} alt="" width="360" height="480" loading="eager" decoding="async">`;
 const CLAVES_MUNECO = ['m_golpes', 'm_aire', 'm_plan', 'm_const', 'n_empiezo', 'n_seis', 'n_anios', 'n_mas', 'o_tecnica', 'o_peso', 'o_resist', 'o_sparring', 'o_estres', 'o_competir', 'f_ayuda', 'f_tiempo', 'f_const', 'f_aburro', 'f_ojo', 'f_equipo', 'l_casa', 'l_soga', 'l_arbol', 'l_pesa', 't1', 't2', 't3', 't4', 'p_gratis', 'p_5', 'p_10', 'p_20'];
 const MUNECO = Object.fromEntries(CLAVES_MUNECO.map((k) => [k, () => img3d(k)]));
 

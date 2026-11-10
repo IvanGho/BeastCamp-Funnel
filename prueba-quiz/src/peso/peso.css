@@ -26,7 +26,7 @@
 .scr.alto.seis .grid{grid-template-rows:repeat(3,minmax(0,1fr))}   /* «causas» y «frenos»: 2 columnas x 3 filas */
 .scr.filas.cuatro .grid{grid-template-rows:repeat(4,minmax(0,1fr))}   /* «forma» y «actividad»: 4 filas */
 .scr.filas .grid>.c:last-child:nth-child(odd){grid-column:auto;justify-self:stretch;width:auto}
-.scr.alto .cta,.scr.filas .cta{flex:none;margin-top:10px}
+.scr.alto .cta,.scr.filas .cta{flex:none;margin-top:12px}   /* igual que el botón de las demás pantallas */
 .scr.fijo>.cta{flex:none;margin-top:auto}
 .scr.fijo>:where(:has(+.cta)){padding-bottom:8px}   /* aire mínimo sobre el botón; el resto del sobrante queda en otros lugares de la pantalla */
 
@@ -54,27 +54,28 @@
 /* Medidas: altura, peso y meta */
 .mu{display:block;margin:0 auto;height:clamp(90px,24dvh,200px);width:auto;aspect-ratio:3/4;object-fit:contain;mix-blend-mode:multiply;animation:bob3 2.2s ease-in-out infinite}
 /* con el botón abajo, el muñeco ocupa el alto que sobra entre el subtítulo y el campo (con tope); si no entra se achica y nunca hay scroll */
-.scr.fijo .mu{flex:1 1 0;min-height:0;width:100%;height:auto;max-height:440px;aspect-ratio:auto;margin:auto 0}
+.scr.fijo .mu{flex:1 1 0;min-height:0;width:100%;height:auto;max-height:min(340px,42dvh);aspect-ratio:auto;margin:auto 0}
 .scr.medida>.cta{margin-top:8px}   /* el sobrante lo toman los márgenes del muñeco, no el botón */
 .nbox{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0}
 .nbox input{width:clamp(130px,42%,180px);margin:0;padding:10px 12px;text-align:center;font-size:34px;font-weight:800;letter-spacing:.02em}
 .nbox input::placeholder{color:#c5cec8;font-weight:700}
 .nbox span{font-size:22px;font-weight:700;color:var(--m)}
 .msg{flex:none;min-height:7.4rem;margin:2px 0 0}
+@media(min-height:701px){.msg{min-height:9.5rem}}   /* alcanza para el aviso más largo (bajo peso): el campo no salta al escribir */
 .msg .m{font-size:14px;line-height:1.4}
 .msg .err{color:#b91c1c;font-weight:600;text-align:center;padding:8px 4px}
 .msg .ok,.msg .aviso,.msg .bajo{border-radius:var(--r);padding:11px 14px}
 .msg .ok{background:#f0fdf4;border:1px solid #c8f1d6;color:#14532d}
 .msg .aviso{background:#fffbe6;border:1px solid #fde68a;color:#854d0e}
 .msg .bajo{background:#fef2f2;border:1px solid #fecaca;color:#7f1d1d}
-.msg p{margin:4px 0 0}.msg small{display:block;margin-top:5px;font-size:11.5px;opacity:.8}.msg a{color:inherit}
+.msg p{margin:4px 0 0}.msg small{display:block;margin-top:5px;font-size:11.5px;opacity:.9}.msg a{color:inherit}
 .msg .cat{font-weight:700;opacity:.85}
 .msg .bajo a.cta{margin-top:10px;padding:11px;color:var(--t)}
 .medida .cta{margin-top:8px}
 
 /* Pantallas informativas: cita de la fuente y cierre */
-.cita{font-size:11px;line-height:1.35;color:#8a948d;text-align:center;margin:6px 0 0}
-.cita a{color:#6b756e}
+.cita{font-size:11px;line-height:1.35;color:#5b665e;text-align:center;margin:6px 0 0}
+.cita a{color:#5b665e;display:inline-block;padding:10px 0;margin:-10px 0}
 .cierre{margin-top:10px;margin-bottom:0}
 .nota .aviso{display:none;font-weight:700;color:#7c5a0b;background:#fffbe6;border:1px solid #fde68a;border-radius:10px;padding:5px 9px;margin:0 0 6px}
 @media(max-height:960px){.nota .cu{display:none}.nota .aviso{display:block}}
@@ -91,15 +92,18 @@
 .graf{display:block;width:100%;height:auto;margin-top:4px;overflow:visible}
 .evento{margin:8px 0 0;text-align:center;font-weight:700;color:var(--gd);font-size:15px}
 .nota-est{margin:8px 2px 0;font-size:11.5px;line-height:1.4;color:var(--m);text-align:center}
-.nota-est a{color:#6b756e}
+.nota-est a{color:#5b665e;display:inline-block;padding:10px 0;margin:-10px 0}
+/* El nombre largo no hace crecer el título: en celulares bajos se corta con «…» antes de pasar a dos líneas */
+@media(max-height:700px){.perfil .nom{display:inline-block;max-width:max(4em,calc(100vw - 190px));overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}}
 @media(max-height:700px){
+ .perfil .box .row{gap:6px}.perfil .box .row b{font-size:15px}.perfil .box .vimc{font-size:12.5px}   /* «Tu punto de partida» y el IMC entran en una sola línea */
  .imcb{margin:10px 0 3px}.graf{margin-top:0}
  .evento{margin-top:4px;font-size:14px}.nota-est{margin-top:5px;font-size:11px;line-height:1.33}
  .msg{min-height:6.2rem}
 }
 
 /* «experto», «mail» y «perfil»: el contenido se reparte entre el título y el botón */
-.scr.experto .exp{flex:1 1 auto;max-height:760px;margin:auto 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(2px,1.2dvh,12px)}
+.scr.experto .exp{flex:0 1 auto;max-height:760px;margin:auto 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(2px,1.2dvh,12px)}
 .scr.experto .exp ul{align-self:stretch}
 .scr.experto .av{width:clamp(58px,11dvh,100px);height:clamp(58px,11dvh,100px);font-size:clamp(19px,3.6dvh,32px);margin-bottom:0}
 .scr.experto .sub+.chips{margin-top:auto}   /* sin tarjeta de especialista */
@@ -107,7 +111,7 @@
 .scr.mail input{padding-top:clamp(15px,2.2dvh,22px);padding-bottom:clamp(15px,2.2dvh,22px)}
 @media(max-width:899px) and (min-height:700px){.shell.alto.conbg:has(.scr.mail) #bg{height:clamp(72px,24dvh,260px)}}   /* en celulares altos el video de «mail» ocupa un poco más */
 .scr.perfil h2+*{margin-top:auto}
-@media(min-height:701px){.scr.perfil .box{margin-bottom:9px}.scr.perfil .box+.box{margin-top:9px}}   /* en celulares de 812 de alto el perfil justo no entraba con el botón abajo */
+@media(min-height:701px){.scr.perfil .box{margin-bottom:8px}.scr.perfil .box+.box{margin-top:8px}}   /* en celulares de 812 de alto el perfil justo no entraba con el botón abajo */
 /* El perfil no tiene nada que se pueda achicar: en un celular bajo, si no entra, la página crece y se scrollea, y el botón nunca queda debajo del pie legal */
 .shell.alto:has(.scr.perfil){height:auto;min-height:100dvh}
 @media(max-width:899px){.shell.alto:has(.scr.perfil){grid-template-rows:auto 1fr}}

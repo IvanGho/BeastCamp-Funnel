@@ -19,7 +19,7 @@ const SEMANAS_PLAN = [
   ['Semana 1', 'Postura, pies y tus dos primeros golpes'],
   ['Semana 2', 'Esquivas y boxeo al aire'],
   ['Semana 3', 'Combinaciones y ritmo'],
-  ['Semana 4', 'Rondas completas de 3 minutos, con descanso'],
+  ['Semana 4', 'Rounds completos de 3 minutos, con descanso'],
 ];
 
 const confianza = `<p class="note cen" style="margin-top:10px">Pago seguro · Garantía ${G} días · Acceso instantáneo</p>`;
@@ -42,7 +42,7 @@ function planPeso() {
     peso, meta, kg: peso - meta, pct,
     imcHoy: hayAltura ? CALC.imc(peso, alt) : null,
     imcMeta: hayAltura ? CALC.imc(meta, alt) : null,
-    mes: CALC.mesAnio(fecha),
+    mes: CALC.mesAnio(fecha).replace(/ de (\d)/, ' de\u00a0$1'),   // «marzo de 2027» no se parte en dos líneas
     puntos: CALC.curva(peso, meta, 24),
   };
 }
@@ -86,7 +86,7 @@ function bloquePrecio() {
   if (!esRescate) {
     return `<div class="box">${valor}<div class="cen" style="margin-top:10px"><div class="note">Tu precio de lanzamiento</div><div class="big">${precio}</div><div>Pago único · Acceso inmediato · Sin suscripción</div><div class="note">Menos que un mes de gimnasio</div></div></div>`;
   }
-  return `<div class="box">${valor}<div class="cen" style="margin-top:10px"><div class="pill">${CFG.dto}</div></div><div class="precio2"><span>Precio normal</span><s>${P.base}</s></div><div class="precio2"><b>${CFG.etiquetaPrecio}</b><b style="color:var(--g)">${precio}</b></div><div class="big cen">${precio}</div><div class="cen">Pago único · Acceso inmediato · Sin suscripción</div><div class="note cen">Menos que un mes de gimnasio</div></div>`;
+  return `<div class="box">${valor}<div class="cen" style="margin-top:10px"><div class="pill">${CFG.dto}</div></div><div class="precio2"><span>Precio normal</span><s>${P.base}</s></div><div class="precio2"><b>${CFG.etiquetaPrecio}</b><b style="color:var(--gd)">${precio}</b></div><div class="big cen">${precio}</div><div class="cen">Pago único · Acceso inmediato · Sin suscripción</div><div class="note cen">Menos que un mes de gimnasio</div></div>`;
 }
 
 /* Testimonios propios del funnel: sin datos reales (DATOS_PESO.testimonios vacío) no se muestra nada. */
@@ -96,19 +96,11 @@ function bloqueTestimoniosPeso(titulo = 'Lo que cuentan quienes lo probaron') {
   return `<div class="box"><b>${titulo}</b>${ts.map((t) => `<div class="test2"><div class="av" style="width:42px;height:42px;font-size:16px;margin:0;box-shadow:none;border:0">${esc(String(t.nombre || '?')[0])}</div><div><b>${esc(t.nombre)}</b>${t.detalle ? ` · <span>${esc(t.detalle)}</span>` : ''}<br><span>“${esc(t.texto)}”</span></div></div>`).join('')}</div>`;
 }
 
-/* Pie legal con los mismos textos que pie(), con enlaces en pestaña nueva para no perder la oferta. */
-function piePesoOferta() {
-  const f = document.createElement('footer');
-  f.className = 'ft';
-  f.innerHTML = '<a href="/legal/terminos/" target="_blank" rel="noopener">Términos y condiciones</a> · <a href="/legal/privacidad/" target="_blank" rel="noopener">Política de privacidad</a> · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.';
-  document.body.appendChild(f);
-}
-
 function html() {
   const h = [];
   h.push(`<div class="tbar${esRescate ? ' up' : ''}"><span>${CFG.barra}</span> <b class="tm">10:00</b></div>`);
   h.push(bloqueEncabezado());
-  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture></video></div>`);
+  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" width="960" height="540" aria-hidden="true" tabindex="-1" disablepictureinpicture></video></div>`);
   h.push(bloqueHoyMeta());
   h.push(bloqueGrafico());
   h.push(`<div class="box sello">${I_ESCUDO}<div><b>Hecho para arrancar de cero</b><br><span style="color:var(--m);font-size:14px">No necesitás saber boxear ni tener equipo.</span></div></div>`);
@@ -146,7 +138,7 @@ function html() {
 <details><summary>¿Y si no me sirve?</summary>Tenés ${G} días de garantía de devolución, sin vueltas.</details></div>`);
   const boton = esRescate ? CFG.boton : `QUIERO MI PLAN POR ${precio} →`;
   const apoyo = esRescate ? CFG.apoyo + precio : 'Empezar hoy mismo';
-  h.push(`<button class="cta" data-reservar>${boton}<span style="display:block;font-size:13px;font-weight:600;opacity:.92;margin-top:2px">${apoyo}</span></button>`);
+  h.push(`<button class="cta" data-reservar>${boton}<span style="display:block;font-size:13px;font-weight:600;margin-top:2px">${apoyo}</span></button>`);
   h.push(confianza);
   h.push(`<p class="note cen" style="margin-top:12px">Pago único, sin suscripción.</p>`);
   return h.join('');
@@ -170,7 +162,7 @@ if (porQue) {
 document.querySelectorAll('[data-reservar]').forEach((b) => (b.onclick = () => reservar(CFG.clave)));
 /* Mismo contador que oferta.js (comun.js): 10:00 en la oferta, 09:57 en back1 y 04:57 en back2, y se reinicia solo al llegar a cero. */
 arrancaContador(PAGINA);
-piePesoOferta();
+pie(true, true);            // pie de comun.js al final de la página (sin posición fija), con los enlaces en pestaña nueva para no perder la oferta
 
 /* Salida: al intentar irse, la persona pasa al siguiente rescate (otra página con su propia dirección). */
 if (CFG.siguiente) {

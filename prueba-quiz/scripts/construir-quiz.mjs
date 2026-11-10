@@ -56,7 +56,7 @@ const metas = ({ titulo, descripcion, ruta, og = "peleador" }) => {
 };
 
 // `imagenes`: lo que se ve en la primera pantalla; el navegador lo pide antes de ejecutar el JS que arma la página.
-const cabeza = (titulo, { descripcion, ruta, og, imagenes = [], cssExtra = "" }) => `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${metas({ titulo, descripcion, ruta, og })}<title>${titulo}</title>${imagenes.map((u) => `<link rel="preload" as="image" href="${u}" fetchpriority="high">`).join("")}<style>${css}${cssExtra}</style></head>`;
+const cabeza = (titulo, { descripcion, ruta, og, imagenes = [], cssExtra = "" }) => `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${metas({ titulo, descripcion, ruta, og })}<title>${titulo}</title>${imagenes.map((u) => `<link rel="preload" as="image" href="${u}" fetchpriority="high">`).join("")}<style>${css}${cssExtra}</style></head>`;
 const primeraPantallaQuiz = ["/media/hook.jpg", ...["m_golpes", "m_aire", "m_plan", "m_const"].map((k) => `/img/muneco-${k}.webp`)];
 const scripts = (extra) => `<script>\n${datosTxt}\n${ilust}\n${comun}\n${extra}\n</script>`;
 
@@ -79,7 +79,7 @@ const DESC = {
 // ---------- Quiz ----------
 salida("quiz/index.html",
   cabeza("BeastCamp · Plan de shadowboxing en casa", { descripcion: DESC.quiz, ruta: "/quiz/", imagenes: primeraPantallaQuiz }) +
-  `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app"></main></div>${scripts(src("quiz.js"))}</body></html>`);
+  `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app" aria-live="polite"></main></div>${scripts(src("quiz.js"))}</body></html>`);
 
 // ---------- Oferta y rescates ----------
 for (const [id, titulo] of [["oferta", "BeastCamp Sombra · Tu plan de 4 semanas"], ["back1", "BeastCamp Sombra · 20% OFF"], ["back2", "BeastCamp Sombra · 50% OFF final"]]) {
@@ -95,7 +95,7 @@ const cssOfertaPeso = peso("peso-oferta.css");
 const primeraPantallaPeso = ["/media/hook.jpg", ...["n_empiezo", "n_seis", "n_anios", "n_mas"].map((k) => `/img/muneco-${k}.webp`)];
 salida("quiz-peso/index.html",
   cabeza("BeastCamp · Plan para bajar de peso en casa", { descripcion: DESC.quizPeso, ruta: "/quiz-peso/", og: "peso", imagenes: primeraPantallaPeso, cssExtra: cssPeso }) +
-  `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app"></main></div>${scripts([peso("calculos-peso.js"), peso("datos-peso.js"), peso("quiz-peso.js")].join("\n"))}</body></html>`);
+  `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app" aria-live="polite"></main></div>${scripts([peso("calculos-peso.js"), peso("datos-peso.js"), peso("quiz-peso.js")].join("\n"))}</body></html>`);
 for (const [id, titulo] of [["oferta", "BeastCamp Sombra · Tu plan de 4 semanas"], ["back1", "BeastCamp Sombra · 20% OFF"], ["back2", "BeastCamp Sombra · 50% OFF final"]]) {
   salida(`${id}-peso/index.html`,
     cabeza(titulo, { descripcion: DESC[id === "oferta" ? "ofertaPeso" : `${id}Peso`], ruta: `/${id}-peso/`, og: "peso", imagenes: ["/media/oferta.jpg"], cssExtra: cssOfertaPeso }) + `<body><div class="shell" id="shell"><div id="bg"></div><main id="app" class="oferta-main"></main></div>${scripts(`const PAGINA='${id}';\n${[peso("calculos-peso.js"), peso("datos-peso.js"), peso("oferta-peso.js")].join("\n")}`)}</body></html>`);
@@ -160,7 +160,7 @@ salida("legal/privacidad/index.html", legal("Política de privacidad", "/legal/p
 
 // ---------- Raíz: lleva al quiz ----------
 salida("index.html",
-  `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${metas({ titulo: "BeastCamp", descripcion: DESC.raiz, ruta: "/" })}<meta http-equiv="refresh" content="0;url=/quiz/"><title>BeastCamp</title></head><body><a href="/quiz/">Ir al quiz</a><script>location.replace('/quiz/'+location.search)</script></body></html>`);
+  `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${metas({ titulo: "BeastCamp", descripcion: DESC.raiz, ruta: "/" })}<meta http-equiv="refresh" content="0;url=/quiz/"><title>BeastCamp</title></head><body><a href="/quiz/">Ir al quiz</a><script>location.replace('/quiz/'+location.search)</script></body></html>`);
 
 // ---------- robots.txt ----------
 // Nadie indexa nada (las páginas además llevan noindex en la etiqueta y en la cabecera). Los bots de vista previa de links y de revisión de anuncios

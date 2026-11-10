@@ -336,7 +336,7 @@ Combinás golpes con esquivas suaves. Pasás de atacar a defender con calma.
 - Caminata lenta: 40 s
 - Respiración de calma: 40 s
 
-### Semana 4: Rondas completas de 3 minutos, con descanso
+### Semana 4: Rounds completos de 3 minutos, con descanso
 
 Rondas completas de 3 minutos con 1 de descanso. Usás todo lo aprendido, a tu ritmo y con la respiración bajo control. Son sesiones cortas: lo importante es la constancia.
 
@@ -894,7 +894,7 @@ Combinás golpes con esquivas suaves. Pasás de atacar a defender con calma.
 - Respiración de calma: 45 s
 - Torsión suave de espalda: 40 s
 
-### Semana 4: Rondas completas de 3 minutos, con descanso
+### Semana 4: Rounds completos de 3 minutos, con descanso
 
 Rondas completas de 3 minutos con 1 de descanso. Usás todo lo aprendido, a tu ritmo y con la respiración bajo control. Ritmo medio: alcanza para progresar sin llegar al límite.
 
@@ -1621,7 +1621,7 @@ El gancho de atrás (el 4) sale del giro de la cadera. Practicás el pivote para
 - Respiración de calma: 1 min
 - Estiramiento de piernas: 55 s
 
-### Semana 4: Rondas completas de 3 minutos, con descanso
+### Semana 4: Rounds completos de 3 minutos, con descanso
 
 Rondas completas de 3 minutos con 1 de descanso. Usás todo lo aprendido, a tu ritmo y con la respiración bajo control. Cinco días de entrenamiento: respetá el día suave y los descansos. Si venís de no entrenar hace tiempo, podés bajar de nivel cuando quieras.
 
@@ -2536,7 +2536,7 @@ Alternás momentos más activos con otros más tranquilos dentro del mismo round
 - Respiración de calma: 1 min
 - Estiramiento de piernas: 1 min
 
-### Semana 4: Rondas completas de 3 minutos, con descanso
+### Semana 4: Rounds completos de 3 minutos, con descanso
 
 Rondas completas de 3 minutos con 1 de descanso. Usás todo lo aprendido, a tu ritmo y con la respiración bajo control. Seis días por semana: es la carga más alta. Si venís de no entrenar hace tiempo, empezá por un nivel más corto y subí de a poco.
 

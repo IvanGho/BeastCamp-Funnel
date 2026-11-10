@@ -32,14 +32,14 @@ function bloquePrecio() {
   if (!esRescate) {
     return `<div class="box">${lista}<div class="cen" style="margin-top:10px"><div class="note">Tu precio de lanzamiento</div><div class="big">${precio}</div><div>Pago único · Acceso inmediato · Sin suscripción</div><div class="note">Menos que un mes de gimnasio</div></div></div>`;
   }
-  return `<div class="box">${lista}<div class="cen" style="margin-top:10px"><div class="pill">${CFG.dto}</div></div><div class="precio2"><span>Precio normal</span><s>${P.base}</s></div><div class="precio2"><b>${CFG.etiquetaPrecio}</b><b style="color:var(--g)">${precio}</b></div><div class="big cen">${precio}</div><div class="cen">Pago único · Acceso inmediato · Sin suscripción</div></div>`;
+  return `<div class="box">${lista}<div class="cen" style="margin-top:10px"><div class="pill">${CFG.dto}</div></div><div class="precio2"><span>Precio normal</span><s>${P.base}</s></div><div class="precio2"><b>${CFG.etiquetaPrecio}</b><b style="color:var(--gd)">${precio}</b></div><div class="big cen">${precio}</div><div class="cen">Pago único · Acceso inmediato · Sin suscripción</div></div>`;
 }
 
 function html() {
   const h = [];
   h.push(`<div class="tbar${esRescate ? ' up' : ''}"><span>${CFG.barra}</span> <b class="tm">10:00</b></div>`);
   h.push(bloqueEncabezado());
-  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture></video></div>`);
+  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" width="960" height="540" aria-hidden="true" tabindex="-1" disablepictureinpicture></video></div>`);
   h.push(`<div class="box sello">${I_ESCUDO}<div><b>Rutinas probadas por profesionales, semiprofesionales y amateurs</b><br><span style="color:var(--m);font-size:14px">Entrenadas y ajustadas por peleadores de los tres niveles.</span></div></div>`);
   if (!esRescate) h.push(`<div class="box"><b>Por qué entrenar sin plan te frena</b><p style="margin:8px 0 0;color:var(--m);font-size:15px">Repetir los mismos golpes sin una guía fija los errores. Un plan por semanas te dice qué trabajar, cuánto y cuándo.</p></div>`);
   h.push(`<p>Plan de 4 semanas de shadowboxing en casa, en tu celu, con 4 niveles de carga (de 15 minutos por día a 90 minutos por día), timer de rounds y rutinas guiadas.</p>`);
@@ -55,7 +55,7 @@ function html() {
   h.push(`<div class="box faq"><b>Preguntas frecuentes</b><details><summary>¿Cómo recibo el plan?</summary>Apenas pagás te llega el acceso al celular. Funciona como app, sin descargar nada.</details><details><summary>¿Necesito equipo?</summary>No. Se entrena en casa, sin equipo.</details><details><summary>¿Sirve si nunca entrené?</summary>Sí, el plan arranca desde cero y sube de a poco según tu nivel.</details><details><summary>¿Y si no me sirve?</summary>Tenés ${G} días de garantía de devolución, sin vueltas.</details></div>`);
   const boton = esRescate ? CFG.boton : `QUIERO MI PLAN POR ${precio} →`;
   const apoyo = esRescate ? CFG.apoyo + precio : 'Empezar hoy mismo';
-  h.push(`<button class="cta" data-reservar>${boton}<span style="display:block;font-size:13px;font-weight:600;opacity:.92;margin-top:2px">${apoyo}</span></button>`);
+  h.push(`<button class="cta" data-reservar>${boton}<span style="display:block;font-size:13px;font-weight:600;margin-top:2px">${apoyo}</span></button>`);
   h.push(confianza);
   if (!esRescate) h.push(`<p class="note cen" style="margin-top:12px">Este precio es para quienes completaron el quiz. Cuando el contador llega a cero, se cierra.</p>`);
   if (CFG.pie) h.push(`<p class="note cen" style="margin-top:12px">${CFG.pie}${P.base}.</p>`);
@@ -69,7 +69,7 @@ k.innerHTML = `<span>Oferta termina en<b class="tm">10:00</b></span><button clas
 document.body.appendChild(k);
 document.querySelectorAll('[data-reservar]').forEach((b) => (b.onclick = () => reservar(CFG.clave)));
 arrancaContador(PAGINA);
-pie();
+pie(true);                 // al final de la página, sin posición fija: la barra de abajo no lo tapa
 
 /* Salida: al intentar irse, la persona pasa al siguiente rescate (otra página con su propia dirección). */
 if (CFG.siguiente) {

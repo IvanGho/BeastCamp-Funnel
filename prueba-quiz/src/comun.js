@@ -79,6 +79,7 @@ function videoSilencioso(v, poster) {
   v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = 'auto';
   ['muted', 'loop', 'playsinline', 'webkit-playsinline', 'autoplay', 'disablepictureinpicture'].forEach((a) => v.setAttribute(a, ''));
   v.setAttribute('preload', 'auto');
+  v.setAttribute('aria-hidden', 'true'); v.tabIndex = -1;                       // decorativo: ni el lector de pantalla ni el teclado pasan por acá
   if (poster) v.poster = poster;
   return v;
 }
@@ -101,23 +102,44 @@ function arrancaContador(clave = 'oferta') {
   pinta(); setInterval(pinta, 1000);
 }
 
+/* Cada pantalla nueva del quiz lleva el foco a su título (sin scroll), para el teclado y los lectores de pantalla. En compu, las pantallas con un campo enfocan el campo;
+   en celular no, porque abriría el teclado y taparía la pantalla. El título cuenta como encabezado de primer nivel sin cambiar su aspecto. */
+function enfocaTitulo(raiz, campo) {
+  const t = raiz.querySelector('h2');
+  if (t) { t.setAttribute('aria-level', '1'); t.tabIndex = -1; }
+  const aqui = campo && window.matchMedia && window.matchMedia('(hover:hover)').matches ? campo : t;
+  try { if (aqui) aqui.focus({ preventScroll: true }); } catch (e) {}
+}
+
 /* Aviso breve que aparece y se va (por ejemplo «Plan ajustado a tu rutina»). */
 window.toast = (m) => {
   const t = document.createElement('div');
-  t.className = 'toast'; t.textContent = m; t.setAttribute('role', 'status');
+  t.className = 'toast abajo'; t.textContent = m; t.setAttribute('role', 'status');
   document.body.appendChild(t);
   setTimeout(() => t.classList.add('in'), 20);
   setTimeout(() => { t.classList.remove('in'); setTimeout(() => t.remove(), 300); }, 1700);
   vib(8);
 };
 
-/* Pie legal fijo con enlaces a Términos y Privacidad (los avisos legales van solo acá). */
-function pie() {
+/* Pie legal con enlaces a Términos y Privacidad (los avisos legales van solo acá).
+   Por defecto es fijo (el quiz). Con fin = true va al final de la página, dentro de #app, sin posición fija: así la barra de abajo de las ofertas no lo tapa.
+   Con nueva = true los enlaces abren en otra pestaña, para no perder el quiz ni la oferta. */
+function pie(fin = false, nueva = false) {
   const f = document.createElement('footer');
-  f.className = 'ft';
-  f.innerHTML = '<a href="/legal/terminos/">Términos y condiciones</a> · <a href="/legal/privacidad/">Política de privacidad</a> · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.';
+  f.className = fin ? 'ft fin' : 'ft';
+  const blank = nueva ? ' target="_blank" rel="noopener"' : '';
+  f.innerHTML = `<a href="/legal/terminos/"${blank}>Términos y condiciones</a> · <a href="/legal/privacidad/"${blank}>Política de privacidad</a> · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.`;
+  if (fin && $('app')) { $('app').appendChild(f); return f; }
   document.body.appendChild(f);
+  /* El alto del pie cambia con el ancho de la ventana: el contenido deja justo ese lugar abajo (--pie). */
+  const ajusta = () => document.documentElement.style.setProperty('--pie', f.offsetHeight + 'px');
+  ajusta();
+  window.addEventListener('resize', ajusta, { passive: true });
+  return f;
 }
+
+/* Detalle de una tarjeta («2-3 días · 15-30 min»): con guiones y espacios que no cortan, solo puede partirse después del «·». */
+const detalleSinCortes = (t) => String(t).replace(/-/g, '\u2011').replace(/ · /g, '\u00a0· ').replace(/(\d) min/g, '$1\u00a0min');
 
 /* ---------- Bloques que leen DATOS (vacío = no se muestran) ---------- */
 const svgMini = (d) => `<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;

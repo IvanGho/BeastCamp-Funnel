@@ -82,12 +82,12 @@ function siguiente() {
 
 function tarjeta(o, est, i, chico, multi) {
   const ico = MUNECO[o[1]]();
-  return `<button class="c ${est}${chico ? ' chico' : ''}" data-i="${i}">${multi ? '<span class="chk"></span>' : ''}${ico}<b>${esc(o[0])}${o[2] ? `<small>${esc(o[2])}</small>` : ''}</b></button>`;
+  return `<button class="c ${est}${chico ? ' chico' : ''}" data-i="${i}">${multi ? '<span class="chk"></span>' : ''}${ico}<b>${esc(o[0])}${o[2] ? `<small>${esc(detalleSinCortes(o[2]))}</small>` : ''}</b></button>`;
 }
 
 function dibuja() {
   const x = S[s];
-  setBg(x.video);
+  if (x.t !== 'carga') setBg(x.video);          // la carga conserva la franja de video: así «perfil» no cambia el alto de la página al aparecer
   progreso();
   let h = '';
   if (x.t === 'q') {
@@ -102,7 +102,7 @@ function dibuja() {
   } else if (x.t === 'experto') {
     h = `<div class="tag cen">Tu diagnóstico personalizado</div><h2>Un diagnóstico de 3 minutos, privado y sin costo</h2><p class="sub">Con tus respuestas armamos tu plan de 4 semanas.</p>${tarjetaEspecialista()}${chipsGatillos()}<button class="cta" id="seguir">Generar mi diagnóstico →</button>`;
   } else if (x.t === 'mail') {
-    h = `<div class="tag cen">Último paso</div><h2>Tu plan está casi listo</h2><p class="sub">Decinos cómo te llamás y a dónde guardamos tu plan.</p><input id="nm" type="text" placeholder="Tu nombre o apodo" autocomplete="given-name" value="${esc(A.nombre || '')}"><input id="m" type="email" placeholder="tu@mail.com" autocomplete="email" value="${esc(A.mail || '')}"><button class="cta" id="seguir">Quiero mi plan</button>${chipsGatillos()}`;
+    h = `<div class="tag cen">Último paso</div><h2>Tu plan está casi listo</h2><p class="sub">Decinos cómo te llamás y a dónde guardamos tu plan.</p><input id="nm" type="text" placeholder="Tu nombre o apodo" aria-label="Tu nombre o apodo" autocomplete="given-name" value="${esc(A.nombre || '')}"><input id="m" type="email" inputmode="email" placeholder="tu@mail.com" aria-label="Tu mail" aria-describedby="mailerr" autocomplete="email" value="${esc(A.mail || '')}"><p class="errc" id="mailerr" role="alert"></p><button class="cta" id="seguir">Quiero mi plan</button>${chipsGatillos()}`;
   } else if (x.t === 'carga') {
     return cargando();
   } else if (x.t === 'perfil') {
@@ -112,6 +112,7 @@ function dibuja() {
   raiz.innerHTML = `<div class="scr ${x.t}">${h}</div>`;
   window.scrollTo(0, 0);
   enlaza(x);
+  if (s > 0) enfocaTitulo(raiz);
 }
 
 function enlaza(x) {
@@ -134,9 +135,10 @@ function enlaza(x) {
     q('#seguir').onclick = () => { A.noticia = 'si'; guardaA(); siguiente(); };
     q('#seguir2').onclick = () => { A.noticia = 'no'; guardaA(); siguiente(); };
   } else if (x.t === 'mail') {
+    q('#m').addEventListener('input', (ev) => { ev.target.style.borderColor = ''; ev.target.removeAttribute('aria-invalid'); q('#mailerr').textContent = ''; });
     q('#seguir').onclick = () => {
       const e = q('#m');
-      if (!/^\S+@\S+\.\S+$/.test(e.value)) { e.style.borderColor = '#dc2626'; return; }
+      if (!/^\S+@\S+\.\S+$/.test(e.value)) { e.style.borderColor = '#dc2626'; e.setAttribute('aria-invalid', 'true'); q('#mailerr').textContent = 'Revisá el mail.'; e.focus({ preventScroll: true }); return; }
       A.nombre = (q('#nm').value || '').trim().slice(0, 60) || 'Campeón'; A.mail = e.value.trim(); guardaA();
       window.__send('lead', { nombre: A.nombre, mail: A.mail, nivel: A.nivel || '', t: Date.now() });
       siguiente();
@@ -160,6 +162,7 @@ function cargando() {
   ];
   raiz.innerHTML = `<div class="scr"><h2>${esc(nom)}, estamos preparando tu plan</h2><div class="ring"><svg width="150" height="150"><circle cx="75" cy="75" r="64" stroke="#e5ebe6" stroke-width="11" fill="none"/><circle id="rc" cx="75" cy="75" r="64" stroke="#16A34A" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="${R}" stroke-dashoffset="${R}"/></svg><b id="pc">0%</b></div>${msgs.map((m, i) => `<div class="chkl" id="c${i}"><div class="ic"></div>${esc(m)}</div>`).join('')}</div>`;
   window.scrollTo(0, 0);
+  enfocaTitulo(raiz);
   let p = 0, pausa = false;
   const paso = 100 / msgs.length;                 // cada mensaje ocupa un sexto del avance
   const hitos = [

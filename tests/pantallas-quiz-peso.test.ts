@@ -166,7 +166,9 @@ async function revisarAlto(p: Page, nombre: string, hallazgos: Hallazgo[]) {
   const falla = (problema: string) => hallazgos.push({ pantalla: nombre, problema });
   const t = r.tarjetas;
   if (t.length !== 4) return falla(`se esperaban 4 tarjetas y hay ${t.length}`);
-  const xs = new Set(t.map((c) => Math.round(c.c.x / 8))), ys = new Set(t.map((c) => Math.round(c.c.y / 8)));   // las figuras se mecen unos píxeles: se agrupa con tolerancia
+  /* Se agrupa con tolerancia: las figuras se mecen unos píxeles y una tarjeta con el puntero encima sube 2 px. */
+  const grupos = (v: number[]) => [...v].sort((p, q) => p - q).reduce((n, x, i, a) => (i && x - a[i - 1] <= 6 ? n : n + 1), 0);
+  const xs = { size: grupos(t.map((c) => c.c.x)) }, ys = { size: grupos(t.map((c) => c.c.y)) };
   if (xs.size !== 2 || ys.size !== 2) falla(`no es una cuadrícula de 2x2 (columnas ${xs.size}, filas ${ys.size})`);
   if (t.some((c) => Math.abs(c.c.h - t[0].c.h) > 1 || Math.abs(c.c.w - t[0].c.w) > 1)) falla("las cuatro tarjetas no miden lo mismo");
   const fondo = Math.max(...t.map((c) => c.c.b));
