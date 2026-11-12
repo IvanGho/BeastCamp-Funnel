@@ -3,13 +3,21 @@
 // Cada página sale con el CSS y el JS en línea (el CSP de nginx no permite archivos externos de script ni de estilo).
 // Uso: node prueba-quiz/scripts/construir-quiz.mjs   (desde la raíz del repo)
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { variante, VARIANTES } from "./variantes.mjs";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = (f) => readFileSync(join(raiz, "src", f), "utf8");
+// BC_VARIANTE (camp | shadowboxing): arma solo el funnel de ese dominio, con su raíz, su og:url y sus legales. BC_DESTINO: carpeta de salida.
+const V = variante(process.env.BC_VARIANTE);
+const DESTINO = process.env.BC_DESTINO ? resolve(process.env.BC_DESTINO) : join(raiz, "sitio");
+const PAGINAS_DE_FUNNEL = /^(quiz|oferta|back1|back2)(-peso)?\//;
 const salida = (ruta, contenido) => {
-  const destino = join(raiz, "sitio", ruta);
+  if (V && PAGINAS_DE_FUNNEL.test(ruta) && !V.paginas.includes(ruta.split("/")[0])) return;   // la página del otro funnel no sale en este dominio
+  // Un enlace al quiz del otro funnel (p. ej. «Ver el plan de técnica» para quien no necesita bajar de peso) apunta al otro dominio.
+  if (V && typeof contenido === "string") for (const o of Object.values(VARIANTES)) if (o.id !== V.id) contenido = contenido.replaceAll(`href="${o.quiz}"`, `href="https://${o.dominio}${o.quiz}"`);
+  const destino = join(DESTINO, ruta);
   mkdirSync(dirname(destino), { recursive: true });
   writeFileSync(destino, contenido);
 };
@@ -23,7 +31,7 @@ const comun = src("comun.js");
 
 // ---------- Metadatos de cada página ----------
 // Con datos.sitioUrl (https, sin barra final) las rutas de og:image y og:url salen absolutas; vacío = relativas y sin og:url.
-const sitioUrl = String(datos.sitioUrl || "").replace(/\/+$/, "");
+const sitioUrl = String(V ? `https://${V.dominio}` : datos.sitioUrl || "").replace(/\/+$/, "");
 const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const attr = (t) => String(t).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 // Imagen para compartir de cada funnel (1200×630). Las páginas compartidas (gracias, legales, raíz) usan la de peleadores.
@@ -32,7 +40,8 @@ const OG = {
   peso: { imagen: "/img/og-quiz-peso.jpg", alt: "BeastCamp: plan de shadowboxing en casa para empezar de cero" },
 };
 const G = datos.garantiaDias;
-const metas = ({ titulo, descripcion, ruta, og = "peleador" }) => {
+const INICIO = V ? V.quiz : "/quiz/";   // adonde lleva la raíz y el «Volver» de los legales
+const metas = ({ titulo, descripcion, ruta, og = V ? V.og : "peleador" }) => {
   const t = attr(titulo), d = attr(descripcion), img = OG[og];
   return [
     `<meta name="robots" content="noindex,nofollow,noarchive">`,
@@ -57,7 +66,11 @@ const metas = ({ titulo, descripcion, ruta, og = "peleador" }) => {
 };
 
 // `imagenes`: lo que se ve en la primera pantalla; el navegador lo pide antes de ejecutar el JS que arma la página.
-const cabeza = (titulo, { descripcion, ruta, og, imagenes = [], cssExtra = "" }) => `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${metas({ titulo, descripcion, ruta, og })}<title>${titulo}</title>${imagenes.map((u) => `<link rel="preload" as="image" href="${u}" fetchpriority="high">`).join("")}<style>${css}${cssExtra}</style></head>`;
+// En compu los dos quiz se ven como en el celular: una sola columna centrada, con aire a los costados (sin pantalla partida con el video al lado).
+// Se logra con las mismas reglas de celular a cualquier ancho: los cortes de 900 px se corren a un ancho que nunca se alcanza.
+const COLUMNA = ".shell{max-width:480px;margin-left:auto;margin-right:auto}body:has(#shell) .prog{max-width:448px}";
+const comoCelular = (c) => c.replaceAll("min-width:900px", "min-width:99999px").replaceAll("max-width:899px", "max-width:99999px") + COLUMNA;
+const cabeza = (titulo, { descripcion, ruta, og, imagenes = [], cssExtra = "", columna = false }) => `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${metas({ titulo, descripcion, ruta, og })}<title>${titulo}</title>${imagenes.map((u) => `<link rel="preload" as="image" href="${u}" fetchpriority="high">`).join("")}<style>${columna ? comoCelular(css + cssExtra) : css + cssExtra}</style></head>`;
 const primeraPantallaQuiz = ["/media/hook.jpg", ...["m_golpes", "m_aire", "m_plan", "m_const"].map((k) => `/img/muneco-${k}.webp`)];
 const scripts = (extra) => `<script>\n${datosTxt}\n${ilust}\n${comun}\n${extra}\n</script>`;
 
@@ -79,7 +92,7 @@ const DESC = {
 
 // ---------- Quiz ----------
 salida("quiz/index.html",
-  cabeza("BeastCamp · Plan de shadowboxing en casa", { descripcion: DESC.quiz, ruta: "/quiz/", imagenes: primeraPantallaQuiz, cssExtra: cssCompartido }) +
+  cabeza("BeastCamp · Plan de shadowboxing en casa", { descripcion: DESC.quiz, ruta: "/quiz/", imagenes: primeraPantallaQuiz, cssExtra: cssCompartido, columna: true }) +
   `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app" aria-live="polite"></main></div>${scripts(src("quiz.js"))}</body></html>`);
 
 // ---------- Oferta y rescates ----------
@@ -95,7 +108,7 @@ const cssOfertaPeso = peso("peso-oferta.css");
 // Primera pantalla (edad): el póster del video hook y los cuatro muñecos de sus tarjetas.
 const primeraPantallaPeso = ["/media/hook.jpg", ...["n_empiezo", "n_seis", "n_anios", "n_mas"].map((k) => `/img/muneco-${k}.webp`)];
 salida("quiz-peso/index.html",
-  cabeza("BeastCamp · Plan para bajar de peso en casa", { descripcion: DESC.quizPeso, ruta: "/quiz-peso/", og: "peso", imagenes: primeraPantallaPeso, cssExtra: cssPeso + cssCompartido }) +
+  cabeza("BeastCamp · Plan para bajar de peso en casa", { descripcion: DESC.quizPeso, ruta: "/quiz-peso/", og: "peso", imagenes: primeraPantallaPeso, cssExtra: cssPeso + cssCompartido, columna: true }) +
   `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app" aria-live="polite"></main></div>${scripts([peso("calculos-peso.js"), peso("datos-peso.js"), peso("quiz-peso.js")].join("\n"))}</body></html>`);
 for (const [id, titulo] of [["oferta", "BeastCamp Sombra · Tu plan de 4 semanas"], ["back1", "BeastCamp Sombra · 20% OFF"], ["back2", "BeastCamp Sombra · 50% OFF final"]]) {
   salida(`${id}-peso/index.html`,
@@ -115,7 +128,7 @@ const responsable = datos.responsable
   ? `El responsable del tratamiento de los datos es <b>${esc(datos.responsable)}</b>.`
   : "El responsable del tratamiento de los datos es el titular de BeastCamp, que opera este sitio.";
 const legal = (titulo, ruta, descripcion, cuerpo) =>
-  cabeza(`BeastCamp · ${titulo}`, { descripcion, ruta }) + `<body><div class="legal"><p><a href="/quiz/">← Volver</a></p><h1>${titulo}</h1>${cuerpo}</div></body></html>`;
+  cabeza(`BeastCamp · ${titulo}`, { descripcion, ruta }) + `<body><div class="legal"><p><a href="${INICIO}">← Volver</a></p><h1>${titulo}</h1>${cuerpo}</div></body></html>`;
 
 salida("legal/terminos/index.html", legal("Términos y condiciones", "/legal/terminos/", DESC.terminos, `
 <p>Estos términos regulan la compra y el uso de BeastCamp, un plan digital de 4 semanas de shadowboxing en casa. Al comprar, aceptás estos términos.</p>
@@ -134,8 +147,8 @@ salida("legal/privacidad/index.html", legal("Política de privacidad", "/legal/p
 <h2>1. Responsable</h2><p>${responsable} Para consultas sobre tus datos, ${contacto}.</p>
 <h2>2. Qué datos guardamos</h2>
 <ul>
-<li><b>Quiz de peleadores:</b> el nombre o apodo y el mail que ingresás y tu nivel de entrenamiento. Tus demás respuestas se usan solo en tu navegador para armar tu plan y no se envían a nuestros servidores.</li>
-<li><b>Quiz de bajar de peso:</b> no manda ningún dato a nuestros servidores. El peso, la altura, la edad, el nombre y las demás respuestas quedan solo en tu navegador.</li>
+${!V || V.funnel === "peleador" ? `<li><b>Quiz de peleadores:</b> el nombre o apodo y el mail que ingresás y tu nivel de entrenamiento. Tus demás respuestas se usan solo en tu navegador para armar tu plan y no se envían a nuestros servidores.</li>` : ""}
+${!V || V.funnel === "peso" ? `<li><b>Quiz de bajar de peso:</b> no manda ningún dato a nuestros servidores. El peso, la altura, la edad, el nombre y las demás respuestas quedan solo en tu navegador.</li>` : ""}
 <li><b>Clics en el botón de reserva y de pago:</b> guardamos que hubo un clic, con el precio, el funnel (peleadores o bajar de peso), la página y la campaña (utm_source, utm_medium, utm_campaign, utm_content y utm_term). No llevan nombre, mail ni ningún dato personal.</li>
 <li><b>Tu compra:</b> cuando pagás, Hilvapay nos avisa el nombre y el mail que escribiste en el pago, el monto, la moneda, la fecha, el producto, el funnel, tu nivel de entrenamiento, la página de venta y la campaña de la que venías. No recibimos los datos de tu tarjeta. Solo si está activa la medición de anuncios de Meta, guardamos además la dirección IP y el navegador de la compra y los identificadores de clic del anuncio (fbclid, fbc y fbp), para mandar la compra a Meta y reintentar si falla. Sin esa medición no se guardan.</li>
 <li><b>Registro de mails:</b> guardamos qué mail salió (el de acceso o el de recuperar tu link) y para qué acceso, sin el contenido del mensaje.</li>
@@ -161,13 +174,13 @@ salida("legal/privacidad/index.html", legal("Política de privacidad", "/legal/p
 
 // ---------- Raíz: lleva al quiz ----------
 salida("index.html",
-  `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${metas({ titulo: "BeastCamp", descripcion: DESC.raiz, ruta: "/" })}<meta http-equiv="refresh" content="0;url=/quiz/"><title>BeastCamp</title></head><body><a href="/quiz/">Ir al quiz</a><script>location.replace('/quiz/'+location.search)</script></body></html>`);
+  `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">${metas({ titulo: "BeastCamp", descripcion: DESC.raiz, ruta: "/" })}<meta http-equiv="refresh" content="0;url=${INICIO}"><title>BeastCamp</title></head><body><a href="${INICIO}">Ir al quiz</a><script>location.replace('${INICIO}'+location.search)</script></body></html>`);
 
 // ---------- robots.txt ----------
 // Nadie indexa nada (las páginas además llevan noindex en la etiqueta y en la cabecera). Los bots de vista previa de links y de revisión de anuncios
 // necesitan leer las etiquetas de las páginas del funnel para armar la tarjeta y revisar el anuncio: solo a ellos se les abren esas rutas.
 const BOTS_VISTA_PREVIA = ["facebookexternalhit", "Facebot", "Twitterbot", "WhatsApp", "TelegramBot", "LinkedInBot", "Slackbot"];
-const RUTAS_VISTA_PREVIA = ["/quiz/", "/quiz-peso/", "/oferta/", "/oferta-peso/", "/back1/", "/back1-peso/", "/back2/", "/back2-peso/", "/img/", "/media/"];
+const RUTAS_VISTA_PREVIA = [...["quiz", "quiz-peso", "oferta", "oferta-peso", "back1", "back1-peso", "back2", "back2-peso"].filter((p) => !V || V.paginas.includes(p)).map((p) => `/${p}/`), "/img/", "/media/"];
 salida("robots.txt", [
   "# Sitio privado: sin indexar. Solo los bots de vista previa de links y de revisión de anuncios leen las páginas del funnel.",
   "",
@@ -180,4 +193,4 @@ salida("robots.txt", [
   "",
 ].join("\n"));
 
-console.log("Sitio armado en prueba-quiz/sitio/");
+console.log(`Sitio armado en ${V ? DESTINO : "prueba-quiz/sitio/"}`);

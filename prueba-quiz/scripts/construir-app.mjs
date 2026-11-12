@@ -6,13 +6,15 @@
 // Uso: node prueba-quiz/scripts/construir-app.mjs   (desde la raíz del repo)
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { variante } from "./variantes.mjs";
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = (f) => readFileSync(join(raiz, "src", f), "utf8");
 const app = (f) => readFileSync(join(raiz, "src", "app", f), "utf8");
 export const DESTINO = join(raiz, "sitio", "app");
+const DESTINO_BASE = DESTINO;   // las capturas siempre se leen de acá
 
 const JS = ["nucleo.js", "ui.js", "estado.js", "pantallas.js", "reproductor.js", "app.js"];
 const ORDEN_CAPTURAS = { hoy: ["Tu sesión de hoy", 1], sesion: ["La sesión con timer", 2], progreso: ["Racha y ranking", 3], plan: ["Tu plan de 4 semanas", 4] };
@@ -26,7 +28,12 @@ export function tamanoPng(buf) {
 }
 
 /* Lo que se escribe en sitio/app/: { nombre: contenido }. No toca el disco (salvo leer src/ y las capturas). */
-export function armarApp() {
+/* `id` = camp | shadowboxing: nombre, descripción y título de la app de ese dominio (PWA propia). Sin id sale la app genérica de siempre. */
+export function armarApp(id = "") {
+  const V = variante(id);
+  const NOMBRE = V ? V.app.nombre : "BeastCamp: shadowboxing en casa";
+  const CORTO = V ? V.app.corto : "BeastCamp";
+  const DESCR = V ? V.app.descripcion : "Tu plan de 4 semanas de shadowboxing en casa: sesiones con timer, drills, racha y ranking.";
   const css = src("base.css") + "\n" + app("app.css");
   // De datos.js la app solo usa el contacto y los días de garantía: se copian esos dos (con las mismas marcas que usa la vista previa para
   // cambiar el bloque). Así no viajan a la app la noticia, el especialista ni los precios.
@@ -37,25 +44,25 @@ export function armarApp() {
   new Function(js);                                  // revisa la sintaxis (no se ejecuta)
   if (/<\/script/i.test(js)) throw new Error("El JS de la app no puede contener </script");
 
-  const html = `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#16A34A"><meta name="color-scheme" content="light"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="BeastCamp"><meta name="format-detection" content="telephone=no"><title>BeastCamp</title>
+  const html = `<!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#16A34A"><meta name="color-scheme" content="light"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="${CORTO}"><meta name="format-detection" content="telephone=no"><title>${CORTO}</title>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="/img/marca/favicon.svg" type="image/svg+xml"><link rel="icon" href="/img/marca/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/img/marca/apple-touch-icon.png">
 <style>${css}</style></head>
-<body><div id="aviso"></div><main id="vista" class="ap"><section class="msg carga" role="status" aria-label="Cargando"><div class="msg-im"><img class="im3d" src="/img/muneco-m_golpes.webp" alt="" width="360" height="480"></div><div class="sk"></div><div class="sk sk2"></div><p class="sub">Preparando tu plan</p></section></main><nav id="nav" class="nav" aria-label="Secciones" hidden></nav><div id="anuncio" class="sr" role="status" aria-live="polite"></div><noscript><p style="padding:24px;text-align:center">Para usar BeastCamp activá JavaScript en tu navegador.</p></noscript>
+<body><div id="aviso"></div><main id="vista" class="ap"><section class="msg carga" role="status" aria-label="Cargando"><div class="msg-im"><img class="im3d" src="/img/muneco-m_golpes.webp" alt="" width="360" height="480"></div><div class="sk"></div><div class="sk sk2"></div><p class="sub">Preparando tu plan</p></section></main><nav id="nav" class="nav" aria-label="Secciones" hidden></nav><div id="anuncio" class="sr" role="status" aria-live="polite"></div><noscript><p style="padding:24px;text-align:center">Para usar ${CORTO} activá JavaScript en tu navegador.</p></noscript>
 <script>
 ${js}
 </script></body></html>
 `;
   const offline = app("offline.html").replace("/*CSS*/", () => css);
 
-  const capDir = join(DESTINO, "capturas");
+  const capDir = join(DESTINO_BASE, "capturas");
   const caps = (existsSync(capDir) ? readdirSync(capDir).filter((f) => f.endsWith(".png")) : []).sort((a, b) => ((ORDEN_CAPTURAS[a.slice(0, -4)] || [0, 99])[1] - (ORDEN_CAPTURAS[b.slice(0, -4)] || [0, 99])[1]) || (a < b ? -1 : 1));
   const screenshots = caps.map((f) => {
     const t = tamanoPng(readFileSync(join(capDir, f)));
     return { src: `/app/capturas/${f}`, sizes: `${t.ancho}x${t.alto}`, type: "image/png", form_factor: "narrow", label: (ORDEN_CAPTURAS[f.slice(0, -4)] || [f.slice(0, -4)])[0] };
   });
   const manifest = JSON.stringify({
-    id: "/app/", name: "BeastCamp: shadowboxing en casa", short_name: "BeastCamp",
-    description: "Tu plan de 4 semanas de shadowboxing en casa: sesiones con timer, drills, racha y ranking.",
+    id: "/app/", name: NOMBRE, short_name: CORTO,
+    description: DESCR,
     start_url: "./", scope: "/app/", display: "standalone", orientation: "portrait", lang: "es-AR", dir: "ltr",
     theme_color: "#16A34A", background_color: "#ffffff", categories: ["health", "fitness", "sports"],
     icons: ICONOS.map(([s, z, p]) => ({ src: s, sizes: z, type: "image/png", purpose: p })),
@@ -71,14 +78,16 @@ ${js}
   return { "index.html": html, "sw.js": sw, "manifest.webmanifest": manifest, "offline.html": offline, _precarga: precarga };
 }
 
-export function escribirApp() {
-  const { _precarga, ...archivos } = armarApp();
-  mkdirSync(DESTINO, { recursive: true });
-  for (const [n, c] of Object.entries(archivos)) writeFileSync(join(DESTINO, n), c);
+export function escribirApp(id = "", destino = DESTINO) {
+  const { _precarga, ...archivos } = armarApp(id);
+  mkdirSync(destino, { recursive: true });
+  for (const [n, c] of Object.entries(archivos)) writeFileSync(join(destino, n), c);
   return Object.keys(archivos);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const n = escribirApp();
-  console.log(`App armada en prueba-quiz/sitio/app/: ${n.join(", ")}`);
+  const id = process.env.BC_VARIANTE || "";
+  const destino = process.env.BC_DESTINO ? join(resolve(process.env.BC_DESTINO), "app") : DESTINO;
+  const n = escribirApp(id, destino);
+  console.log(`App armada en ${id ? destino : "prueba-quiz/sitio/app/"}: ${n.join(", ")}`);
 }

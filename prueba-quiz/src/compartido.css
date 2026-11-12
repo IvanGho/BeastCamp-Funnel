@@ -101,6 +101,11 @@ body:has(#shell.conbg .scr.hook) .prog{top:12px}
  .scr.hook .c{min-height:clamp(96px,18dvh,160px)}
  .scr.hook .c img.im3d{width:clamp(64px,15dvh,120px);height:clamp(64px,15dvh,120px)}
 }
+/* Pantallas de 701 a 780 px de alto (celulares chicos y ventanas de compu bajas): tarjetas un poco más bajas para que entre todo sin scroll. */
+@media(min-height:701px) and (max-height:780px){
+ .scr.hook .c{min-height:clamp(84px,14dvh,112px)}
+ .scr.hook .c img.im3d{width:clamp(60px,12.5dvh,96px);height:clamp(60px,12.5dvh,96px)}
+}
 /* Primera pantalla: la pregunta «¿Qué edad tenés?» en negrita, justo arriba de las opciones. */
 .scr.hook.edad .preg{font-size:16px;font-weight:800;text-align:center;margin:0 0 clamp(6px,1.2dvh,12px)}
 @media(min-width:900px){ .scr.hook.edad .preg{font-size:19px} }

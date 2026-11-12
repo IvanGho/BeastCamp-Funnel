@@ -6,3 +6,5 @@ node_modules/
 .DS_Store
 # Datos locales de la vista previa (compras de prueba, progreso): nunca van al repo
 vista-previa-local/.datos/
+# Sitios por dominio armados con armar-dominios.mjs (se generan, no se versionan)
+prueba-quiz/despliegue/

@@ -117,6 +117,7 @@
 .shell.alto:has(.scr.perfil){height:auto;min-height:100dvh}
 @media(max-width:899px){.shell.alto:has(.scr.perfil){grid-template-rows:auto 1fr}}
 .shell.alto:has(.scr.perfil) main{min-height:auto}
+@media(max-height:620px){.shell.alto.conbg:has(.scr.perfil) #bg{height:72px}.scr.perfil .box{padding-top:6px;padding-bottom:6px}.scr.perfil h2{margin-bottom:2px}.nota-est{font-size:10.5px;line-height:1.25;margin-top:3px}.evento{margin-top:2px;line-height:1.25}}   /* ventanas de compu muy bajas (600 px): el video del perfil es una franja mínima */
 .scr.fijo.perfil{flex:1 0 auto}
 /* Slide «¿Llegaste a ver esto?» con una publicación: tarjeta con espacio para la imagen arriba y los dos botones abajo. */
 .scr.publicacion .nota{flex:1 1 0;min-height:0;display:flex;flex-direction:column;margin:6px 0 12px}
