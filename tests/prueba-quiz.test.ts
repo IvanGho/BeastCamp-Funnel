@@ -46,13 +46,13 @@ test("quiz: sin marcas de prueba, sin emojis y garantía de 30 días en todo", (
   assert.doesNotMatch(todas.join("\n"), /Beast Camp/, "nombre público BeastCamp");
 });
 
-test("quiz: los datos reales viven en un solo archivo y están vacíos o con lo verificado (Juan Medina solo con nombre y título)", () => {
+test("quiz: los datos reales viven en un solo archivo y están vacíos o con lo verificado (especialista: Juan Medina con matrícula y estudios)", () => {
   const D = new Function(`${leer("prueba-quiz/src/datos.js")}; return DATOS;`)();
   assert.equal(D.personas, "");
-  assert.equal(D.diagnosticos, "");
+  assert.equal(D.diagnosticos, "3.200");
   assert.equal(D.estrellas, "");
   assert.deepEqual(D.testimonios, []);
-  assert.deepEqual(D.especialista, { nombre: "Juan Medina", titulo: "Médico deportista", foto: "", matricula: "", universidad: "", posgrados: [], resumen: "" });
+  assert.equal(D.especialista.nombre, "Néstor J. Medina"); assert.equal(D.especialista.matricula, "MN 9467"); assert.equal(D.especialista.foto, "/media/juan-medina.jpg");
   assert.deepEqual(D.pagoUrl, { base: "", b1: "", b2: "" }, "un link de pago por precio, vacíos hasta que exista el checkout");
   assert.equal(D.appUrl, "/app/");
   assert.equal(D.sitioUrl, "", "vacío = etiquetas para compartir con rutas relativas");
@@ -101,7 +101,8 @@ test("vista previa: el relleno vive fuera del sitio y nunca llega al sitio publi
   const relleno = leer("vista-previa-local/datos-vista-previa.js");
   assert.match(relleno, /__VISTA_PREVIA__: true/);
   assert.ok(!existsSync("prueba-quiz/vista-previa-local") && !existsSync("prueba-quiz/src/datos-vista-previa.js"), "no está dentro de prueba-quiz/");
-  const marcas = ["__VISTA_PREVIA__", "MN 00000", "Universidad de relleno", "Posgrado de relleno", "Martín R.", "Lucía P.", "Diego F.", "3.200", "vista=1", "datos-vista-previa"];
+  /* «3.200» ya no va: es la cifra real de diagnósticos (datos.js). */
+  const marcas = ["__VISTA_PREVIA__", "MN 00000", "Universidad de relleno", "Posgrado de relleno", "Martín R.", "Lucía P.", "Diego F.", "vista=1", "datos-vista-previa"];
   for (const [nombre, h] of Object.entries({ ...paginas, raiz })) for (const m of marcas) assert.ok(!h.includes(m), `${nombre} no debe contener «${m}»`);
   assert.match(leer("vista-previa-local/servir.mjs"), /listen\((?:PUERTO|puerto), "127\.0\.0\.1"/, "solo en la PC");
 });

@@ -47,7 +47,7 @@ p{margin:0 0 10px}.sub{text-align:center;color:var(--m);font-size:14px;margin:0 
 .gift{margin:12px 0 0;font-size:12.5px;background:#fffbe6;border:1px solid #fde68a;border-radius:12px;padding:9px 12px;color:#854d0e;display:flex;gap:10px;align-items:center}
 .gift svg{width:26px;height:26px;flex:none;stroke:#b45309;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.gift svg .a{stroke:#b45309}
 /* globo de dato */
-.globo{position:relative;background:#f0fdf4;border:1px solid #c8f1d6;color:#14532d;border-radius:14px;padding:9px 12px 9px 38px;font-size:13px;margin:0 0 12px;line-height:1.35}
+.globo{position:relative;background:#f0fdf4;border:1px solid #c8f1d6;color:#14532d;border-radius:14px;padding:9px 38px;font-size:13px;margin:0 0 12px;line-height:1.35;text-align:center}
 .globo:before{content:"";position:absolute;left:12px;top:11px;width:16px;height:16px;border-radius:50%;background:var(--g)}
 .globo:after{content:"i";position:absolute;left:12px;top:11px;width:16px;height:16px;color:#fff;font:800 11px/16px system-ui;text-align:center}
 /* tarjetas de opciones */
@@ -220,6 +220,7 @@ body:has(#shell.conbg) main{padding-top:36px}
 .scr.filas .grid{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(5,minmax(0,1fr));gap:8px}
 .scr.alto.seis .grid{grid-template-rows:repeat(3,minmax(0,1fr))}   /* «causas» y «frenos»: 2 columnas x 3 filas */
 .scr.filas.cuatro .grid{grid-template-rows:repeat(4,minmax(0,1fr))}   /* «forma» y «actividad»: 4 filas */
+.scr.filas.tres .grid{grid-template-rows:repeat(3,minmax(0,1fr))}   /* «escaleras» y «tiempo»: 3 filas */
 .scr.filas .grid>.c:last-child:nth-child(odd){grid-column:auto;justify-self:stretch;width:auto}
 .scr.alto .cta,.scr.filas .cta{flex:none;margin-top:12px}   /* igual que el botón de las demás pantallas */
 .scr.fijo>.cta{flex:none;margin-top:auto}
@@ -312,6 +313,131 @@ body:has(#shell.conbg) main{padding-top:36px}
 @media(max-width:899px){.shell.alto:has(.scr.perfil){grid-template-rows:auto 1fr}}
 .shell.alto:has(.scr.perfil) main{min-height:auto}
 .scr.fijo.perfil{flex:1 0 auto}
+/* Slide «¿Llegaste a ver esto?» con una publicación: tarjeta con espacio para la imagen arriba y los dos botones abajo. */
+.scr.publicacion .nota{flex:1 1 0;min-height:0;display:flex;flex-direction:column;margin:6px 0 12px}
+.scr.publicacion .nota .im{flex:1 1 auto;height:auto;min-height:140px;background:#eef2ef}
+.scr.publicacion .nota .im svg{stroke:#9fb0a5;width:64px;height:64px}
+.scr.publicacion .nota .tx{flex:none}
+.scr.publicacion>.cta{flex:none;margin-top:0}
+.scr.publicacion>.cta+.cta{margin-top:10px}
+/* Estilos compartidos por los dos quiz (general y de peso): primera pantalla, tarjetas, onda al tocar, pie. Van después de base.css y del CSS de cada funnel. */
+/* Primera pantalla: tarjeta compacta del especialista (foto, nombre con matrícula y título) debajo del banner de regalo. */
+.esp-mini{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:9px 12px;margin:0 0 6px;text-align:left}
+.esp-mini .av{width:46px;height:46px;flex:none;margin:0;font-size:16px;box-shadow:0 0 0 2px var(--g2)}
+.esp-mini b{display:block;font-size:14px;line-height:1.25}.esp-mini small{display:block;color:var(--m);font-size:12px;line-height:1.3;margin-top:1px}
+/* Primera pantalla: tarjetas de edad más bajas para que entren la tarjeta del especialista y los tres puntos sin scroll. */
+.scr.hook .c{min-height:clamp(84px,14dvh,120px)}
+.scr.hook .c img.im3d{width:clamp(56px,10.5dvh,88px);height:clamp(56px,10.5dvh,88px)}
+@media(max-height:700px){.scr.hook .c{min-height:clamp(78px,13dvh,110px)}.scr.hook .esp-mini{padding:6px 10px}.scr.hook .esp-mini .av{width:38px;height:38px}}
+/* Primera pantalla: la barra de progreso va arriba de todo, sobre el video; el título tiene una palabra destacada y el subtítulo es más chico. */
+body:has(#shell.conbg .scr.hook) .prog{top:12px}
+.scr.hook h2 em{font-style:normal;color:var(--g)}
+.scr.hook .sub{font-size:13px}
+/* Primera pantalla: tamaños pensados para celular y para computadora (se lee bien en los dos). */
+.scr.hook h2{font-size:clamp(21px,6vw,26px);line-height:1.15}
+.scr.hook .sub{font-size:13.5px;line-height:1.4}
+.scr.hook .gift{font-size:13px}
+.scr.hook .esp-mini b{font-size:14px}
+@media(min-width:900px){
+ .scr.hook h2{font-size:clamp(30px,3vw,42px)}
+ .scr.hook .sub{font-size:16px}
+ .scr.hook .c{min-height:clamp(118px,19dvh,168px)}
+ .scr.hook .c b{font-size:18px}
+ .scr.hook .c img.im3d{width:clamp(80px,16dvh,130px);height:clamp(80px,16dvh,130px)}
+ .scr.hook .gift{font-size:15px}
+ .scr.hook .esp-mini{padding:12px 16px}
+ .scr.hook .esp-mini b{font-size:16px}.scr.hook .esp-mini small{font-size:14px}
+ .scr.hook .esp-mini .av{width:52px;height:52px}
+ .scr.hook .chips{font-size:14px}
+}
+@media(max-width:899px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(19px,5.4vw,22px)}
+ .scr.hook .c img.im3d{width:clamp(50px,9dvh,80px);height:clamp(50px,9dvh,80px)}
+ .scr.hook .chips{margin-top:8px}
+ .scr.hook .gift{padding:6px 10px}
+}
+@media(max-width:899px) and (max-height:700px){ .shell.conbg:has(.scr.hook) #bg{height:clamp(56px,11dvh,110px)} }
+/* Primera pantalla: todo centrado (tarjetas con muñeco, regalo y tarjeta del especialista). */
+.scr.hook .c:has(img.im3d){justify-content:center;text-align:center;gap:8px}
+.scr.hook .gift{justify-content:center}
+.scr.hook .gift span{text-align:center}
+.scr.hook .esp-mini{justify-content:center;text-align:center}
+.scr.hook .esp-mini>div:last-child{text-align:center}
+@media(max-width:899px) and (max-height:700px){ .shell.conbg:has(.scr.hook) #bg{height:clamp(84px,17dvh,130px)} }
+/* Primera pantalla, celular bajo: video más abajo (casi toca la píldora) y el resto más compacto para que no haya scroll. */
+@media(max-width:899px) and (max-height:700px){
+ .shell.conbg:has(.scr.hook) #bg{height:clamp(84px,19dvh,130px)}
+ .scr.hook .c{min-height:clamp(70px,11.5dvh,100px)}
+ .scr.hook .c img.im3d{width:clamp(46px,8.5dvh,76px);height:clamp(46px,8.5dvh,76px)}
+ .scr.hook .esp-mini{padding:4px 10px}
+ .scr.hook .chips{margin-top:6px}
+ .scr.hook .sub{font-size:13px}
+}
+/* Primera pantalla, escritorio bajo (ventana de menos de 700px de alto): tamaños que entran sin scroll. */
+@media(min-width:900px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(24px,3vw,30px)}
+ .scr.hook .sub{font-size:14px}
+ .scr.hook .c{min-height:clamp(96px,15dvh,130px)}
+ .scr.hook .c img.im3d{width:clamp(64px,12.5dvh,100px);height:clamp(64px,12.5dvh,100px)}
+ .scr.hook .gift{padding:6px 12px}
+ .scr.hook .esp-mini{padding:8px 14px}
+ .scr.hook .esp-mini .av{width:44px;height:44px}
+}
+/* Celular bajo: la píldora sube sobre el degradado blanco del video y las tarjetas se achican un poco más. */
+@media(max-width:899px) and (max-height:700px){
+ .scr.hook .pill{margin-top:-12px}
+ .scr.hook .c{min-height:clamp(66px,10.5dvh,96px)}
+ .scr.hook .c img.im3d{width:clamp(44px,8dvh,72px);height:clamp(44px,8dvh,72px)}
+}
+/* Tarjetas de edad: el grupo muñeco + texto queda centrado (la etiqueta toma solo su ancho). */
+.scr.hook.edad .c:has(img.im3d) b{flex:0 0 auto}
+.scr.hook:not(.edad) .c:has(img.im3d) b{flex:1 1 auto;min-width:0;text-align:center}
+/* Primera pantalla: la píldora centrada y subida sobre el borde del video; sin el degradado blanco entre el video y el texto (celular). */
+.scr.hook .pill{display:flex;width:max-content;margin-left:auto;margin-right:auto}
+@media(max-width:899px){ .shell.conbg:has(.scr.hook) #bg:after{display:none} .scr.hook .pill{margin-top:-28px} }
+/* Título de la primera pantalla en una sola línea en celulares (360 a 425 px de ancho). */
+@media(max-width:899px){ .scr.hook.edad h2{font-size:clamp(17px,5.2vw,22px);white-space:nowrap} }
+/* Medidas: deslizador con el número grande arriba (reemplaza el campo para escribir; no abre el teclado). */
+.slid{margin:10px 0 4px;text-align:center}
+.slid output{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:12px}
+.slid output b{font-size:56px;line-height:1;font-weight:800;color:var(--g)}
+.slid output span{font-size:20px;font-weight:700;color:var(--m)}
+.slid input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;outline:none;margin:6px 0;background:linear-gradient(90deg,var(--g) var(--p,50%),#e5ebe6 var(--p,50%))}
+.slid input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid var(--g);box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer}
+.slid input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--g);cursor:pointer}
+.slid .rng{display:flex;justify-content:space-between;font-size:12px;color:var(--m);margin-top:4px}
+/* Al tocar una opción: anillo suave que se expande desde el centro (sincronizado con el sonido). */
+.scr .c{position:relative;overflow:hidden}
+.scr .c.onda::after{content:"";position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:2px solid var(--g);opacity:.5;pointer-events:none;animation:onda .55s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes onda{to{transform:scale(10);opacity:0}}
+/* Primera pantalla: más aire entre bloques (el margen crece con el alto de la ventana; en celulares bajos queda chico para no hacer scroll). */
+.scr.hook h2{margin:clamp(4px,1.2dvh,12px) 0 clamp(2px,0.6dvh,6px)}
+.scr.hook .sub{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .grid{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .gift{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .esp-mini{margin:0 0 clamp(6px,1.4dvh,14px)}
+/* Regalo de la primera pantalla: letra un poco más chica en celular para que ocupe menos alto. */
+@media(max-width:899px){ .scr.hook .gift{font-size:12px;padding:6px 10px} }
+/* Primera pantalla, celulares altos: tarjetas de edad más altas (casi cuadradas) para ocupar el hueco que queda antes del pie legal. */
+@media(max-width:899px) and (min-height:701px){
+ .scr.hook .c{min-height:clamp(96px,18dvh,160px)}
+ .scr.hook .c img.im3d{width:clamp(64px,15dvh,120px);height:clamp(64px,15dvh,120px)}
+}
+/* Primera pantalla: la pregunta «¿Qué edad tenés?» en negrita, justo arriba de las opciones. */
+.scr.hook.edad .preg{font-size:16px;font-weight:800;text-align:center;margin:0 0 clamp(6px,1.2dvh,12px)}
+@media(min-width:900px){ .scr.hook.edad .preg{font-size:19px} }
+/* Escritorio bajo (menos de 700px de alto): tarjetas de edad un poco más bajas para que entre la pregunta sin scroll. */
+@media(min-width:900px) and (max-height:700px){ .scr.hook .c{min-height:clamp(84px,13dvh,110px)} }
+/* Escritorio bajo: título, muñecos, tarjeta del especialista y márgenes un poco más chicos para que la primera pantalla entre sin scroll. */
+@media(min-width:900px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(20px,2.6vw,26px);margin-top:4px}
+ .scr.hook .c{min-height:clamp(76px,12dvh,100px)}
+ .scr.hook .c img.im3d{width:clamp(56px,11dvh,92px);height:clamp(56px,11dvh,92px)}
+ .scr.hook .esp-mini{padding:5px 12px}
+ .scr.hook .esp-mini .av{width:40px;height:40px}
+ .scr.hook .sub{margin-bottom:6px}
+ .scr.hook.edad .preg{font-size:16px;margin-bottom:4px}
+}
 </style></head><body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app" aria-live="polite"></main></div><script>
 /*DATOS-INICIO*/
 /* ============================================================================================
@@ -322,7 +448,7 @@ body:has(#shell.conbg) main{padding-top:36px}
 const DATOS = {
   /* Contadores de prueba social (solo cifras reales). Ej.: personas:'120' */
   personas: '',            // «+N personas ya lo probaron» (hook, oferta)
-  diagnosticos: '',        // «+N diagnósticos realizados» (tarjeta del especialista)
+  diagnosticos: '3.200',   // «+N diagnósticos realizados» (tarjeta del especialista)
   estrellas: '',           // valoración promedio real, ej. '4,8' (se muestra con estrellas)
 
   /* Testimonios de personas reales con su permiso: [{ nombre:'Nombre A.', detalle:'Nivel Ritmo', texto:'…' }] */
@@ -330,13 +456,13 @@ const DATOS = {
 
   /* Especialista. Solo nombre y título están cargados; el resto es opcional. */
   especialista: {
-    nombre: 'Juan Medina',
-    titulo: 'Médico deportista',
-    foto: '',              // ruta de una imagen, ej. '/media/juan-medina.jpg'
-    matricula: '',         // número de matrícula, si corresponde
-    universidad: '',       // ej. 'Universidad de Buenos Aires'
-    posgrados: [],         // ej. ['Posgrado en …']
-    resumen: '',           // 1 o 2 líneas sobre su trayectoria
+    nombre: 'Néstor J. Medina',
+    titulo: 'Médico deportólogo',
+    foto: '/media/juan-medina.jpg',
+    matricula: 'MN 9467',
+    universidad: 'Universidad Nacional de La Plata (UNLP)',
+    posgrados: ['Medicina del Deporte, Universidad de Buenos Aires (UBA)', 'Fisiología del Ejercicio y Ciencias del Deporte, Universidad Favaloro'],
+    resumen: 'Especialista en Medicina del Deporte y Rendimiento Humano. Enfocado en la evaluación médica deportiva, la prevención de lesiones y la optimización del rendimiento físico.',
   },
 
   /* Noticia / estudio de la slide «¿Llegaste a ver esto?». Con fuente real y enlace. La imagen se carga a mano. */
@@ -543,11 +669,12 @@ window.toast = (m) => {
 /* Pie legal con enlaces a Términos y Privacidad (los avisos legales van solo acá).
    Por defecto es fijo (el quiz). Con fin = true va al final de la página, dentro de #app, sin posición fija: así la barra de abajo de las ofertas no lo tapa.
    Con nueva = true los enlaces abren en otra pestaña, para no perder el quiz ni la oferta. */
-function pie(fin = false, nueva = false) {
+function pie(fin = false, nueva = false, solo_enlaces = false) {
   const f = document.createElement('footer');
   f.className = fin ? 'ft fin' : 'ft';
   const blank = nueva ? ' target="_blank" rel="noopener"' : '';
-  f.innerHTML = `<a href="/legal/terminos/"${blank}>Términos y condiciones</a> · <a href="/legal/privacidad/"${blank}>Política de privacidad</a> · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.`;
+  const aviso = solo_enlaces ? '' : ' · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.';
+  f.innerHTML = `<a href="/legal/terminos/"${blank}>Términos y condiciones</a> · <a href="/legal/privacidad/"${blank}>Política de privacidad</a>${aviso}`;
   if (fin && $('app')) { $('app').appendChild(f); return f; }
   document.body.appendChild(f);
   /* El alto del pie cambia con el ancho de la ventana: el contenido deja justo ese lugar abajo (--pie). */
@@ -571,6 +698,37 @@ const I_REGALO = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="26
 const estrellas = () => (DATOS.estrellas ? `<span class="estr">★★★★★</span> <b>${esc(DATOS.estrellas)}</b>` : '');
 const pillPersonas = (txt = 'personas ya lo probaron') => (DATOS.personas ? `<div class="pill pill-c">${estrellas()} <span><b>+${esc(DATOS.personas)}</b> ${txt}</span></div>` : '');
 const regaloFranja = () => `<div class="gift">${I_REGALO}<span>Al terminar el diagnóstico <b>te dejamos un regalo</b>. Ya está reservado para vos.</span></div>`;
+
+/* Click corto de gota al elegir una opción (~90 ms): se sintetiza acá (sin archivos de terceros). Si el navegador no deja sonar, no pasa nada. */
+let audioGota = null;
+function sonidoGota() {
+  try {
+    audioGota = audioGota || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioGota.state === 'suspended') audioGota.resume();
+    const t = audioGota.currentTime, o = audioGota.createOscillator(), g = audioGota.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(1100, t);
+    o.frequency.exponentialRampToValueAtTime(260, t + 0.06);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.35, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+    o.connect(g); g.connect(audioGota.destination);
+    o.start(t); o.stop(t + 0.1);
+  } catch (e) {}
+}
+/* Al tocar una opción: un anillo suave que se expande desde su centro, sincronizado con el sonido. */
+function ondaYSonido(b) {
+  b.classList.remove('onda'); void b.offsetWidth; b.classList.add('onda');
+  sonidoGota();
+}
+/* Tarjeta compacta del especialista (foto, nombre con matrícula y título): la usan el quiz general y el de peso, debajo del regalo. */
+const tarjetaMini = () => {
+    const e = DATOS.especialista || {};
+    if (!e.nombre) return '';
+    const ini = e.nombre.split(/\s+/).filter((w) => !w.endsWith('.')).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+    const foto = e.foto ? `<img src="${esc(e.foto)}" alt="${esc(e.nombre)}">` : esc(ini);
+    return `<div class="esp-mini"><div class="av">${foto}</div><div><b>${esc(e.nombre)}${e.matricula ? ` · ${esc(e.matricula)}` : ''}</b><small>${esc(e.titulo)}${DATOS.diagnosticos ? ` · +${esc(DATOS.diagnosticos)} diagnósticos` : ''}</small></div></div>`;
+};
 
 function tarjetaEspecialista(compacta = false) {
   const e = DATOS.especialista || {};
@@ -712,6 +870,7 @@ if (typeof module !== 'undefined') module.exports = { CALC };
 /* Datos del funnel de bajar de peso. SOLO información verificada con su fuente; lo que no se verificó no se carga.
    Regla de siempre: un campo vacío oculta su bloque. No cargar cifras, estrellas ni testimonios que no sean reales. */
 const DATOS_PESO = {
+  personas: '3.200',   // «+N peleadores lo probaron este mes» (primera pantalla del quiz de peso)
   /* Noticia de la pantalla «¿Llegaste a ver esto?». Misma forma que DATOS.noticia, más un aviso corto opcional. */
   noticia: {
     etiqueta: 'Salud · Estudio piloto',
@@ -724,6 +883,19 @@ const DATOS_PESO = {
     fecha: '2015',
     enlace: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4429464/',
     imagen: '',
+  },
+
+  /* Slide «¿Llegaste a ver esto?» con una publicación. Vacío = en el sitio publicado la slide no aparece (en tu compu se ve el esqueleto, con el espacio de la imagen).
+     Solo contenido con fuente propia y verificable: imagen y texto de lo que de verdad se publicó, con su fuente y enlace. */
+  publicacion: {
+    etiqueta: '',
+    titular: '',
+    bajada: '',
+    fuente: '',
+    fecha: '',
+    enlace: '',
+    imagen: '',   // ej. '/media/publicacion.jpg'
+    alt: '',
   },
 
   /* Fuentes citadas en el quiz. Cada una con su enlace; si falta `verificada` o `url`, el texto va sin cifra o se oculta. */
@@ -774,7 +946,7 @@ const DATOS_PESO = {
      (c_delgado, c_normal, c_kilos y c_sobrepeso: el mismo boxeador con cuatro contexturas). c_guardia es e_guardia sin la flecha roja, que en este funnel no señala nada. Se muestran con img3d(clave) como los demás; no están en CLAVES_MUNECO. */
   const MARCA = 'Marcá todas las que quieras';
   const S0 = [
-    { t: 'q', k: 'edad', video: 'hook', pill: true, regalo: true, titulo: 'Bajá de peso sin complicarte con shadowboxing en casa', sub: 'Sin gimnasio y sin haber boxeado nunca. Elegí tu edad para empezar.',
+    { t: 'q', k: 'edad', video: 'hook', pill: true, regalo: true, pregunta: '¿Qué edad tenés?', titulo: 'Bajá de peso sin complicarte con shadowboxing en casa', tituloHtml: 'Bajá de peso <em>peleando con tu sombra</em>', sub: 'Respondé 1 pregunta y descubrí cómo conseguirlo.',
       o: [['18 a 29', 'n_empiezo'], ['30 a 39', 'n_seis'], ['40 a 49', 'n_anios'], ['50 o más', 'n_mas']] },
     { t: 'q', k: 'cuerpo', alto: true, titulo: '¿Cómo ves tu cuerpo hoy?',
       o: [['Delgado con algo de panza', 'c_delgado'], ['Normal', 'c_normal'], ['Con kilos de más', 'c_kilos'], ['Con bastante sobrepeso', 'c_sobrepeso']] },
@@ -784,11 +956,12 @@ const DATOS_PESO = {
       o: [['La panza', 'o_peso'], ['Los costados', 'c_guardia'], ['El pecho', 'o_resist'], ['Los brazos', 'l_pesa'], ['Todo un poco', 'o_sparring']] },
     { t: 'q', k: 'forma', titulo: '¿Hace cuánto estuviste en tu mejor forma?',
       o: [['Menos de un año', 't2'], ['Entre 1 y 3 años', 't3'], ['Más de 3 años', 't1'], ['Nunca', 'm_plan']] },
-    { t: 'info30' },
+    { t: 'publicacion' },
     { t: 'q', k: 'exp', titulo: '¿Alguna vez boxeaste o hiciste artes marciales?', globo: 'No hace falta. El plan arranca desde cero.',
-      o: [['Nunca', 'n_empiezo'], ['Probé alguna vez', 'n_seis'], ['Sí, hace años', 'n_anios']] },
+      o: [['Nunca', 'n_empiezo'], ['Estoy empezando', 'l_soga'], ['Probé alguna vez', 'n_seis'], ['Sí, hace años', 'n_anios']] },
+    { t: 'info30' },
     { t: 'q', k: 'actividad', titulo: '¿Cuánto te moviste en los últimos 3 meses?',
-      o: [['Nada', 'f_aburro'], ['Alguna vez suelta', 'f_const'], ['Una vez por semana', 'm_const'], ['Varias veces por semana', 'o_resist']] },
+      o: [['Nada', 'f_aburro'], ['Alguna que otra vez', 'f_const'], ['Una vez por semana', 'm_const'], ['Varias veces por semana', 'o_resist']] },
     { t: 'q', k: 'escaleras', titulo: '¿Cómo llegás después de subir dos pisos por escalera?',
       o: [['Sin aire', 'm_aire'], ['Agitado, pero bien', 'e_resp'], ['Tranquilo', 'n_seis']] },
     { t: 'q', k: 'dia', titulo: '¿Cómo es un día normal tuyo?',
@@ -803,15 +976,12 @@ const DATOS_PESO = {
       o: [['No tenía un plan', 'm_plan'], ['Me faltó tiempo', 'f_tiempo'], ['Me aburrí', 'f_aburro'], ['Perdí la motivación', 'f_const'], ['Me dolía algo', 'e_pies'], ['El gimnasio no es lo mío', 'f_equipo']] },
     { t: 'q', k: 'tiempo', titulo: '¿Cuánto tiempo le podés dedicar?', globo: 'Podés arrancar con lo mínimo y subir después.',
       o: [['Arranque', 't1', '2-3 días · 15-30 min'], ['Ritmo', 't2', '3-4 días · 30-40 min'], ['Impulso', 't3', '4-5 días · 45-60 min']] },
-    { t: 'q', k: 'precio', titulo: '¿Cuánto pagarías por un plan de 4 semanas armado para vos?',
-      o: [['Solo gratis', 'p_gratis'], ['Hasta $5.000', 'p_5'], ['$5.000 a $10.000', 'p_10'], ['$10.000 a $20.000', 'p_20']] },
-    { t: 'medida', k: 'altura', unidad: 'cm', muneco: 'c_guardia', titulo: '¿Cuánto medís?', sub: 'En centímetros, sin decimales.', ph: '170' },
-    { t: 'medida', k: 'peso', unidad: 'kg', muneco: 'o_peso', titulo: '¿Cuánto pesás?', sub: 'En kilos, sin decimales.', ph: '85' },
-    { t: 'medida', k: 'pesoMeta', unidad: 'kg', muneco: 'o_tecnica', titulo: '¿A qué peso te gustaría llegar?', sub: 'En kilos, sin decimales.', ph: '75' },
+    { t: 'medida', k: 'altura', unidad: 'cm', muneco: 'c_guardia', titulo: '¿Cuánto medís?', sub: 'Deslizá hasta tu altura.', min: 140, max: 220, def: 170 },
+    { t: 'medida', k: 'peso', unidad: 'kg', muneco: 'o_peso', titulo: '¿Cuánto pesás?', sub: 'Deslizá hasta tu peso.', min: 40, max: 200, def: 85 },
+    { t: 'medida', k: 'pesoMeta', unidad: 'kg', muneco: 'o_tecnica', titulo: '¿A qué peso te gustaría llegar?', sub: 'Deslizá hasta tu meta.', min: 40, max: 200, def: 75 },
     { t: 'q', k: 'evento', chico: true, titulo: '¿Tenés algo importante en los próximos meses?',
       o: [['Vacaciones', 'l_arbol'], ['Un casamiento o evento', 'o_competir'], ['Un cumpleaños', 'p_gratis'], ['No, lo hago por mí', 'n_empiezo']] },
     { t: 'experto' },
-    { t: 'mail', video: 'mail' },
     { t: 'carga' },
     { t: 'perfil', video: 'oferta' },
   ];
@@ -823,6 +993,17 @@ const DATOS_PESO = {
   };
   const escena = (t, i) => img3d(ESCENAS[t][i][0], `esc3d ${ESCENAS[t][i][1]}`);
 
+  /* Slide «¿Llegaste a ver esto?» con una publicación (imagen + texto con su fuente), cargada en DATOS_PESO.publicacion.
+     Sin contenido real cargado la slide NO sale en el sitio publicado: solo se ve en tu compu (localhost) como esqueleto, con el espacio de la imagen vacío. */
+  const hayPublicacion = () => { const p = DATOS_PESO.publicacion || {}; return !!(p.titular || p.imagen) || /^(localhost|127\.0\.0\.1)$/.test(location.hostname); };
+  function tarjetaPublicacion() {
+    const n = DATOS_PESO.publicacion || {};
+    const img = n.imagen ? `<img src="${esc(n.imagen)}" alt="${esc(n.alt || '')}">` : '<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="12" width="48" height="40" rx="5"/><circle cx="24" cy="26" r="5"/><path d="M8 46l14-14 10 10 8-8 16 16"/></svg>';
+    const tx = (n.etiqueta ? `<div class="et">${esc(n.etiqueta)}</div>` : '') + (n.titular ? `<h3>${esc(n.titular)}</h3>` : '') + (n.bajada ? `<p>${esc(n.bajada)}</p>` : '')
+      + (n.fuente ? `<div class="fu">${esc(n.fuente)}${n.fecha ? ' · ' + esc(n.fecha) : ''}${n.enlace ? ` · <a href="${esc(n.enlace)}" target="_blank" rel="noopener noreferrer">Ver la fuente</a>` : ''}</div>` : '');
+    return `<div class="nota pub"><div class="im">${img}</div>${tx ? `<div class="tx">${tx}</div>` : ''}</div>`;
+  }
+
   /* La noticia solo aparece si hay una con fuente cargada en DATOS_PESO. */
   function tarjetaNoticiaPeso() {
     const n = DATOS_PESO.noticia || {};
@@ -833,10 +1014,10 @@ const DATOS_PESO = {
 
   /* Además de «cuerpo», «meta» y «zonas» (alto y filas), otras pantallas ocupan todo el alto de la ventana (peso.css): «forma» y «actividad» son 4 filas, «causas» y «frenos»
      son 6 tarjetas altas (2x3) y las demás con botón de avanzar (FIJAS) reparten su contenido entre el título y el botón, que queda fijo abajo. */
-  const LLENAS = { forma: 'filas cuatro', actividad: 'filas cuatro', causas: 'alto seis', frenos: 'alto seis' };
-  const FIJAS = ['info30', 'infoboxeo', 'medida', 'experto', 'mail', 'perfil'];
+  const LLENAS = { forma: 'filas cuatro', actividad: 'filas cuatro', exp: 'filas cuatro', escaleras: 'filas tres', dia: 'filas cuatro', sueno: 'filas cuatro', tiempo: 'filas tres', evento: 'filas cuatro', causas: 'alto seis', frenos: 'alto seis' };
+  const FIJAS = ['info30', 'publicacion', 'infoboxeo', 'medida', 'experto', 'perfil'];
 
-  const S = S0.filter((x) => x.t !== 'noticia' || tarjetaNoticiaPeso());
+  const S = S0.filter((x) => (x.t !== 'noticia' || tarjetaNoticiaPeso()) && (x.t !== 'publicacion' || hayPublicacion()));
   let s = 0;
   let bloqueado = false;                 // evita saltar dos pantallas si se toca dos veces seguidas
   const raiz = $('app');
@@ -871,7 +1052,7 @@ const DATOS_PESO = {
   /* Baja todo en el orden del funnel apenas abre la página. */
   const precargadas = [];
   async function precargar() {
-    const urls = ['mail', 'oferta'].map((n) => `/media/${n}.jpg`);
+    const urls = ['oferta'].map((n) => `/media/${n}.jpg`);
     S.forEach((x) => {
       if (x.o) x.o.forEach((o) => urls.push(`/img/muneco-${o[1]}.webp`));
       if (ESCENAS[x.t]) ESCENAS[x.t].forEach((e) => urls.push(`/img/muneco-${e[0]}.webp`));
@@ -880,7 +1061,7 @@ const DATOS_PESO = {
     urls.forEach((u) => { const i = new Image(); i.src = u; precargadas.push(i); });
     if (navigator.connection && navigator.connection.saveData) return;   // con ahorro de datos solo imágenes: el póster reemplaza al video
     await videoListo(videoDe('hook'));
-    for (const n of ['mail', 'oferta']) {
+    for (const n of ['oferta']) {
       const v = videoDe(n);
       /* iOS ignora preload hasta que el video arranca: se le da play y se pausa, salvo que ya esté en pantalla. */
       v.play().then(() => { if (!v.isConnected) v.pause(); }).catch(() => {});
@@ -902,7 +1083,9 @@ const DATOS_PESO = {
     return `<button class="c B${chico ? ' chico' : ''}" data-i="${i}"${multi ? ' aria-pressed="false"' : ''}>${multi ? '<span class="chk"></span>' : ''}${img3d(o[1])}<b>${esc(o[0])}${o[2] ? `<small>${esc(detalleSinCortes(o[2]))}</small>` : ''}</b></button>`;
   }
   /* Regalo de la primera pantalla: la misma franja .gift de quiz.js, con lo que este plan sí incluye. */
-  const regaloPeso = () => `<div class="gift">${I_REGALO}<span>Con tu plan te llevás <b>de regalo</b> la guía de guardia y desplazamientos.</span></div>`;
+  const regaloPeso = () => `<div class="gift">${I_REGALO}<span>Al terminar <b>te dejamos un regalo</b>. Ya está reservado para vos.</span></div>`;
+  /* Píldora de la primera pantalla: la cifra sale de DATOS_PESO.personas (solo cifra real). */
+  const pillPeso = () => (DATOS_PESO.personas ? `<div class="pill pill-c"><span class="estr">★</span> <span><b>+${esc(DATOS_PESO.personas)}</b> peleadores lo probaron este mes</span></div>` : '');
   const filaIll = (img, tit, txt) => `<div class="ill">${img}<div><b>${esc(tit)}</b><span>${esc(txt)}</span></div></div>`;
   /* Chips honestos: lo único que se afirma es lo que el código cumple (peso y altura no salen del navegador). */
   const chipsPrivado = (conTiempo) => `<div class="chips">${conTiempo ? `<span>${I_RELOJ} 3 minutos</span>` : ''}<span>${I_CANDADO} Tu peso y tu altura no salen de tu celu</span></div>`;
@@ -983,15 +1166,15 @@ const DATOS_PESO = {
   function dibuja() {
     const x = S[s];
     bloqueado = false;
-    if (x.t !== 'carga') setBg(x.video);   // la carga conserva la franja de video: así «perfil» no cambia el alto de la página al aparecer
+    setBg(x.t === 'carga' ? 'oferta' : x.video);   // la carga ya muestra la franja de video del perfil: así «perfil» no cambia el alto de la página al aparecer
     forma.classList.toggle('alto', !!(x.alto || x.filas));   // «cuerpo», «meta» y «zonas» ocupan todo el alto de la ventana (peso.css)
     const llena = LLENAS[x.k] || (FIJAS.includes(x.t) ? 'fijo' : '');
     if (llena) forma.classList.add('alto');
     progreso();
     let h = '';
     if (x.t === 'q') {
-      h = (x.pill ? pillPersonas() : '') + `<h2>${esc(x.titulo)}</h2>` + (x.sub ? `<p class="sub">${esc(x.sub)}</p>` : '') + (x.globo ? `<div class="globo">${esc(x.globo)}</div>` : '') +
-        `<div class="grid">${x.o.map((o, i) => tarjeta(o, i, x.chico || x.o.length > 4, false)).join('')}</div>` + (x.regalo ? regaloPeso() : '');
+      h = (x.pill ? pillPeso() : '') + `<h2>${x.tituloHtml || esc(x.titulo)}</h2>` + (x.sub ? `<p class="sub">${esc(x.sub)}</p>` : '') + (x.globo ? `<div class="globo">${esc(x.globo)}</div>` : '') +
+        (x.pregunta ? `<p class="preg">${esc(x.pregunta)}</p>` : '') + `<div class="grid">${x.o.map((o, i) => tarjeta(o, i, x.chico || x.o.length > 4, false)).join('')}</div>` + (x.regalo ? regaloPeso() + tarjetaMini() + chipsGatillos() : '');
     } else if (x.t === 'multi') {
       h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p><div class="grid">${x.o.map((o, i) => tarjeta(o, i, true, true)).join('')}</div><button class="cta" id="seguir" disabled>Continuar</button>`;
     } else if (x.t === 'info30') {
@@ -1011,28 +1194,27 @@ const DATOS_PESO = {
         '<button class="cta" id="seguir">Seguir</button>';
     } else if (x.t === 'noticia') {
       h = `<h2>¿Llegaste a ver esto?</h2><p class="sub">Un estudio sobre entrenamiento de boxeo</p>${tarjetaNoticiaPeso()}<button class="cta" id="seguir">Sí, lo vi</button><button class="cta s" id="seguir2">No, es la primera vez que lo veo</button>`;
+    } else if (x.t === 'publicacion') {
+      h = `<h2>¿Llegaste a ver esto?</h2>${tarjetaPublicacion()}<button class="cta" id="seguir">Sí, lo vi</button><button class="cta s" id="seguir2">No, es la primera vez que lo veo</button>`;
     } else if (x.t === 'medida') {
-      const previo = A[x.k] ? String(A[x.k]) : '';
-      h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p>${img3d(x.muneco, 'mu')}<div class="nbox"><input id="n" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" placeholder="${esc(x.ph)}" aria-label="${esc(x.titulo)}" value="${esc(previo)}"><span>${esc(x.unidad)}</span></div><div class="msg" id="msg" role="status" aria-live="polite"></div><button class="cta" id="seguir" disabled>Seguir</button>`;
+      const previo = A[x.k] ? String(A[x.k]) : x.def;
+      h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p>${img3d(x.muneco, 'mu')}<div class="slid"><output id="v" for="n"><b>${esc(previo)}</b><span>${esc(x.unidad)}</span></output><input id="n" type="range" min="${x.min}" max="${x.max}" step="1" value="${esc(previo)}" aria-label="${esc(x.titulo)}"><div class="rng"><span>${x.min} ${esc(x.unidad)}</span><span>${x.max} ${esc(x.unidad)}</span></div></div><div class="msg" id="msg" role="status" aria-live="polite"></div><button class="cta" id="seguir" disabled>Seguir</button>`;
     } else if (x.t === 'experto') {
       h = `<div class="tag cen">Tu plan personalizado</div><h2>Tu análisis ya está en marcha</h2><p class="sub">Con tus respuestas ajustamos tu plan de 4 semanas al tiempo que tenés.</p>${tarjetaEspecialista()}${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi análisis →</button>`;
-    } else if (x.t === 'mail') {
-      h = `<div class="tag cen">Ya casi</div><h2>Tu plan está casi listo</h2><p class="sub">Decinos cómo te llamás para personalizar tu plan.</p><input id="nm" type="text" placeholder="Tu nombre o apodo" aria-label="Tu nombre o apodo" autocomplete="given-name" value="${esc(A.nombre || '')}">${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi plan</button>`;
     } else if (x.t === 'carga') {
       return cargando();
     } else if (x.t === 'perfil') {
       h = perfil();
     }
-    raiz.innerHTML = `<div class="scr ${x.t}${x.video === 'hook' ? ' hook' : ''}${x.alto ? ' alto' : ''}${x.filas ? ' filas' : ''}${llena ? ' ' + llena : ''}">${h}</div>`;
+    raiz.innerHTML = `<div class="scr ${x.t}${x.video === 'hook' ? ' hook' : ''}${x.k === 'edad' ? ' edad' : ''}${x.alto ? ' alto' : ''}${x.filas ? ' filas' : ''}${llena ? ' ' + llena : ''}">${h}</div>`;
     window.scrollTo(0, 0);
     enlaza(x);
     if (s > 0 && x.t !== 'medida') enfocaTitulo(raiz);
   }
 
   function perfil() {
-    const nom = esc(A.nombre || 'Campeón');
     const tienePeso = A.peso && A.altura;
-    let h = `<div class="tag cen">Tu perfil</div><h2><span class="nom">${nom}</span>, así queda tu plan</h2>`;
+    let h = `<div class="tag cen">Tu perfil</div><h2>Así queda tu plan</h2>`;
     if (tienePeso) {
       const imc = imc1(CALC.imc(A.peso, A.altura));
       h += `<div class="box"><div class="row"><b>Tu punto de partida</b><span class="vimc">IMC ${coma(imc)} · ${NOMBRE_CAT[CALC.categoria(imc)]}</span></div>${barraImc(imc)}</div>`;
@@ -1057,13 +1239,14 @@ const DATOS_PESO = {
         if (bloqueado) return;
         bloqueado = true;
         const o = x.o[+b.dataset.i];
-        b.classList.add('on'); A[x.k] = o[0]; guardaA(); vib(); setTimeout(siguiente, 220);
+        b.classList.add('on'); A[x.k] = o[0]; guardaA(); vib(); ondaYSonido(b); setTimeout(siguiente, 320);
       }));
     } else if (x.t === 'multi') {
       const sel = new Set();
       const tarjetas = [...raiz.querySelectorAll('.c')];
       tarjetas.forEach((b) => (b.onclick = () => {
         const i = +b.dataset.i;
+        ondaYSonido(b);
         if (sel.has(i)) sel.delete(i);
         else {
           /* «Todo un poco» no se combina con las zonas puntuales. */
@@ -1079,36 +1262,28 @@ const DATOS_PESO = {
     } else if (x.t === 'noticia') {
       q('#seguir').onclick = () => { A.noticia = 'si'; guardaA(); siguiente(); };
       q('#seguir2').onclick = () => { A.noticia = 'no'; guardaA(); siguiente(); };
+    } else if (x.t === 'publicacion') {
+      q('#seguir').onclick = () => { A.publicacion = 'si'; guardaA(); siguiente(); };
+      q('#seguir2').onclick = () => { A.publicacion = 'no'; guardaA(); siguiente(); };
     } else if (x.t === 'medida') {
-      const inp = q('#n'), btn = q('#seguir'), msg = q('#msg');
+      const inp = q('#n'), btn = q('#seguir'), msg = q('#msg'), salida = q('#v b');
       let valor = null;
       const revisa = () => {
-        const limpio = inp.value.replace(/\D/g, '').replace(/^0+/, '').slice(0, 3);
-        if (inp.value !== limpio) inp.value = limpio;
-        const r = evaluaMedida(x, limpio);
+        salida.textContent = inp.value;
+        inp.style.setProperty('--p', ((inp.value - inp.min) / (inp.max - inp.min) * 100) + '%');
+        const r = evaluaMedida(x, inp.value);
         valor = r.ok ? r.n : null;
         btn.disabled = !r.ok;
         msg.innerHTML = r.html ? `<div class="m ${r.tono || ''}">${r.html}</div>` : '';
       };
       inp.addEventListener('input', revisa);
-      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); if (!btn.disabled) btn.click(); } });
       btn.onclick = () => {
         if (valor === null || bloqueado) return;
         bloqueado = true;
         A[x.k] = valor; guardaA(); siguiente();
       };
       revisa();
-      enfocaTitulo(raiz, inp);   // en compu enfoca el campo; en celular el título (enfocar el campo abriría el teclado solo)
-    } else if (x.t === 'mail') {
-      /* Solo el nombre, y es opcional: sin nombre queda «Campeón». No se manda nada al servidor (el lead exige un mail y ya no se pide). */
-      const sigue = () => {
-        if (bloqueado) return;
-        bloqueado = true;
-        A.nombre = (q('#nm').value || '').trim().slice(0, 60) || 'Campeón'; guardaA();
-        siguiente();
-      };
-      q('#seguir').onclick = sigue;
-      q('#nm').addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); sigue(); } });
+      enfocaTitulo(raiz);   // el deslizador no abre el teclado en celular
     } else if (x.t === 'perfil') {
       q('#ver').onclick = () => { guardaA(); location.href = '/oferta-peso/' + consultaCampana(); };
     }
@@ -1117,7 +1292,6 @@ const DATOS_PESO = {
   /* Carga: 6 mensajes de ~1,6 s cada uno. El análisis se frena en dos puntos hasta que la persona responde un pop-up. */
   function cargando() {
     const R = 402;
-    const nom = A.nombre || 'Campeón';
     const imcTxt = A.peso && A.altura ? `Calculando tu punto de partida: IMC ${coma(CALC.imc(A.peso, A.altura))}` : 'Calculando tu punto de partida…';
     const detalleTiempo = { Arranque: '2-3 días · 15-30 min', Ritmo: '3-4 días · 30-40 min', Impulso: '4-5 días · 45-60 min' }[A.tiempo] || A.tiempo || '';
     const msgs = [
@@ -1126,15 +1300,15 @@ const DATOS_PESO = {
       `Eligiendo el nivel de carga según tu tiempo: ${detalleTiempo}`,
       'Armando tu progresión desde cero…',
       'Armando tus 4 semanas de shadowboxing…',
-      `Listo, ${nom}. Tu plan está armado.`,
+      'Listo. Tu plan está armado.',
     ];
-    raiz.innerHTML = `<div class="scr carga"><h2>${esc(nom)}, estamos preparando tu plan</h2><div class="ring"><svg width="150" height="150"><circle cx="75" cy="75" r="64" stroke="#e5ebe6" stroke-width="11" fill="none"/><circle id="rc" cx="75" cy="75" r="64" stroke="#16A34A" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="${R}" stroke-dashoffset="${R}"/></svg><b id="pc">0%</b></div>${msgs.map((m, i) => `<div class="chkl" id="c${i}"><div class="ic"></div>${esc(m)}</div>`).join('')}</div>`;
+    raiz.innerHTML = `<div class="scr carga"><h2>Estamos preparando tu plan</h2><div class="ring"><svg width="150" height="150"><circle cx="75" cy="75" r="64" stroke="#e5ebe6" stroke-width="11" fill="none"/><circle id="rc" cx="75" cy="75" r="64" stroke="#16A34A" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="${R}" stroke-dashoffset="${R}"/></svg><b id="pc">0%</b></div>${msgs.map((m, i) => `<div class="chkl" id="c${i}"><div class="ic"></div>${esc(m)}</div>`).join('')}</div>`;
     window.scrollTo(0, 0);
     enfocaTitulo(raiz);
     let p = 0, pausa = false;
     const paso = 100 / msgs.length;                 // cada mensaje ocupa un sexto del avance
     const hitos = [
-      { en: Math.round(paso * 2), pregunta: `${nom}, ¿podés entrenar a la misma hora todos los días?`, opc: ['Sí, ya tengo mi horario', 'Algunos días'], dato: 'Un horario fijo ayuda a sostener la constancia.', aviso: 'Anotado', clave: 'horaFija' },
+      { en: Math.round(paso * 2), pregunta: '¿Podés entrenar a la misma hora todos los días?', opc: ['Sí, ya tengo mi horario', 'Algunos días'], dato: 'Un horario fijo ayuda a sostener la constancia.', aviso: 'Anotado', clave: 'horaFija' },
       { en: Math.round(paso * 4), pregunta: '¿Preferís entrenar a la mañana o a la noche?', opc: ['A la mañana', 'A la noche'], dato: 'Elegí el momento en el que más rendís.', aviso: 'Anotado', clave: 'momento' },
     ];
     const marca = () => msgs.forEach((_, i) => { const e = $('c' + i); if (e && p >= (i + 1) * paso - 0.01) { e.classList.add('d'); e.querySelector('.ic').textContent = '✓'; } });
@@ -1156,7 +1330,7 @@ const DATOS_PESO = {
 
   /* El pie legal es fijo y su alto cambia con el ancho de la ventana: las pantallas a todo el alto (peso.css) llegan justo hasta él. */
   const ajustaPie = () => { const f = document.querySelector('.ft'); if (f) forma.style.setProperty('--pie', f.offsetHeight + 'px'); };
-  pie(false, true);      // pie de comun.js, con los enlaces en pestaña nueva para no perder el quiz
+  pie(false, true, true);   // pie de comun.js: solo los dos enlaces, en pestaña nueva para no perder el quiz
   ajustaPie();
   window.addEventListener('resize', ajustaPie, { passive: true });
   dibuja();

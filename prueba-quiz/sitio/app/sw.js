@@ -4,7 +4,7 @@
    - El plan y el estado (/api/app/<acceso> y /plan): red primero con tiempo y, si falla, la copia guardada (se marca con x-bc-cache).
    - /img/: caché primero. /media/ y todo lo demás de /api/: sin caché (nunca 206). PUT y POST no se tocan.
    - Versión nueva: queda esperando hasta que la app avise («Hay una versión nueva») con el mensaje `actualizar`. */
-const VERSION = 'v2ebaa995e616';
+const VERSION = 'v18f61f3a35f2';
 const PRECARGA = [
   "/app/",
   "/app/offline.html",

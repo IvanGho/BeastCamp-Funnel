@@ -15,6 +15,7 @@ const salida = (ruta, contenido) => {
 };
 
 const css = src("base.css");
+const cssCompartido = src("compartido.css");   // estilos de la primera pantalla y la onda al tocar: los dos quiz
 const datosTxt = src("datos.js");
 const datos = new Function(`${datosTxt}; return DATOS;`)();
 const ilust = src("ilustraciones.js");
@@ -78,7 +79,7 @@ const DESC = {
 
 // ---------- Quiz ----------
 salida("quiz/index.html",
-  cabeza("BeastCamp · Plan de shadowboxing en casa", { descripcion: DESC.quiz, ruta: "/quiz/", imagenes: primeraPantallaQuiz }) +
+  cabeza("BeastCamp · Plan de shadowboxing en casa", { descripcion: DESC.quiz, ruta: "/quiz/", imagenes: primeraPantallaQuiz, cssExtra: cssCompartido }) +
   `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app" aria-live="polite"></main></div>${scripts(src("quiz.js"))}</body></html>`);
 
 // ---------- Oferta y rescates ----------
@@ -94,7 +95,7 @@ const cssOfertaPeso = peso("peso-oferta.css");
 // Primera pantalla (edad): el póster del video hook y los cuatro muñecos de sus tarjetas.
 const primeraPantallaPeso = ["/media/hook.jpg", ...["n_empiezo", "n_seis", "n_anios", "n_mas"].map((k) => `/img/muneco-${k}.webp`)];
 salida("quiz-peso/index.html",
-  cabeza("BeastCamp · Plan para bajar de peso en casa", { descripcion: DESC.quizPeso, ruta: "/quiz-peso/", og: "peso", imagenes: primeraPantallaPeso, cssExtra: cssPeso }) +
+  cabeza("BeastCamp · Plan para bajar de peso en casa", { descripcion: DESC.quizPeso, ruta: "/quiz-peso/", og: "peso", imagenes: primeraPantallaPeso, cssExtra: cssPeso + cssCompartido }) +
   `<body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app" aria-live="polite"></main></div>${scripts([peso("calculos-peso.js"), peso("datos-peso.js"), peso("quiz-peso.js")].join("\n"))}</body></html>`);
 for (const [id, titulo] of [["oferta", "BeastCamp Sombra · Tu plan de 4 semanas"], ["back1", "BeastCamp Sombra · 20% OFF"], ["back2", "BeastCamp Sombra · 50% OFF final"]]) {
   salida(`${id}-peso/index.html`,

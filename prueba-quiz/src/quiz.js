@@ -92,7 +92,7 @@ function dibuja() {
   let h = '';
   if (x.t === 'q') {
     h = (x.pill ? pillPersonas() : '') + `<h2>${esc(x.titulo)}</h2>` + (x.sub ? `<p class="sub">${esc(x.sub)}</p>` : '') + (x.globo ? `<div class="globo">${esc(x.globo)}</div>` : '') +
-      `<div class="grid">${x.o.map((o, i) => tarjeta(o, x.est, i, x.chico, false)).join('')}</div>` + (x.regalo ? regaloFranja() : '');
+      `<div class="grid">${x.o.map((o, i) => tarjeta(o, x.est, i, x.chico, false)).join('')}</div>` + (x.regalo ? regaloFranja() + tarjetaMini() + chipsGatillos() : '');
   } else if (x.t === 'multi') {
     h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p><div class="grid">${x.o.map((o, i) => tarjeta(o, 'B', i, true, true)).join('')}</div><button class="cta" id="seguir" disabled>Continuar</button>`;
   } else if (x.t === 'info') {
@@ -109,7 +109,7 @@ function dibuja() {
     const pro = /Impulso|Fighter/i.test(A.tiempo || '');
     h = `<div class="tag cen">Tu perfil</div><h2>${esc(A.nombre || 'Tu plan')}, así queda tu plan</h2><div class="box"><b>Tu punto de partida</b><br><span style="color:var(--m)">${esc(A.nivel || '')} · ${esc(A.obj || '')}</span></div><div class="box"><b>Tu camino</b><div class="sem"><b>Semana 1</b><span>Pies, guardia, jab y cross</span></div><div class="sem"><b>Semana 2</b><span>Esquivas y sombra</span></div><div class="sem"><b>Semana 3</b><span>Combinaciones y ritmo</span></div><div class="sem"><b>Semana 4</b><span>${pro ? 'Rounds de 3 min con más volumen y pausas controladas' : 'Rounds completos de 3 min'}</span></div></div><div class="box"><b>Tu carga</b><br><span style="color:var(--m)">${esc((A.tiempo || '').split(' · ')[0])}. ${pro ? 'Arrancás con una semana de adaptación y 1 día de descanso total: más horas no es mejor si no te recuperás.' : 'Subimos la carga de a poco, según cómo te sientas.'}</span></div><button class="cta" id="ver">Ver mi plan</button>`;
   }
-  raiz.innerHTML = `<div class="scr ${x.t}">${h}</div>`;
+  raiz.innerHTML = `<div class="scr ${x.t}${x.video === 'hook' ? ' hook' : ''}">${h}</div>`;
   window.scrollTo(0, 0);
   enlaza(x);
   if (s > 0) enfocaTitulo(raiz);
@@ -120,13 +120,13 @@ function enlaza(x) {
   if (x.t === 'q') {
     raiz.querySelectorAll('.c').forEach((b) => (b.onclick = () => {
       const o = x.o[+b.dataset.i];
-      b.classList.add('on'); A[x.k] = o[0]; guardaA(); vib(); setTimeout(siguiente, 220);
+      b.classList.add('on'); A[x.k] = o[0]; guardaA(); vib(); ondaYSonido(b); setTimeout(siguiente, 320);
     }));
   } else if (x.t === 'multi') {
     const sel = new Set();
     raiz.querySelectorAll('.c').forEach((b) => (b.onclick = () => {
       const i = +b.dataset.i; sel.has(i) ? sel.delete(i) : sel.add(i);
-      b.classList.toggle('on'); q('#seguir').disabled = sel.size === 0; vib(8);
+      b.classList.toggle('on'); q('#seguir').disabled = sel.size === 0; vib(8); ondaYSonido(b);
     }));
     q('#seguir').onclick = () => { A[x.k] = [...sel].map((i) => x.o[i][0]); guardaA(); siguiente(); };
   } else if (x.t === 'info' || x.t === 'experto') {
@@ -186,6 +186,6 @@ function cargando() {
   }, 96);                                          // 100 pasos x 96 ms ≈ 9,6 s (6 mensajes x 1,6 s)
 }
 
-pie();
+pie(false, false, true);
 dibuja();
 precargar();
