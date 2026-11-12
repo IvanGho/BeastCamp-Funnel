@@ -41,6 +41,12 @@ for (const [id, dominio, suyas, ajenas, inicio, nombre] of [
       // política de privacidad: solo el quiz de este funnel
       const priv = leer(d, "legal/privacidad/index.html");
       assert.equal(priv.includes("Quiz de peleadores:"), id === "camp"); assert.equal(priv.includes("Quiz de bajar de peso:"), id === "shadowboxing");
+      // nada del otro producto: ni en la privacidad ni en el texto de la app; la foto de la publicación solo en shadowboxing
+      assert.ok(!priv.includes("peleadores o bajar de peso"));
+      const appJs = leer(d, "app/index.html");
+      assert.equal(appJs.includes("Shadowboxing en casa para entrenar como peleador"), id === "camp");
+      assert.equal(appJs.includes("Bajar de peso con shadowboxing en casa"), id === "shadowboxing");
+      assert.equal(existsSync(join(d, "media/publicacion.jpg")), id === "shadowboxing");
       // en compu el quiz es una columna centrada como en el celular (sin pantalla partida)
       const quiz = leer(d, suyas[0] + "/index.html");
       assert.ok(!quiz.includes("min-width:900px") && quiz.includes(".shell{max-width:480px;margin-left:auto;margin-right:auto}"));

@@ -40,7 +40,10 @@ export function armarApp(id = "") {
   const datosFull = new Function(`${src("datos.js")}; return DATOS;`)();
   const datosTxt = `/*DATOS-INICIO*/\nconst DATOS = ${JSON.stringify({ contacto: datosFull.contacto, garantiaDias: datosFull.garantiaDias })};\n/*DATOS-FIN*/`;
   const nucleo = new Function(`${app("nucleo.js")}; return NUCLEO;`)();
-  const js = [datosTxt, ...JS.map(app)].join("\n");
+  // Cada app habla solo de su producto: el resumen del perfil lleva únicamente el texto de ese funnel.
+  const FUNNEL_TXT = { peso: "Bajar de peso con shadowboxing en casa", peleador: "Shadowboxing en casa para entrenar como peleador" };
+  const propios = V ? { [V.funnel]: FUNNEL_TXT[V.funnel] } : FUNNEL_TXT;
+  const js = [datosTxt, ...JS.map(app)].join("\n").replace(/const FUNNEL_TXT = \{[^\n]*\};/, () => `const FUNNEL_TXT = ${JSON.stringify(propios)};`);
   new Function(js);                                  // revisa la sintaxis (no se ejecuta)
   if (/<\/script/i.test(js)) throw new Error("El JS de la app no puede contener </script");
 

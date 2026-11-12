@@ -7,6 +7,7 @@ import { spawnSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { VARIANTES } from "./variantes.mjs";
+import { filtrarPropio } from "./filtro-propio.mjs";
 
 const aca = dirname(fileURLToPath(import.meta.url));
 const raiz = join(aca, "..");
@@ -24,6 +25,7 @@ export function armarDominio(id, salida = join(raiz, "despliegue", id)) {
   // Lo que no se arma: imágenes, videos y las capturas de la app.
   for (const d of ["img", "media"]) cpSync(join(raiz, "sitio", d), join(salida, d), { recursive: true });
   if (existsSync(join(raiz, "sitio", "app", "capturas"))) cpSync(join(raiz, "sitio", "app", "capturas"), join(salida, "app", "capturas"), { recursive: true });
+  filtrarPropio(raiz, salida, id);
   return salida;
 }
 

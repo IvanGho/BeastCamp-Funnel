@@ -17,6 +17,7 @@ const salida = (ruta, contenido) => {
   if (V && PAGINAS_DE_FUNNEL.test(ruta) && !V.paginas.includes(ruta.split("/")[0])) return;   // la página del otro funnel no sale en este dominio
   // Un enlace al quiz del otro funnel (p. ej. «Ver el plan de técnica» para quien no necesita bajar de peso) apunta al otro dominio.
   if (V && typeof contenido === "string") for (const o of Object.values(VARIANTES)) if (o.id !== V.id) contenido = contenido.replaceAll(`href="${o.quiz}"`, `href="https://${o.dominio}${o.quiz}"`);
+  if (V && typeof contenido === "string") contenido = contenido.replaceAll("el funnel (peleadores o bajar de peso), ", "");   // cada dominio habla solo de su producto
   const destino = join(DESTINO, ruta);
   mkdirSync(dirname(destino), { recursive: true });
   writeFileSync(destino, contenido);

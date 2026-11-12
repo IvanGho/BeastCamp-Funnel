@@ -125,6 +125,7 @@ export async function crearServicio({ dataDir, env = process.env, planDe, fetch:
   const hacerFetch = fetchInyectado ?? ((...a) => globalThis.fetch(...a));
 
   const dir = dataDir || e("DATA_DIR") || e("STATE_DIRECTORY") || "/data";
+  const FUNNEL_FIJO = FUNNELS.has(e("FUNNEL_FIJO")) ? e("FUNNEL_FIJO") : "";   // peleador | peso: si está, este servicio es de ese producto y nada más
   const baseCruda = e("BASE_URL").replace(/\/+$/, "");
   const baseUrl = /^https?:\/\/[^\s/?#]+$/i.test(baseCruda) ? baseCruda : "";
   const consola = e("MAIL_A_CONSOLA") === "1";
@@ -292,6 +293,7 @@ export async function crearServicio({ dataDir, env = process.env, planDe, fetch:
       return responderJson(res, 200, { ok: true, ping: true });
     }
     const datos = datosDePago(cuerpo);
+    if (datos && FUNNEL_FIJO) datos.funnel = FUNNEL_FIJO;   // cada dominio vende un solo producto
     if (!datos) return responder(res, 400);
     // IP, navegador y los identificadores de anuncios solo sirven para mandarle la compra a Meta:
     // sin Meta configurado no se guardan (menos datos personales en disco).

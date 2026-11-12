@@ -19,14 +19,14 @@ const DATOS_PESO = {
   /* Slide «¿Llegaste a ver esto?» con una publicación. Vacío = en el sitio publicado la slide no aparece (en tu compu se ve el esqueleto, con el espacio de la imagen).
      Solo contenido con fuente propia y verificable: imagen y texto de lo que de verdad se publicó, con su fuente y enlace. */
   publicacion: {
-    etiqueta: '',
-    titular: '',
-    bajada: '',
-    fuente: '',
-    fecha: '',
+    etiqueta: 'Salud · Medicina deportiva',
+    titular: 'El boxeo de sombra, según el Dr. Néstor J. Medina',
+    bajada: '«El boxeo de sombra es un aliado increíble para mejorar la resistencia, quemar grasa y mantenerse en forma.»',
+    fuente: 'Dr. Néstor J. Medina (MN 9467), médico deportólogo',
+    fecha: 'Mayo de 2026',
     enlace: '',
-    imagen: '',   // ej. '/media/publicacion.jpg'
-    alt: '',
+    imagen: '/media/publicacion.jpg',
+    alt: 'El Dr. Néstor J. Medina, médico deportólogo, en un gimnasio de boxeo',
   },
 
   /* Fuentes citadas en el quiz. Cada una con su enlace; si falta `verificada` o `url`, el texto va sin cifra o se oculta. */

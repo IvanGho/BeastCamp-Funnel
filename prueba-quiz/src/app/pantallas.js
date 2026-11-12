@@ -39,7 +39,7 @@ function vBienvenida(sel, apodo) {
   const nombre = ESTADO.nombre || 'campeón';
   return `<section class="bien">
     <div class="bien-h"><div class="bien-im">${mun(nv.id)}</div><div><p class="tag">Tu plan está listo</p><h1 tabindex="-1">Hola, ${esc(nombre)}</h1></div></div>
-    <div class="box resumen"><div class="row"><span>Perfil</span><b>${esc(FUNNEL_TXT[ESTADO.funnel] || FUNNEL_TXT.peso)}</b></div>
+    <div class="box resumen"><div class="row"><span>Perfil</span><b>${esc(FUNNEL_TXT[ESTADO.funnel] || Object.values(FUNNEL_TXT)[0])}</b></div>
       <div class="row"><span>Nivel</span><b id="b-nivel">${esc(nv.nombre)} · ${esc(nv.dias)}</b></div>
       <div class="row"><span>Duración</span><b>4 semanas · ${esc(nv.minutos)} por sesión</b></div></div>
     <h2>Tu apodo para el ranking</h2>
