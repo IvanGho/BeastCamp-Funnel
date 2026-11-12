@@ -150,7 +150,7 @@ test("quiz: cada pantalla lleva el foco a su título, #app anuncia los cambios y
       const p = await ctx.newPage();
       await p.goto(base + "/quiz/", { waitUntil: "load" });
       for (let v = 0; v < 30; v++) {
-        await p.waitForTimeout(450);
+        await p.waitForTimeout(650);   // 320 ms de onda + 170 ms de salida de la pantalla
         if (await p.$("#m")) break;
         if (await p.$("#seguir:not([disabled])")) { await p.click("#seguir"); continue; }
         if (await p.$("#seguir[disabled]")) { await p.click(".c >> nth=0"); await p.click("#seguir"); continue; }
@@ -170,7 +170,7 @@ test("quiz: cada pantalla lleva el foco a su título, #app anuncia los cambios y
 /* Lleva el quiz de peso hasta el perfil con la altura, el peso y la meta dados; devuelve el CLS acumulado desde que entra la carga. */
 async function hastaElPerfil(p: Page, alt: number, peso: number, meta: number, nombre: string) {
   for (let v = 0; v < 50; v++) {
-    await p.waitForTimeout(v === 0 ? 150 : 420);
+    await p.waitForTimeout(v === 0 ? 150 : 650);
     const info = await p.evaluate(() => {
       const s = document.querySelector("#app .scr"); if (!s) return null;
       const h = s.querySelector("h2")?.textContent ?? "";
@@ -183,7 +183,7 @@ async function hastaElPerfil(p: Page, alt: number, peso: number, meta: number, n
       for (let k = 0; k < 2; k++) { await p.waitForSelector(".velo button", { timeout: 25000 }); await p.waitForTimeout(300); await p.click(".velo button >> nth=0"); await p.waitForTimeout(300); }
       await p.waitForSelector("#ver", { timeout: 30000 }); await p.waitForTimeout(600); return;
     }
-    if (info.n) { await p.fill("#n", String(/medís/i.test(info.h) ? alt : /pesás/i.test(info.h) ? peso : meta)); await p.waitForTimeout(150); await p.click("#seguir"); continue; }
+    if (info.n) { await p.evaluate((x) => { const i = document.querySelector("#n") as HTMLInputElement; i.value = x; i.dispatchEvent(new Event("input", { bubbles: true })); }, String(/medís/i.test(info.h) ? alt : /pesás/i.test(info.h) ? peso : meta)); await p.waitForTimeout(150); await p.click("#seguir"); continue; }
     if (info.nm) { await p.fill("#nm", nombre); await p.click("#seguir"); continue; }
     if (info.c && info.seguir) { await p.click(".c >> nth=0"); await p.click(".c >> nth=2"); await p.click("#seguir"); continue; }
     if (info.c) { await p.click(".c >> nth=1"); continue; }      // en «evento» la opción 1 («Un casamiento o evento») deja la línea más larga en el perfil

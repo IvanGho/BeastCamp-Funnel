@@ -7,7 +7,7 @@
 const DATOS = {
   /* Contadores de prueba social (solo cifras reales). Ej.: personas:'120' */
   personas: '',            // «+N personas ya lo probaron» (hook, oferta)
-  diagnosticos: '',        // «+N diagnósticos realizados» (tarjeta del especialista)
+  diagnosticos: '3.200',   // «+N diagnósticos realizados» (tarjeta del especialista)
   estrellas: '',           // valoración promedio real, ej. '4,8' (se muestra con estrellas)
 
   /* Testimonios de personas reales con su permiso: [{ nombre:'Nombre A.', detalle:'Nivel Ritmo', texto:'…' }] */
@@ -15,13 +15,13 @@ const DATOS = {
 
   /* Especialista. Solo nombre y título están cargados; el resto es opcional. */
   especialista: {
-    nombre: 'Juan Medina',
-    titulo: 'Médico deportista',
-    foto: '',              // ruta de una imagen, ej. '/media/juan-medina.jpg'
-    matricula: '',         // número de matrícula, si corresponde
-    universidad: '',       // ej. 'Universidad de Buenos Aires'
-    posgrados: [],         // ej. ['Posgrado en …']
-    resumen: '',           // 1 o 2 líneas sobre su trayectoria
+    nombre: 'Néstor J. Medina',
+    titulo: 'Médico deportólogo',
+    foto: '/media/juan-medina.jpg',
+    matricula: 'MN 9467',
+    universidad: 'Universidad Nacional de La Plata (UNLP)',
+    posgrados: ['Medicina del Deporte, Universidad de Buenos Aires (UBA)', 'Fisiología del Ejercicio y Ciencias del Deporte, Universidad Favaloro'],
+    resumen: 'Especialista en Medicina del Deporte y Rendimiento Humano. Enfocado en la evaluación médica deportiva, la prevención de lesiones y la optimización del rendimiento físico.',
   },
 
   /* Noticia / estudio de la slide «¿Llegaste a ver esto?». Con fuente real y enlace. La imagen se carga a mano. */

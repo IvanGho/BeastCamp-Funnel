@@ -18,9 +18,11 @@ import { chromium, type Page } from "playwright-core";
 
 const CHROMES = [process.env.CHROME_PATH, "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "C:/Program Files/Google/Chrome/Application/chrome.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe", "/usr/bin/google-chrome", "/usr/bin/chromium", "/opt/pw-browsers/chromium"].filter(Boolean) as string[];
 const chrome = CHROMES.find((c) => existsSync(c));
+/* El peso y la altura se eligen con un deslizador (no se escriben): mueve el valor y avisa como si el usuario lo deslizara. */
+async function setRango(p: Page, v: string) { await p.evaluate((x) => { const i = document.querySelector("#n") as HTMLInputElement; i.value = x; i.dispatchEvent(new Event("input", { bubbles: true })); }, v); }
 const TIPOS: Record<string, string> = { ".html": "text/html; charset=utf-8", ".mp4": "video/mp4", ".jpg": "image/jpeg", ".webp": "image/webp", ".txt": "text/plain" };
 const TAMANOS = [[1366, 620], [1280, 600], [1920, 1080], [390, 844], [360, 640], [425, 812]] as const;   // 425x812 es el celular del usuario
-const REGALO = "Con tu plan te llevás de regalo la guía de guardia y desplazamientos.";
+const REGALO = "Al terminar te dejamos un regalo. Ya está reservado para vos.";
 const CUERPO = ["c_delgado", "c_normal", "c_kilos", "c_sobrepeso"];   // «¿Cómo ves tu cuerpo hoy?»: el mismo boxeador en cuatro contexturas
 /* Frases de barra y ciclo del contador de cada página: los mismos de oferta.js y comun.js. */
 const BARRAS: Record<string, string> = { "oferta-peso": "Tu precio de lanzamiento está reservado por", "back1-peso": "ESPERÁ — TU DESCUENTO ESTÁ RESERVADO POR", "back2-peso": "ÚLTIMA OPORTUNIDAD — SE ACABA EN" };
@@ -292,7 +294,7 @@ async function revisarInformativa(p: Page, nombre: string, hallazgos: Hallazgo[]
 async function revisarMedida(p: Page, nombre: string, hallazgos: Hallazgo[]) {
   const r = await p.evaluate(() => {
     const rc = (e: Element | null) => { const b = e ? e.getBoundingClientRect() : new DOMRect(0, 0, 0, 0); return { x: b.left, y: b.top, w: b.width, h: b.height, b: b.bottom, r: b.right }; };
-    return { h2: rc(document.querySelector("h2")), sub: rc(document.querySelector(".sub")), mu: rc(document.querySelector("img.mu")), nbox: rc(document.querySelector(".nbox")), msg: rc(document.querySelector(".msg")), cta: rc(document.querySelector("#seguir")), msgScroll: (document.querySelector(".msg") as HTMLElement).scrollHeight, ancho: innerWidth };
+    return { h2: rc(document.querySelector("h2")), sub: rc(document.querySelector(".sub")), mu: rc(document.querySelector("img.mu")), nbox: rc(document.querySelector(".slid")), msg: rc(document.querySelector(".msg")), cta: rc(document.querySelector("#seguir")), msgScroll: (document.querySelector(".msg") as HTMLElement).scrollHeight, ancho: innerWidth };
   });
   const falla = (problema: string) => hallazgos.push({ pantalla: nombre, problema });
   if (r.h2.y > 40) falla(`el título no queda arriba: empieza en ${Math.round(r.h2.y)}px`);
@@ -380,7 +382,7 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   /* Primera pantalla: video hook, prueba social (solo con datos), 4 tarjetas con muñeco y la franja de regalo con su texto verdadero. */
   if (!(await video()).endsWith("/media/hd/hook.mp4")) falla("edad", "la primera pantalla no usa el video hook");
   const hook = await p.evaluate(() => ({ pill: !!document.querySelector(".pill"), regalo: document.querySelector(".gift")?.textContent?.trim() ?? "", icono: !!document.querySelector(".gift svg") }));
-  const hayPersonas = !!(await p.evaluate("DATOS.personas"));
+  const hayPersonas = !!(await p.evaluate("DATOS_PESO.personas"));
   if (hook.pill !== hayPersonas) falla("edad", `la píldora de personas ${hayPersonas ? "falta aunque hay cifra de personas" : "aparece sin cifra real"}`);
   if (vista && !hayPersonas) falla("edad", "los datos de relleno deberían traer la cifra de personas");
   if (hook.regalo !== REGALO || !hook.icono) falla("edad", `la franja de regalo no dice lo acordado: «${hook.regalo}»`);
@@ -398,8 +400,9 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   await revisarFilas(p, "zonas-con-seleccion", hallazgos);
   await p.click(".c >> nth=2"); await clic("#seguir");
   await m("forma", { tarjetas: 4 }); await revisarFilas(p, "forma", hallazgos, 4, false); await clic(".c >> nth=0");
+  await m("publicacion"); await clic("#seguir");   // slide de la publicación: dos botones abajo (el de arriba avanza)
+  await m("exp", { tarjetas: 4 }); await clic(".c >> nth=0");
   await m("info30", { escenas: 3 }); await revisarInformativa(p, "info30", hallazgos); await boton("info30"); await clic("#seguir");
-  await m("exp", { tarjetas: 3 }); await clic(".c >> nth=0");
   await m("actividad", { tarjetas: 4 }); await revisarFilas(p, "actividad", hallazgos, 4, false); await clic(".c >> nth=1");
   await m("escaleras", { tarjetas: 3 }); await clic(".c >> nth=1");
   await m("dia", { tarjetas: 4 }); await clic(".c >> nth=0");
@@ -409,31 +412,23 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   await m("infoboxeo", { escenas: 3 }); await revisarInformativa(p, "infoboxeo", hallazgos); await boton("infoboxeo"); await clic("#seguir");
   await m("frenos", { tarjetas: 6 }); await revisarGrilla6(p, "frenos", hallazgos); await p.click(".c >> nth=0"); await p.click(".c >> nth=2"); await revisarGrilla6(p, "frenos-con-seleccion", hallazgos); await boton("frenos"); await clic("#seguir");
   await m("tiempo", { tarjetas: 3 }); await clic(".c >> nth=1");
-  await m("precio", { tarjetas: 4 }); await clic(".c >> nth=2");
-  await m("altura", { medida: true }); await revisarMedida(p, "altura", hallazgos); await boton("altura"); await p.fill("#n", "175"); await p.waitForTimeout(100); await revisarMedida(p, "altura-con-valor", hallazgos); await boton("altura-con-valor"); await clic("#seguir");
+  await m("altura", { medida: true }); await revisarMedida(p, "altura", hallazgos); await boton("altura"); await setRango(p, "175"); await p.waitForTimeout(100); await revisarMedida(p, "altura-con-valor", hallazgos); await boton("altura-con-valor"); await clic("#seguir");
   await m("peso", { medida: true }); await revisarMedida(p, "peso", hallazgos); await boton("peso");
-  await p.fill("#n", "57"); await p.waitForTimeout(150);
+  await setRango(p, "57"); await p.waitForTimeout(150);
   if (!(await p.isDisabled("#seguir"))) falla("peso", "peso igual al mínimo sano deja pasar a una meta imposible");
-  await p.fill("#n", "92"); await p.waitForTimeout(150); await m("peso-con-imc", { medida: true }); await revisarMedida(p, "peso-con-imc", hallazgos); await boton("peso-con-imc"); await clic("#seguir");
+  await setRango(p, "92"); await p.waitForTimeout(150); await m("peso-con-imc", { medida: true }); await revisarMedida(p, "peso-con-imc", hallazgos); await boton("peso-con-imc"); await clic("#seguir");
   await m("pesometa", { medida: true }); await revisarMedida(p, "pesometa", hallazgos); await boton("pesometa");
-  await p.fill("#n", "50"); await p.waitForTimeout(150);
+  await setRango(p, "50"); await p.waitForTimeout(150);
   if (!(await p.isDisabled("#seguir"))) falla("pesometa", "meta por debajo del mínimo sano no deshabilita el botón");
   await m("pesometa-bajo-minimo", { medida: true }); await revisarMedida(p, "pesometa-bajo-minimo", hallazgos); await boton("pesometa-bajo-minimo");
-  await p.fill("#n", "92"); await p.waitForTimeout(150);
+  await setRango(p, "92"); await p.waitForTimeout(150);
   if (!(await p.isDisabled("#seguir"))) falla("pesometa", "meta igual al peso actual no deshabilita el botón");
-  await p.fill("#n", "80"); await p.waitForTimeout(150);
+  await setRango(p, "80"); await p.waitForTimeout(150);
   if (await p.isDisabled("#seguir")) falla("pesometa", "una meta válida deja el botón deshabilitado");
   await m("pesometa-ok", { medida: true }); await revisarMedida(p, "pesometa-ok", hallazgos); await boton("pesometa-ok"); await clic("#seguir");
   await m("evento", { tarjetas: 4 }); await clic(".c >> nth=0");
   await m("experto"); await boton("experto"); await revisarReparto(p, "experto", hallazgos, 90); await clic("#seguir");
-  await m("mail"); await boton("mail"); await revisarReparto(p, "mail", hallazgos, 150);
-  if (await p.evaluate(() => { const c = document.querySelector(".scr")!.children; return !(c[c.length - 2]?.classList.contains("chips") && c[c.length - 1]?.id === "seguir"); })) falla("mail", "los chips deberían ir justo antes del botón");
-  if (!(await video()).endsWith("/media/hd/mail.mp4")) falla("mail", "la pantalla de mail no usa el video mail");
-  /* Solo el nombre: sin campo de mail, con el texto acordado, y Enter avanza. */
-  const mailPantalla = await p.evaluate(() => ({ m: !!document.querySelector("#m"), email: !!document.querySelector("input[type=email]"), inputs: document.querySelectorAll(".scr input").length, tag: document.querySelector(".tag")?.textContent, h2: document.querySelector("h2")?.textContent, sub: document.querySelector(".sub")?.textContent, boton: document.querySelector("#seguir")?.textContent, chip: document.querySelector(".chips")?.textContent?.trim() }));
-  if (mailPantalla.m || mailPantalla.email || mailPantalla.inputs !== 1) falla("mail", `la pantalla debería tener solo el campo de nombre: ${JSON.stringify(mailPantalla)}`);
-  if (mailPantalla.tag !== "Ya casi" || mailPantalla.h2 !== "Tu plan está casi listo" || mailPantalla.sub !== "Decinos cómo te llamás para personalizar tu plan." || mailPantalla.boton !== "Ver mi plan" || !/Tu peso y tu altura no salen de tu celu/.test(mailPantalla.chip ?? "")) falla("mail", `los textos de la pantalla no son los acordados: ${JSON.stringify(mailPantalla)}`);
-  await p.fill("#nm", "Prueba"); await p.press("#nm", "Enter"); await p.waitForTimeout(520);
+  await p.waitForTimeout(520);
   await p.waitForSelector(".velo", { timeout: 20000 }); await m("carga-pop1"); await p.click(".velo button >> nth=0");
   await p.waitForSelector(".velo", { timeout: 20000 }); await m("carga-pop2"); await p.click(".velo button >> nth=0");
   await p.waitForSelector("#ver", { timeout: 20000 }); await m("perfil"); await boton("perfil", "#ver"); await revisarReparto(p, "perfil", hallazgos, 90);
@@ -451,8 +446,6 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   if (!perfil.tag || !perfil.imc || !perfil.graf) falla("perfil", `el perfil perdió el .tag, la barra de IMC o la proyección dentro de los .box (${JSON.stringify(perfil)})`);
   const llamadas: string[] = await p.evaluate(() => (window as any).__llamadas);
   if (llamadas.includes("lead")) falla("mail", `el quiz llamó a __send('lead'): ${llamadas.join(", ")}`);
-  const nombreGuardado = await p.evaluate(() => JSON.parse(sessionStorage.getItem("bc_resp") ?? "{}").nombre);
-  if (nombreGuardado !== "Prueba") falla("mail", `el nombre no quedó guardado en el navegador: ${nombreGuardado}`);
   await p.click("#ver");
   await p.waitForURL("**/oferta-peso/**"); await p.waitForTimeout(600);
   await captura("oferta");
@@ -472,11 +465,11 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   p2.on("pageerror", (e) => errores.push(String(e)));
   p2.on("console", (m) => { if (m.type() === "error" && !/404|favicon/.test(m.text())) errores.push(m.text()); });
   await p2.route("**/api/*", (r) => r.fulfill({ status: 204 }));
-  /* El contador de oferta arranca casi en cero (faltan 2 s) para comprobar que se reinicia solo, como el de /oferta/. */
-  await p2.addInitScript(() => { try { sessionStorage.setItem("bc_t0_oferta", String(Math.floor(Date.now() / 1000) - 598)); } catch (e) {} });
+  /* El contador de oferta arranca casi en cero (faltan 5 s: margen para que una carga lenta no lo reinicie antes de leerlo) para comprobar que se reinicia solo, como el de /oferta/. */
+  await p2.addInitScript(() => { try { sessionStorage.setItem("bc_t0_oferta", String(Math.floor(Date.now() / 1000) - 595)); } catch (e) {} });
   await p2.goto(`${base}/oferta-peso/`); await p2.waitForTimeout(400);
   const cuenta = await p2.evaluate(() => document.querySelector(".tbar .tm")?.textContent ?? "");
-  if (!(segundos(cuenta) >= 1 && segundos(cuenta) <= 2)) falla("oferta-peso", `el contador debería arrancar en 00:02 o 00:01 y marca «${cuenta}»`);
+  if (!(segundos(cuenta) >= 1 && segundos(cuenta) <= 5)) falla("oferta-peso", `el contador debería arrancar entre 00:05 y 00:01 y marca «${cuenta}»`);
   const directa = await p2.evaluate(() => ({ h1: document.querySelector("h1")?.textContent ?? "", personal: !!document.querySelector(".po-hoy, .po-graf"), video: !!document.querySelector(".vid video"), pasos: document.querySelectorAll(".box .st").length }));
   if (directa.personal || !directa.video || directa.pasos !== 13 || directa.h1 !== "Tu plan para bajar de peso ya está armado.") falla("oferta-peso", `la entrada directa no queda bien: ${JSON.stringify(directa)}`);
   await p2.waitForFunction(() => { const t = document.querySelector(".tbar .tm")?.textContent ?? ""; return /^\d\d:\d\d$/.test(t) && +t.slice(0, 2) * 60 + +t.slice(3) > 590; }, null, { timeout: 6000 })

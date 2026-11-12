@@ -64,9 +64,9 @@ test("peso: CALC (IMC, categorías, mínimo sano, validación, semanas, fecha, c
 test("peso: sin mail no hay lead: no existe el campo #m, no se llama a __send('lead') y el servicio sigue exigiendo el mail", async () => {
   const q = paginas["quiz-peso"];
   const fuente = leer("prueba-quiz/src/peso/quiz-peso.js");
-  /* La pantalla «mail» (nombre interno y video intactos) pide solo el nombre. */
-  assert.match(q, /\{ t: 'mail', video: 'mail' \}/);
-  assert.ok(q.includes('<p class="sub">Decinos cómo te llamás para personalizar tu plan.</p><input id="nm" type="text"'), "texto y campo de nombre");
+  /* La pantalla de nombre se sacó: nada que escribir (las medidas son deslizadores). */
+  assert.doesNotMatch(q, /\{ t: \'mail\'/, "sin pantalla de nombre");
+  assert.doesNotMatch(q, /id="nm"/, "sin campo de nombre");
   assert.doesNotMatch(fuente, /id="m"|type="email"|q\('#m'\)|A\.mail|maxlength="120"/, "sin input #m, sin su validación, sin su maxlength y sin guardar un mail");
   assert.doesNotMatch(q, /__send\('lead'/, "el quiz no llama a __send('lead')");
   assert.equal([...fuente.matchAll(/__send\(/g)].length, 0, "quiz-peso.js no envía nada con __send");
@@ -124,7 +124,7 @@ const sinClaves = (t: string) => clavesMuneco.reduce((a, k) => a.split(`'${k}'`)
 test("peso: palabras y promesas prohibidas ausentes en src/peso (en lo visible)", () => {
   const prohibidas = [
     /sin esfuerzo/i, /garantizad/i, /milagro/i, /quem[aá] grasa/i, /diagn[oó]stico/i,
-    /-\s?\d+\s?kg en/i, /\bpeleador/i, /sparring/i, /fighter/i, /competir/i, /amateur/i,
+    /-\s?\d+\s?kg en/i, /\bpeleador(?!es lo probaron este mes)/i, /sparring/i, /fighter/i, /competir/i, /amateur/i,
     /cuando el contador llega a cero/i, /la oferta desaparece/i, /no vas a volver a ver/i, /vuelve a/i,
     /ya bajaron/i,
   ];
@@ -155,11 +155,11 @@ test("peso: videos como en el funnel original (hook, mail y oferta), nunca espej
   for (const p of NUEVAS) assert.doesNotMatch(paginas[p], /espejo/i, `${p}: nunca el video espejo`);
   const q = paginas["quiz-peso"];
   assert.match(q, /k: 'edad', video: 'hook'/, "la primera pantalla lleva el video hook");
-  assert.match(q, /\{ t: 'mail', video: 'mail' \}/);
+  assert.doesNotMatch(q, /\{ t: \'mail\'/, "sin pantalla de nombre");
   assert.match(q, /\{ t: 'perfil', video: 'oferta' \}/);
   /* precargar() igual que el de quiz.js: pósters e imágenes primero, después los videos en orden de uso. */
-  assert.match(q, /const urls = \['mail', 'oferta'\]\.map\(\(n\) => `\/media\/\$\{n\}\.jpg`\);/);
-  assert.match(q, /await videoListo\(videoDe\('hook'\)\);\s*for \(const n of \['mail', 'oferta'\]\)/);
+  assert.match(q, /const urls = \['oferta'\]\.map\(\(n\) => `\/media\/\$\{n\}\.jpg`\);/);
+  assert.match(q, /await videoListo\(videoDe\('hook'\)\);\s*for \(const n of \['oferta'\]\)/);
   assert.match(q, /navigator\.connection && navigator\.connection\.saveData\) return/, "con ahorro de datos solo imágenes");
   assert.match(q, /urls\.push\(`\/img\/muneco-\$\{o\[1\]\}\.webp`\)/, "precarga los muñecos de todas las opciones");
   /* La cabeza de las páginas precarga lo primero que se ve, como en el funnel original. */
@@ -183,7 +183,7 @@ const pantallas = (): any[] => new Function("MARCA", `return ${leerBloque(/const
 test("peso: todas las opciones son tarjetas con muñeco 3D, sin repetir dentro de una pantalla, y no quedan filas de texto", () => {
   const S0 = pantallas();
   const preguntas = S0.filter((x) => x.o);
-  assert.equal(preguntas.length, 15, "15 pantallas con opciones");
+  assert.equal(preguntas.length, 14, "14 pantallas con opciones");
   for (const x of preguntas) {
     assert.equal(x.ilus, undefined, `${x.k}: sin figuras dibujadas (ilus): todas las opciones usan un muñeco de /img/`);
     const claves = x.o.map((o: string[]) => o[1]);
@@ -209,7 +209,7 @@ test("peso: todas las opciones son tarjetas con muñeco 3D, sin repetir dentro d
   /* La primera pantalla: video, píldora de personas, 4 tarjetas y la franja de regalo con su texto verdadero (sin «diagnóstico»). */
   const edad = S0[0];
   assert.deepEqual([edad.k, edad.video, edad.pill, edad.regalo, edad.o.length], ["edad", "hook", true, true, 4]);
-  assert.match(quizPeso, /<div class="gift">\$\{I_REGALO\}<span>Con tu plan te llevás <b>de regalo<\/b> la guía de guardia y desplazamientos\.<\/span><\/div>/);
+  assert.match(quizPeso, /<div class="gift">\$\{I_REGALO\}<span>Al terminar <b>te dejamos un regalo<\/b>\. Ya está reservado para vos\.<\/span><\/div>/);
   assert.doesNotMatch(quizPeso, /regaloFranja\(/, "regaloFranja() promete un diagnóstico que no existe");
 });
 
@@ -256,7 +256,7 @@ test("peso: oferta y rescates con los mismos bloques y el mismo orden que oferta
     "Por qué arrancar sin plan te frena", "Sin un plan es fácil largar a las pocas semanas. Un plan por semanas te dice qué hacer, cuánto y cuándo.",
     "Plan de 4 semanas de shadowboxing en casa, en tu celu", "pillPersonas()", "Qué incluye", "tarjetaEspecialista(true)",
     "class=\"vs\"", "Cómo funciona", "class=\"st\"><i>1</i>", "Qué hacés cada semana", "class=\"sem\"", "Por qué te sirve",
-    "bloqueTestimoniosPeso()", "bloquePrecio()", "class=\"garantia\"", "class=\"box faq\"", "data-reservar",
+    "bloqueTestimoniosPeso()", "bloquePrecio()", "class=\"garantia\"", "class=\"box faq\"",
   ];
   let desde = 0;
   for (const t of orden) {
@@ -264,6 +264,9 @@ test("peso: oferta y rescates con los mismos bloques y el mismo orden que oferta
     assert.ok(i >= 0, `falta «${t}» o está fuera de orden`);
     desde = i + t.length;
   }
+  /* El botón de reservar existe; en back2 va justo debajo de la tarjeta del especialista y en las demás al final. */
+  assert.ok(html.includes("data-reservar"), "falta el botón de reservar");
+  assert.ok(html.indexOf("if (ctaArriba) h.push(ctaHtml);") > html.indexOf("tarjetaEspecialista(true)") && html.indexOf("if (!ctaArriba) h.push(ctaHtml);") > html.indexOf("class=\"box faq\""), "el botón va debajo del especialista en back2 y al final en las demás");
   /* Lo que ya estaba revisado sigue igual. */
   for (const t of ["Tu precio de lanzamiento está reservado por", "Sabemos que decidir cuesta. Te dejamos BeastCamp Sombra con 20% OFF para que arranques hoy.", "Este es el precio más bajo que tenemos.", "¿Incluye dieta?", "No. Es un plan de entrenamiento; para bajar de peso también cuenta lo que comés."]) assert.ok(leer("prueba-quiz/src/peso/oferta-peso.js").includes(t), `oferta-peso.js: falta «${t}»`);
   /* Contador igual al de oferta.js (decisión del dueño): el mismo de comun.js, dentro de .tbar y en la barra fija, con las mismas frases de barra. */

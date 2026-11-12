@@ -25,6 +25,7 @@
 .scr.filas .grid{grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(5,minmax(0,1fr));gap:8px}
 .scr.alto.seis .grid{grid-template-rows:repeat(3,minmax(0,1fr))}   /* «causas» y «frenos»: 2 columnas x 3 filas */
 .scr.filas.cuatro .grid{grid-template-rows:repeat(4,minmax(0,1fr))}   /* «forma» y «actividad»: 4 filas */
+.scr.filas.tres .grid{grid-template-rows:repeat(3,minmax(0,1fr))}   /* «escaleras» y «tiempo»: 3 filas */
 .scr.filas .grid>.c:last-child:nth-child(odd){grid-column:auto;justify-self:stretch;width:auto}
 .scr.alto .cta,.scr.filas .cta{flex:none;margin-top:12px}   /* igual que el botón de las demás pantallas */
 .scr.fijo>.cta{flex:none;margin-top:auto}
@@ -117,3 +118,10 @@
 @media(max-width:899px){.shell.alto:has(.scr.perfil){grid-template-rows:auto 1fr}}
 .shell.alto:has(.scr.perfil) main{min-height:auto}
 .scr.fijo.perfil{flex:1 0 auto}
+/* Slide «¿Llegaste a ver esto?» con una publicación: tarjeta con espacio para la imagen arriba y los dos botones abajo. */
+.scr.publicacion .nota{flex:1 1 0;min-height:0;display:flex;flex-direction:column;margin:6px 0 12px}
+.scr.publicacion .nota .im{flex:1 1 auto;height:auto;min-height:140px;background:#eef2ef}
+.scr.publicacion .nota .im svg{stroke:#9fb0a5;width:64px;height:64px}
+.scr.publicacion .nota .tx{flex:none}
+.scr.publicacion>.cta{flex:none;margin-top:0}
+.scr.publicacion>.cta+.cta{margin-top:10px}

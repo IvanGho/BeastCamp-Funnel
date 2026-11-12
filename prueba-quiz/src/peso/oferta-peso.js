@@ -98,9 +98,13 @@ function bloqueTestimoniosPeso(titulo = 'Lo que cuentan quienes lo probaron') {
 
 function html() {
   const h = [];
+  const boton = esRescate ? CFG.boton : `QUIERO MI PLAN POR ${precio} →`;
+  const apoyo = esRescate ? CFG.apoyo + precio : 'Empezar hoy mismo';
+  const ctaHtml = `<button class="cta" data-reservar>${boton}<span style="display:block;font-size:13px;font-weight:600;margin-top:2px">${apoyo}</span></button>`;
+  const ctaArriba = PAGINA === 'back2';   // en la última oferta el botón va justo debajo de la tarjeta del especialista (y no al final)
   h.push(`<div class="tbar${esRescate ? ' up' : ''}"><span>${CFG.barra}</span> <b class="tm">10:00</b></div>`);
   h.push(bloqueEncabezado());
-  h.push(`<div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" width="960" height="540" aria-hidden="true" tabindex="-1" disablepictureinpicture></video></div>`);
+  h.push(`<div class="vid-fila"><div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" width="960" height="540" aria-hidden="true" tabindex="-1" disablepictureinpicture></video></div><div class="vid-info">${tildes(['Plan de 4 semanas', '4 niveles de carga', 'Rutinas guiadas paso a paso', 'Timer de rounds'])}</div></div>`);
   h.push(bloqueHoyMeta());
   h.push(bloqueGrafico());
   h.push(`<div class="box sello">${I_ESCUDO}<div><b>Hecho para arrancar de cero</b><br><span style="color:var(--m);font-size:14px">No necesitás saber boxear ni tener equipo.</span></div></div>`);
@@ -116,6 +120,7 @@ function html() {
     'En tu celu, sin descargar nada y sin equipo',
   ])}</div>`);
   h.push(tarjetaEspecialista(true));
+  if (ctaArriba) h.push(ctaHtml);
   h.push(`<div class="box"><b>Así cambia tu forma de arrancar</b><div class="vs"><div><small>ANTES</small>Improvisás y lo dejás a la semana<br>No sabés por dónde empezar<br>Sesiones largas que no sostenés<br>Sin un ritmo que te ordene</div><div class="on"><small>CON BEASTCAMP</small>Plan semana a semana<br>Arrancás desde cero<br>Sesiones desde 15 minutos<br>Timer que marca el ritmo</div></div></div>`);
   h.push(`<div class="box"><b>Cómo funciona</b><div class="st"><i>1</i>Elegís el nivel de carga que se ajusta a tu tiempo</div><div class="st"><i>2</i>Entrenás en casa, desde el celu, con el timer y las rutinas guiadas</div><div class="st"><i>3</i>Sumás puntos y subís en el ranking con tu apodo</div></div>`);
   h.push(`<div class="box"><b>Qué hacés cada semana</b>${SEMANAS_PLAN.map((x) => `<div class="sem"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</div>`);
@@ -136,9 +141,7 @@ function html() {
 <details><summary>¿Y si tengo una lesión o un problema de salud?</summary>Consultá a tu médico antes de empezar. Las rutinas no reemplazan a un profesional de la salud.</details>
 <details><summary>¿Cómo recibo el plan?</summary>Apenas pagás te llega el acceso al celular. Funciona como app, sin descargar nada.</details>
 <details><summary>¿Y si no me sirve?</summary>Tenés ${G} días de garantía de devolución, sin vueltas.</details></div>`);
-  const boton = esRescate ? CFG.boton : `QUIERO MI PLAN POR ${precio} →`;
-  const apoyo = esRescate ? CFG.apoyo + precio : 'Empezar hoy mismo';
-  h.push(`<button class="cta" data-reservar>${boton}<span style="display:block;font-size:13px;font-weight:600;margin-top:2px">${apoyo}</span></button>`);
+  if (!ctaArriba) h.push(ctaHtml);
   h.push(confianza);
   h.push(`<p class="note cen" style="margin-top:12px">Pago único, sin suscripción.</p>`);
   return h.join('');

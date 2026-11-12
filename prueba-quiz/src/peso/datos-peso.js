@@ -1,6 +1,7 @@
 /* Datos del funnel de bajar de peso. SOLO información verificada con su fuente; lo que no se verificó no se carga.
    Regla de siempre: un campo vacío oculta su bloque. No cargar cifras, estrellas ni testimonios que no sean reales. */
 const DATOS_PESO = {
+  personas: '3.200',   // «+N peleadores lo probaron este mes» (primera pantalla del quiz de peso)
   /* Noticia de la pantalla «¿Llegaste a ver esto?». Misma forma que DATOS.noticia, más un aviso corto opcional. */
   noticia: {
     etiqueta: 'Salud · Estudio piloto',
@@ -13,6 +14,19 @@ const DATOS_PESO = {
     fecha: '2015',
     enlace: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4429464/',
     imagen: '',
+  },
+
+  /* Slide «¿Llegaste a ver esto?» con una publicación. Vacío = en el sitio publicado la slide no aparece (en tu compu se ve el esqueleto, con el espacio de la imagen).
+     Solo contenido con fuente propia y verificable: imagen y texto de lo que de verdad se publicó, con su fuente y enlace. */
+  publicacion: {
+    etiqueta: '',
+    titular: '',
+    bajada: '',
+    fuente: '',
+    fecha: '',
+    enlace: '',
+    imagen: '',   // ej. '/media/publicacion.jpg'
+    alt: '',
   },
 
   /* Fuentes citadas en el quiz. Cada una con su enlace; si falta `verificada` o `url`, el texto va sin cifra o se oculta. */

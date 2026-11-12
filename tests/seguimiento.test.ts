@@ -13,6 +13,8 @@ import { extname, join } from "node:path";
 import { execFileSync } from "node:child_process";
 import { test } from "node:test";
 import { chromium, type Browser, type BrowserContext, type Page } from "playwright-core";
+/* El peso y la altura se eligen con un deslizador: mueve el valor y avisa como si el usuario lo deslizara. */
+async function setRango(p: Page, v: string) { await p.evaluate((x) => { const i = document.querySelector("#n") as HTMLInputElement; i.value = x; i.dispatchEvent(new Event("input", { bubbles: true })); }, v); }
 
 const CHROMES = [process.env.CHROME_PATH, "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "C:/Program Files/Google/Chrome/Application/chrome.exe", "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe", "/usr/bin/google-chrome", "/usr/bin/chromium", "/opt/pw-browsers/chromium"].filter(Boolean) as string[];
 const chrome = CHROMES.find((c) => existsSync(c));
@@ -90,8 +92,9 @@ async function quizPeso(p: Page) {
   await clic(p, ".c >> nth=1");                      // meta
   await clic(p, ".c >> nth=2"); await clic(p, "#seguir");   // zonas
   await clic(p, ".c >> nth=0");                      // forma
-  await clic(p, "#seguir");                          // info30
+  await clic(p, "#seguir");                          // publicación (Sí, lo vi)
   await clic(p, ".c >> nth=0");                      // exp
+  await clic(p, "#seguir");                          // info30
   await clic(p, ".c >> nth=1");                      // actividad
   await clic(p, ".c >> nth=1");                      // escaleras
   await clic(p, ".c >> nth=0");                      // dia
@@ -101,13 +104,11 @@ async function quizPeso(p: Page) {
   await clic(p, "#seguir");                          // infoboxeo
   await p.click(".c >> nth=0"); await p.click(".c >> nth=2"); await clic(p, "#seguir");   // frenos
   await clic(p, ".c >> nth=1");                      // tiempo: Ritmo
-  await clic(p, ".c >> nth=2");                      // precio
-  await p.fill("#n", "175"); await p.waitForTimeout(100); await clic(p, "#seguir");       // altura
-  await p.fill("#n", "92"); await p.waitForTimeout(150); await clic(p, "#seguir");        // peso
-  await p.fill("#n", "80"); await p.waitForTimeout(150); await clic(p, "#seguir");        // meta de peso
+  await setRango(p, "175"); await p.waitForTimeout(100); await clic(p, "#seguir");       // altura
+  await setRango(p, "92"); await p.waitForTimeout(150); await clic(p, "#seguir");        // peso
+  await setRango(p, "80"); await p.waitForTimeout(150); await clic(p, "#seguir");        // meta de peso
   await clic(p, ".c >> nth=0");                      // evento
   await clic(p, "#seguir");                          // experto
-  await clic(p, "#seguir");                          // nombre (vacío)
   for (let i = 0; i < 2; i++) { await p.waitForSelector(".velo", { timeout: 20000 }); await p.click(".velo button >> nth=0"); }
   await p.waitForSelector("#ver", { timeout: 20000 });
 }

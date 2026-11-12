@@ -1,0 +1,118 @@
+/* Estilos compartidos por los dos quiz (general y de peso): primera pantalla, tarjetas, onda al tocar, pie. Van después de base.css y del CSS de cada funnel. */
+/* Primera pantalla: tarjeta compacta del especialista (foto, nombre con matrícula y título) debajo del banner de regalo. */
+.esp-mini{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:9px 12px;margin:0 0 6px;text-align:left}
+.esp-mini .av{width:46px;height:46px;flex:none;margin:0;font-size:16px;box-shadow:0 0 0 2px var(--g2)}
+.esp-mini b{display:block;font-size:14px;line-height:1.25}.esp-mini small{display:block;color:var(--m);font-size:12px;line-height:1.3;margin-top:1px}
+/* Primera pantalla: tarjetas de edad más bajas para que entren la tarjeta del especialista y los tres puntos sin scroll. */
+.scr.hook .c{min-height:clamp(84px,14dvh,120px)}
+.scr.hook .c img.im3d{width:clamp(56px,10.5dvh,88px);height:clamp(56px,10.5dvh,88px)}
+@media(max-height:700px){.scr.hook .c{min-height:clamp(78px,13dvh,110px)}.scr.hook .esp-mini{padding:6px 10px}.scr.hook .esp-mini .av{width:38px;height:38px}}
+/* Primera pantalla: la barra de progreso va arriba de todo, sobre el video; el título tiene una palabra destacada y el subtítulo es más chico. */
+body:has(#shell.conbg .scr.hook) .prog{top:12px}
+.scr.hook h2 em{font-style:normal;color:var(--g)}
+.scr.hook .sub{font-size:13px}
+/* Primera pantalla: tamaños pensados para celular y para computadora (se lee bien en los dos). */
+.scr.hook h2{font-size:clamp(21px,6vw,26px);line-height:1.15}
+.scr.hook .sub{font-size:13.5px;line-height:1.4}
+.scr.hook .gift{font-size:13px}
+.scr.hook .esp-mini b{font-size:14px}
+@media(min-width:900px){
+ .scr.hook h2{font-size:clamp(30px,3vw,42px)}
+ .scr.hook .sub{font-size:16px}
+ .scr.hook .c{min-height:clamp(118px,19dvh,168px)}
+ .scr.hook .c b{font-size:18px}
+ .scr.hook .c img.im3d{width:clamp(80px,16dvh,130px);height:clamp(80px,16dvh,130px)}
+ .scr.hook .gift{font-size:15px}
+ .scr.hook .esp-mini{padding:12px 16px}
+ .scr.hook .esp-mini b{font-size:16px}.scr.hook .esp-mini small{font-size:14px}
+ .scr.hook .esp-mini .av{width:52px;height:52px}
+ .scr.hook .chips{font-size:14px}
+}
+@media(max-width:899px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(19px,5.4vw,22px)}
+ .scr.hook .c img.im3d{width:clamp(50px,9dvh,80px);height:clamp(50px,9dvh,80px)}
+ .scr.hook .chips{margin-top:8px}
+ .scr.hook .gift{padding:6px 10px}
+}
+@media(max-width:899px) and (max-height:700px){ .shell.conbg:has(.scr.hook) #bg{height:clamp(56px,11dvh,110px)} }
+/* Primera pantalla: todo centrado (tarjetas con muñeco, regalo y tarjeta del especialista). */
+.scr.hook .c:has(img.im3d){justify-content:center;text-align:center;gap:8px}
+.scr.hook .gift{justify-content:center}
+.scr.hook .gift span{text-align:center}
+.scr.hook .esp-mini{justify-content:center;text-align:center}
+.scr.hook .esp-mini>div:last-child{text-align:center}
+@media(max-width:899px) and (max-height:700px){ .shell.conbg:has(.scr.hook) #bg{height:clamp(84px,17dvh,130px)} }
+/* Primera pantalla, celular bajo: video más abajo (casi toca la píldora) y el resto más compacto para que no haya scroll. */
+@media(max-width:899px) and (max-height:700px){
+ .shell.conbg:has(.scr.hook) #bg{height:clamp(84px,19dvh,130px)}
+ .scr.hook .c{min-height:clamp(70px,11.5dvh,100px)}
+ .scr.hook .c img.im3d{width:clamp(46px,8.5dvh,76px);height:clamp(46px,8.5dvh,76px)}
+ .scr.hook .esp-mini{padding:4px 10px}
+ .scr.hook .chips{margin-top:6px}
+ .scr.hook .sub{font-size:13px}
+}
+/* Primera pantalla, escritorio bajo (ventana de menos de 700px de alto): tamaños que entran sin scroll. */
+@media(min-width:900px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(24px,3vw,30px)}
+ .scr.hook .sub{font-size:14px}
+ .scr.hook .c{min-height:clamp(96px,15dvh,130px)}
+ .scr.hook .c img.im3d{width:clamp(64px,12.5dvh,100px);height:clamp(64px,12.5dvh,100px)}
+ .scr.hook .gift{padding:6px 12px}
+ .scr.hook .esp-mini{padding:8px 14px}
+ .scr.hook .esp-mini .av{width:44px;height:44px}
+}
+/* Celular bajo: la píldora sube sobre el degradado blanco del video y las tarjetas se achican un poco más. */
+@media(max-width:899px) and (max-height:700px){
+ .scr.hook .pill{margin-top:-12px}
+ .scr.hook .c{min-height:clamp(66px,10.5dvh,96px)}
+ .scr.hook .c img.im3d{width:clamp(44px,8dvh,72px);height:clamp(44px,8dvh,72px)}
+}
+/* Tarjetas de edad: el grupo muñeco + texto queda centrado (la etiqueta toma solo su ancho). */
+.scr.hook.edad .c:has(img.im3d) b{flex:0 0 auto}
+.scr.hook:not(.edad) .c:has(img.im3d) b{flex:1 1 auto;min-width:0;text-align:center}
+/* Primera pantalla: la píldora centrada y subida sobre el borde del video; sin el degradado blanco entre el video y el texto (celular). */
+.scr.hook .pill{display:flex;width:max-content;margin-left:auto;margin-right:auto}
+@media(max-width:899px){ .shell.conbg:has(.scr.hook) #bg:after{display:none} .scr.hook .pill{margin-top:-28px} }
+/* Título de la primera pantalla en una sola línea en celulares (360 a 425 px de ancho). */
+@media(max-width:899px){ .scr.hook.edad h2{font-size:clamp(17px,5.2vw,22px);white-space:nowrap} }
+/* Medidas: deslizador con el número grande arriba (reemplaza el campo para escribir; no abre el teclado). */
+.slid{margin:10px 0 4px;text-align:center}
+.slid output{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:12px}
+.slid output b{font-size:56px;line-height:1;font-weight:800;color:var(--g)}
+.slid output span{font-size:20px;font-weight:700;color:var(--m)}
+.slid input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;outline:none;margin:6px 0;background:linear-gradient(90deg,var(--g) var(--p,50%),#e5ebe6 var(--p,50%))}
+.slid input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid var(--g);box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer}
+.slid input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--g);cursor:pointer}
+.slid .rng{display:flex;justify-content:space-between;font-size:12px;color:var(--m);margin-top:4px}
+/* Al tocar una opción: anillo suave que se expande desde el centro (sincronizado con el sonido). */
+.scr .c{position:relative;overflow:hidden}
+.scr .c.onda::after{content:"";position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:2px solid var(--g);opacity:.5;pointer-events:none;animation:onda .55s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes onda{to{transform:scale(10);opacity:0}}
+/* Primera pantalla: más aire entre bloques (el margen crece con el alto de la ventana; en celulares bajos queda chico para no hacer scroll). */
+.scr.hook h2{margin:clamp(4px,1.2dvh,12px) 0 clamp(2px,0.6dvh,6px)}
+.scr.hook .sub{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .grid{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .gift{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .esp-mini{margin:0 0 clamp(6px,1.4dvh,14px)}
+/* Regalo de la primera pantalla: letra un poco más chica en celular para que ocupe menos alto. */
+@media(max-width:899px){ .scr.hook .gift{font-size:12px;padding:6px 10px} }
+/* Primera pantalla, celulares altos: tarjetas de edad más altas (casi cuadradas) para ocupar el hueco que queda antes del pie legal. */
+@media(max-width:899px) and (min-height:701px){
+ .scr.hook .c{min-height:clamp(96px,18dvh,160px)}
+ .scr.hook .c img.im3d{width:clamp(64px,15dvh,120px);height:clamp(64px,15dvh,120px)}
+}
+/* Primera pantalla: la pregunta «¿Qué edad tenés?» en negrita, justo arriba de las opciones. */
+.scr.hook.edad .preg{font-size:16px;font-weight:800;text-align:center;margin:0 0 clamp(6px,1.2dvh,12px)}
+@media(min-width:900px){ .scr.hook.edad .preg{font-size:19px} }
+/* Escritorio bajo (menos de 700px de alto): tarjetas de edad un poco más bajas para que entre la pregunta sin scroll. */
+@media(min-width:900px) and (max-height:700px){ .scr.hook .c{min-height:clamp(84px,13dvh,110px)} }
+/* Escritorio bajo: título, muñecos, tarjeta del especialista y márgenes un poco más chicos para que la primera pantalla entre sin scroll. */
+@media(min-width:900px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(20px,2.6vw,26px);margin-top:4px}
+ .scr.hook .c{min-height:clamp(76px,12dvh,100px)}
+ .scr.hook .c img.im3d{width:clamp(56px,11dvh,92px);height:clamp(56px,11dvh,92px)}
+ .scr.hook .esp-mini{padding:5px 12px}
+ .scr.hook .esp-mini .av{width:40px;height:40px}
+ .scr.hook .sub{margin-bottom:6px}
+ .scr.hook.edad .preg{font-size:16px;margin-bottom:4px}
+}

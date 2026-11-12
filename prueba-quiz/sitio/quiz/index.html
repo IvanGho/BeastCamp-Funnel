@@ -47,7 +47,7 @@ p{margin:0 0 10px}.sub{text-align:center;color:var(--m);font-size:14px;margin:0 
 .gift{margin:12px 0 0;font-size:12.5px;background:#fffbe6;border:1px solid #fde68a;border-radius:12px;padding:9px 12px;color:#854d0e;display:flex;gap:10px;align-items:center}
 .gift svg{width:26px;height:26px;flex:none;stroke:#b45309;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.gift svg .a{stroke:#b45309}
 /* globo de dato */
-.globo{position:relative;background:#f0fdf4;border:1px solid #c8f1d6;color:#14532d;border-radius:14px;padding:9px 12px 9px 38px;font-size:13px;margin:0 0 12px;line-height:1.35}
+.globo{position:relative;background:#f0fdf4;border:1px solid #c8f1d6;color:#14532d;border-radius:14px;padding:9px 38px;font-size:13px;margin:0 0 12px;line-height:1.35;text-align:center}
 .globo:before{content:"";position:absolute;left:12px;top:11px;width:16px;height:16px;border-radius:50%;background:var(--g)}
 .globo:after{content:"i";position:absolute;left:12px;top:11px;width:16px;height:16px;color:#fff;font:800 11px/16px system-ui;text-align:center}
 /* tarjetas de opciones */
@@ -193,6 +193,124 @@ body:has(#shell.conbg) main{padding-top:36px}
  body:has(#shell.conbg) .prog{top:14px;left:75%;width:min(calc(50% - 56px),464px)}
  body:has(#shell.conbg) main{padding-top:32px}
 }
+/* Estilos compartidos por los dos quiz (general y de peso): primera pantalla, tarjetas, onda al tocar, pie. Van después de base.css y del CSS de cada funnel. */
+/* Primera pantalla: tarjeta compacta del especialista (foto, nombre con matrícula y título) debajo del banner de regalo. */
+.esp-mini{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:9px 12px;margin:0 0 6px;text-align:left}
+.esp-mini .av{width:46px;height:46px;flex:none;margin:0;font-size:16px;box-shadow:0 0 0 2px var(--g2)}
+.esp-mini b{display:block;font-size:14px;line-height:1.25}.esp-mini small{display:block;color:var(--m);font-size:12px;line-height:1.3;margin-top:1px}
+/* Primera pantalla: tarjetas de edad más bajas para que entren la tarjeta del especialista y los tres puntos sin scroll. */
+.scr.hook .c{min-height:clamp(84px,14dvh,120px)}
+.scr.hook .c img.im3d{width:clamp(56px,10.5dvh,88px);height:clamp(56px,10.5dvh,88px)}
+@media(max-height:700px){.scr.hook .c{min-height:clamp(78px,13dvh,110px)}.scr.hook .esp-mini{padding:6px 10px}.scr.hook .esp-mini .av{width:38px;height:38px}}
+/* Primera pantalla: la barra de progreso va arriba de todo, sobre el video; el título tiene una palabra destacada y el subtítulo es más chico. */
+body:has(#shell.conbg .scr.hook) .prog{top:12px}
+.scr.hook h2 em{font-style:normal;color:var(--g)}
+.scr.hook .sub{font-size:13px}
+/* Primera pantalla: tamaños pensados para celular y para computadora (se lee bien en los dos). */
+.scr.hook h2{font-size:clamp(21px,6vw,26px);line-height:1.15}
+.scr.hook .sub{font-size:13.5px;line-height:1.4}
+.scr.hook .gift{font-size:13px}
+.scr.hook .esp-mini b{font-size:14px}
+@media(min-width:900px){
+ .scr.hook h2{font-size:clamp(30px,3vw,42px)}
+ .scr.hook .sub{font-size:16px}
+ .scr.hook .c{min-height:clamp(118px,19dvh,168px)}
+ .scr.hook .c b{font-size:18px}
+ .scr.hook .c img.im3d{width:clamp(80px,16dvh,130px);height:clamp(80px,16dvh,130px)}
+ .scr.hook .gift{font-size:15px}
+ .scr.hook .esp-mini{padding:12px 16px}
+ .scr.hook .esp-mini b{font-size:16px}.scr.hook .esp-mini small{font-size:14px}
+ .scr.hook .esp-mini .av{width:52px;height:52px}
+ .scr.hook .chips{font-size:14px}
+}
+@media(max-width:899px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(19px,5.4vw,22px)}
+ .scr.hook .c img.im3d{width:clamp(50px,9dvh,80px);height:clamp(50px,9dvh,80px)}
+ .scr.hook .chips{margin-top:8px}
+ .scr.hook .gift{padding:6px 10px}
+}
+@media(max-width:899px) and (max-height:700px){ .shell.conbg:has(.scr.hook) #bg{height:clamp(56px,11dvh,110px)} }
+/* Primera pantalla: todo centrado (tarjetas con muñeco, regalo y tarjeta del especialista). */
+.scr.hook .c:has(img.im3d){justify-content:center;text-align:center;gap:8px}
+.scr.hook .gift{justify-content:center}
+.scr.hook .gift span{text-align:center}
+.scr.hook .esp-mini{justify-content:center;text-align:center}
+.scr.hook .esp-mini>div:last-child{text-align:center}
+@media(max-width:899px) and (max-height:700px){ .shell.conbg:has(.scr.hook) #bg{height:clamp(84px,17dvh,130px)} }
+/* Primera pantalla, celular bajo: video más abajo (casi toca la píldora) y el resto más compacto para que no haya scroll. */
+@media(max-width:899px) and (max-height:700px){
+ .shell.conbg:has(.scr.hook) #bg{height:clamp(84px,19dvh,130px)}
+ .scr.hook .c{min-height:clamp(70px,11.5dvh,100px)}
+ .scr.hook .c img.im3d{width:clamp(46px,8.5dvh,76px);height:clamp(46px,8.5dvh,76px)}
+ .scr.hook .esp-mini{padding:4px 10px}
+ .scr.hook .chips{margin-top:6px}
+ .scr.hook .sub{font-size:13px}
+}
+/* Primera pantalla, escritorio bajo (ventana de menos de 700px de alto): tamaños que entran sin scroll. */
+@media(min-width:900px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(24px,3vw,30px)}
+ .scr.hook .sub{font-size:14px}
+ .scr.hook .c{min-height:clamp(96px,15dvh,130px)}
+ .scr.hook .c img.im3d{width:clamp(64px,12.5dvh,100px);height:clamp(64px,12.5dvh,100px)}
+ .scr.hook .gift{padding:6px 12px}
+ .scr.hook .esp-mini{padding:8px 14px}
+ .scr.hook .esp-mini .av{width:44px;height:44px}
+}
+/* Celular bajo: la píldora sube sobre el degradado blanco del video y las tarjetas se achican un poco más. */
+@media(max-width:899px) and (max-height:700px){
+ .scr.hook .pill{margin-top:-12px}
+ .scr.hook .c{min-height:clamp(66px,10.5dvh,96px)}
+ .scr.hook .c img.im3d{width:clamp(44px,8dvh,72px);height:clamp(44px,8dvh,72px)}
+}
+/* Tarjetas de edad: el grupo muñeco + texto queda centrado (la etiqueta toma solo su ancho). */
+.scr.hook.edad .c:has(img.im3d) b{flex:0 0 auto}
+.scr.hook:not(.edad) .c:has(img.im3d) b{flex:1 1 auto;min-width:0;text-align:center}
+/* Primera pantalla: la píldora centrada y subida sobre el borde del video; sin el degradado blanco entre el video y el texto (celular). */
+.scr.hook .pill{display:flex;width:max-content;margin-left:auto;margin-right:auto}
+@media(max-width:899px){ .shell.conbg:has(.scr.hook) #bg:after{display:none} .scr.hook .pill{margin-top:-28px} }
+/* Título de la primera pantalla en una sola línea en celulares (360 a 425 px de ancho). */
+@media(max-width:899px){ .scr.hook.edad h2{font-size:clamp(17px,5.2vw,22px);white-space:nowrap} }
+/* Medidas: deslizador con el número grande arriba (reemplaza el campo para escribir; no abre el teclado). */
+.slid{margin:10px 0 4px;text-align:center}
+.slid output{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:12px}
+.slid output b{font-size:56px;line-height:1;font-weight:800;color:var(--g)}
+.slid output span{font-size:20px;font-weight:700;color:var(--m)}
+.slid input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;outline:none;margin:6px 0;background:linear-gradient(90deg,var(--g) var(--p,50%),#e5ebe6 var(--p,50%))}
+.slid input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid var(--g);box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer}
+.slid input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--g);cursor:pointer}
+.slid .rng{display:flex;justify-content:space-between;font-size:12px;color:var(--m);margin-top:4px}
+/* Al tocar una opción: anillo suave que se expande desde el centro (sincronizado con el sonido). */
+.scr .c{position:relative;overflow:hidden}
+.scr .c.onda::after{content:"";position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:2px solid var(--g);opacity:.5;pointer-events:none;animation:onda .55s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes onda{to{transform:scale(10);opacity:0}}
+/* Primera pantalla: más aire entre bloques (el margen crece con el alto de la ventana; en celulares bajos queda chico para no hacer scroll). */
+.scr.hook h2{margin:clamp(4px,1.2dvh,12px) 0 clamp(2px,0.6dvh,6px)}
+.scr.hook .sub{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .grid{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .gift{margin:0 0 clamp(8px,1.8dvh,18px)}
+.scr.hook .esp-mini{margin:0 0 clamp(6px,1.4dvh,14px)}
+/* Regalo de la primera pantalla: letra un poco más chica en celular para que ocupe menos alto. */
+@media(max-width:899px){ .scr.hook .gift{font-size:12px;padding:6px 10px} }
+/* Primera pantalla, celulares altos: tarjetas de edad más altas (casi cuadradas) para ocupar el hueco que queda antes del pie legal. */
+@media(max-width:899px) and (min-height:701px){
+ .scr.hook .c{min-height:clamp(96px,18dvh,160px)}
+ .scr.hook .c img.im3d{width:clamp(64px,15dvh,120px);height:clamp(64px,15dvh,120px)}
+}
+/* Primera pantalla: la pregunta «¿Qué edad tenés?» en negrita, justo arriba de las opciones. */
+.scr.hook.edad .preg{font-size:16px;font-weight:800;text-align:center;margin:0 0 clamp(6px,1.2dvh,12px)}
+@media(min-width:900px){ .scr.hook.edad .preg{font-size:19px} }
+/* Escritorio bajo (menos de 700px de alto): tarjetas de edad un poco más bajas para que entre la pregunta sin scroll. */
+@media(min-width:900px) and (max-height:700px){ .scr.hook .c{min-height:clamp(84px,13dvh,110px)} }
+/* Escritorio bajo: título, muñecos, tarjeta del especialista y márgenes un poco más chicos para que la primera pantalla entre sin scroll. */
+@media(min-width:900px) and (max-height:700px){
+ .scr.hook h2{font-size:clamp(20px,2.6vw,26px);margin-top:4px}
+ .scr.hook .c{min-height:clamp(76px,12dvh,100px)}
+ .scr.hook .c img.im3d{width:clamp(56px,11dvh,92px);height:clamp(56px,11dvh,92px)}
+ .scr.hook .esp-mini{padding:5px 12px}
+ .scr.hook .esp-mini .av{width:40px;height:40px}
+ .scr.hook .sub{margin-bottom:6px}
+ .scr.hook.edad .preg{font-size:16px;margin-bottom:4px}
+}
 </style></head><body><div class="prog"><i id="barra"></i></div><div class="shell" id="shell"><div id="bg"></div><main id="app" aria-live="polite"></main></div><script>
 /*DATOS-INICIO*/
 /* ============================================================================================
@@ -203,7 +321,7 @@ body:has(#shell.conbg) main{padding-top:36px}
 const DATOS = {
   /* Contadores de prueba social (solo cifras reales). Ej.: personas:'120' */
   personas: '',            // «+N personas ya lo probaron» (hook, oferta)
-  diagnosticos: '',        // «+N diagnósticos realizados» (tarjeta del especialista)
+  diagnosticos: '3.200',   // «+N diagnósticos realizados» (tarjeta del especialista)
   estrellas: '',           // valoración promedio real, ej. '4,8' (se muestra con estrellas)
 
   /* Testimonios de personas reales con su permiso: [{ nombre:'Nombre A.', detalle:'Nivel Ritmo', texto:'…' }] */
@@ -211,13 +329,13 @@ const DATOS = {
 
   /* Especialista. Solo nombre y título están cargados; el resto es opcional. */
   especialista: {
-    nombre: 'Juan Medina',
-    titulo: 'Médico deportista',
-    foto: '',              // ruta de una imagen, ej. '/media/juan-medina.jpg'
-    matricula: '',         // número de matrícula, si corresponde
-    universidad: '',       // ej. 'Universidad de Buenos Aires'
-    posgrados: [],         // ej. ['Posgrado en …']
-    resumen: '',           // 1 o 2 líneas sobre su trayectoria
+    nombre: 'Néstor J. Medina',
+    titulo: 'Médico deportólogo',
+    foto: '/media/juan-medina.jpg',
+    matricula: 'MN 9467',
+    universidad: 'Universidad Nacional de La Plata (UNLP)',
+    posgrados: ['Medicina del Deporte, Universidad de Buenos Aires (UBA)', 'Fisiología del Ejercicio y Ciencias del Deporte, Universidad Favaloro'],
+    resumen: 'Especialista en Medicina del Deporte y Rendimiento Humano. Enfocado en la evaluación médica deportiva, la prevención de lesiones y la optimización del rendimiento físico.',
   },
 
   /* Noticia / estudio de la slide «¿Llegaste a ver esto?». Con fuente real y enlace. La imagen se carga a mano. */
@@ -424,11 +542,12 @@ window.toast = (m) => {
 /* Pie legal con enlaces a Términos y Privacidad (los avisos legales van solo acá).
    Por defecto es fijo (el quiz). Con fin = true va al final de la página, dentro de #app, sin posición fija: así la barra de abajo de las ofertas no lo tapa.
    Con nueva = true los enlaces abren en otra pestaña, para no perder el quiz ni la oferta. */
-function pie(fin = false, nueva = false) {
+function pie(fin = false, nueva = false, solo_enlaces = false) {
   const f = document.createElement('footer');
   f.className = fin ? 'ft fin' : 'ft';
   const blank = nueva ? ' target="_blank" rel="noopener"' : '';
-  f.innerHTML = `<a href="/legal/terminos/"${blank}>Términos y condiciones</a> · <a href="/legal/privacidad/"${blank}>Política de privacidad</a> · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.`;
+  const aviso = solo_enlaces ? '' : ' · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.';
+  f.innerHTML = `<a href="/legal/terminos/"${blank}>Términos y condiciones</a> · <a href="/legal/privacidad/"${blank}>Política de privacidad</a>${aviso}`;
   if (fin && $('app')) { $('app').appendChild(f); return f; }
   document.body.appendChild(f);
   /* El alto del pie cambia con el ancho de la ventana: el contenido deja justo ese lugar abajo (--pie). */
@@ -452,6 +571,37 @@ const I_REGALO = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="26
 const estrellas = () => (DATOS.estrellas ? `<span class="estr">★★★★★</span> <b>${esc(DATOS.estrellas)}</b>` : '');
 const pillPersonas = (txt = 'personas ya lo probaron') => (DATOS.personas ? `<div class="pill pill-c">${estrellas()} <span><b>+${esc(DATOS.personas)}</b> ${txt}</span></div>` : '');
 const regaloFranja = () => `<div class="gift">${I_REGALO}<span>Al terminar el diagnóstico <b>te dejamos un regalo</b>. Ya está reservado para vos.</span></div>`;
+
+/* Click corto de gota al elegir una opción (~90 ms): se sintetiza acá (sin archivos de terceros). Si el navegador no deja sonar, no pasa nada. */
+let audioGota = null;
+function sonidoGota() {
+  try {
+    audioGota = audioGota || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioGota.state === 'suspended') audioGota.resume();
+    const t = audioGota.currentTime, o = audioGota.createOscillator(), g = audioGota.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(1100, t);
+    o.frequency.exponentialRampToValueAtTime(260, t + 0.06);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.35, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+    o.connect(g); g.connect(audioGota.destination);
+    o.start(t); o.stop(t + 0.1);
+  } catch (e) {}
+}
+/* Al tocar una opción: un anillo suave que se expande desde su centro, sincronizado con el sonido. */
+function ondaYSonido(b) {
+  b.classList.remove('onda'); void b.offsetWidth; b.classList.add('onda');
+  sonidoGota();
+}
+/* Tarjeta compacta del especialista (foto, nombre con matrícula y título): la usan el quiz general y el de peso, debajo del regalo. */
+const tarjetaMini = () => {
+    const e = DATOS.especialista || {};
+    if (!e.nombre) return '';
+    const ini = e.nombre.split(/\s+/).filter((w) => !w.endsWith('.')).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+    const foto = e.foto ? `<img src="${esc(e.foto)}" alt="${esc(e.nombre)}">` : esc(ini);
+    return `<div class="esp-mini"><div class="av">${foto}</div><div><b>${esc(e.nombre)}${e.matricula ? ` · ${esc(e.matricula)}` : ''}</b><small>${esc(e.titulo)}${DATOS.diagnosticos ? ` · +${esc(DATOS.diagnosticos)} diagnósticos` : ''}</small></div></div>`;
+};
 
 function tarjetaEspecialista(compacta = false) {
   const e = DATOS.especialista || {};
@@ -613,7 +763,7 @@ function dibuja() {
   let h = '';
   if (x.t === 'q') {
     h = (x.pill ? pillPersonas() : '') + `<h2>${esc(x.titulo)}</h2>` + (x.sub ? `<p class="sub">${esc(x.sub)}</p>` : '') + (x.globo ? `<div class="globo">${esc(x.globo)}</div>` : '') +
-      `<div class="grid">${x.o.map((o, i) => tarjeta(o, x.est, i, x.chico, false)).join('')}</div>` + (x.regalo ? regaloFranja() : '');
+      `<div class="grid">${x.o.map((o, i) => tarjeta(o, x.est, i, x.chico, false)).join('')}</div>` + (x.regalo ? regaloFranja() + tarjetaMini() + chipsGatillos() : '');
   } else if (x.t === 'multi') {
     h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p><div class="grid">${x.o.map((o, i) => tarjeta(o, 'B', i, true, true)).join('')}</div><button class="cta" id="seguir" disabled>Continuar</button>`;
   } else if (x.t === 'info') {
@@ -630,7 +780,7 @@ function dibuja() {
     const pro = /Impulso|Fighter/i.test(A.tiempo || '');
     h = `<div class="tag cen">Tu perfil</div><h2>${esc(A.nombre || 'Tu plan')}, así queda tu plan</h2><div class="box"><b>Tu punto de partida</b><br><span style="color:var(--m)">${esc(A.nivel || '')} · ${esc(A.obj || '')}</span></div><div class="box"><b>Tu camino</b><div class="sem"><b>Semana 1</b><span>Pies, guardia, jab y cross</span></div><div class="sem"><b>Semana 2</b><span>Esquivas y sombra</span></div><div class="sem"><b>Semana 3</b><span>Combinaciones y ritmo</span></div><div class="sem"><b>Semana 4</b><span>${pro ? 'Rounds de 3 min con más volumen y pausas controladas' : 'Rounds completos de 3 min'}</span></div></div><div class="box"><b>Tu carga</b><br><span style="color:var(--m)">${esc((A.tiempo || '').split(' · ')[0])}. ${pro ? 'Arrancás con una semana de adaptación y 1 día de descanso total: más horas no es mejor si no te recuperás.' : 'Subimos la carga de a poco, según cómo te sientas.'}</span></div><button class="cta" id="ver">Ver mi plan</button>`;
   }
-  raiz.innerHTML = `<div class="scr ${x.t}">${h}</div>`;
+  raiz.innerHTML = `<div class="scr ${x.t}${x.video === 'hook' ? ' hook' : ''}">${h}</div>`;
   window.scrollTo(0, 0);
   enlaza(x);
   if (s > 0) enfocaTitulo(raiz);
@@ -641,13 +791,13 @@ function enlaza(x) {
   if (x.t === 'q') {
     raiz.querySelectorAll('.c').forEach((b) => (b.onclick = () => {
       const o = x.o[+b.dataset.i];
-      b.classList.add('on'); A[x.k] = o[0]; guardaA(); vib(); setTimeout(siguiente, 220);
+      b.classList.add('on'); A[x.k] = o[0]; guardaA(); vib(); ondaYSonido(b); setTimeout(siguiente, 320);
     }));
   } else if (x.t === 'multi') {
     const sel = new Set();
     raiz.querySelectorAll('.c').forEach((b) => (b.onclick = () => {
       const i = +b.dataset.i; sel.has(i) ? sel.delete(i) : sel.add(i);
-      b.classList.toggle('on'); q('#seguir').disabled = sel.size === 0; vib(8);
+      b.classList.toggle('on'); q('#seguir').disabled = sel.size === 0; vib(8); ondaYSonido(b);
     }));
     q('#seguir').onclick = () => { A[x.k] = [...sel].map((i) => x.o[i][0]); guardaA(); siguiente(); };
   } else if (x.t === 'info' || x.t === 'experto') {
@@ -707,7 +857,7 @@ function cargando() {
   }, 96);                                          // 100 pasos x 96 ms ≈ 9,6 s (6 mensajes x 1,6 s)
 }
 
-pie();
+pie(false, false, true);
 dibuja();
 precargar();
 

@@ -124,11 +124,12 @@ window.toast = (m) => {
 /* Pie legal con enlaces a Términos y Privacidad (los avisos legales van solo acá).
    Por defecto es fijo (el quiz). Con fin = true va al final de la página, dentro de #app, sin posición fija: así la barra de abajo de las ofertas no lo tapa.
    Con nueva = true los enlaces abren en otra pestaña, para no perder el quiz ni la oferta. */
-function pie(fin = false, nueva = false) {
+function pie(fin = false, nueva = false, solo_enlaces = false) {
   const f = document.createElement('footer');
   f.className = fin ? 'ft fin' : 'ft';
   const blank = nueva ? ' target="_blank" rel="noopener"' : '';
-  f.innerHTML = `<a href="/legal/terminos/"${blank}>Términos y condiciones</a> · <a href="/legal/privacidad/"${blank}>Política de privacidad</a> · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.`;
+  const aviso = solo_enlaces ? '' : ' · Para mayores de 18. Las rutinas no reemplazan a un profesional de la salud; consultá antes de entrenar si tenés una lesión.';
+  f.innerHTML = `<a href="/legal/terminos/"${blank}>Términos y condiciones</a> · <a href="/legal/privacidad/"${blank}>Política de privacidad</a>${aviso}`;
   if (fin && $('app')) { $('app').appendChild(f); return f; }
   document.body.appendChild(f);
   /* El alto del pie cambia con el ancho de la ventana: el contenido deja justo ese lugar abajo (--pie). */
@@ -152,6 +153,37 @@ const I_REGALO = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="26
 const estrellas = () => (DATOS.estrellas ? `<span class="estr">★★★★★</span> <b>${esc(DATOS.estrellas)}</b>` : '');
 const pillPersonas = (txt = 'personas ya lo probaron') => (DATOS.personas ? `<div class="pill pill-c">${estrellas()} <span><b>+${esc(DATOS.personas)}</b> ${txt}</span></div>` : '');
 const regaloFranja = () => `<div class="gift">${I_REGALO}<span>Al terminar el diagnóstico <b>te dejamos un regalo</b>. Ya está reservado para vos.</span></div>`;
+
+/* Click corto de gota al elegir una opción (~90 ms): se sintetiza acá (sin archivos de terceros). Si el navegador no deja sonar, no pasa nada. */
+let audioGota = null;
+function sonidoGota() {
+  try {
+    audioGota = audioGota || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioGota.state === 'suspended') audioGota.resume();
+    const t = audioGota.currentTime, o = audioGota.createOscillator(), g = audioGota.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(1100, t);
+    o.frequency.exponentialRampToValueAtTime(260, t + 0.06);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.35, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+    o.connect(g); g.connect(audioGota.destination);
+    o.start(t); o.stop(t + 0.1);
+  } catch (e) {}
+}
+/* Al tocar una opción: un anillo suave que se expande desde su centro, sincronizado con el sonido. */
+function ondaYSonido(b) {
+  b.classList.remove('onda'); void b.offsetWidth; b.classList.add('onda');
+  sonidoGota();
+}
+/* Tarjeta compacta del especialista (foto, nombre con matrícula y título): la usan el quiz general y el de peso, debajo del regalo. */
+const tarjetaMini = () => {
+    const e = DATOS.especialista || {};
+    if (!e.nombre) return '';
+    const ini = e.nombre.split(/\s+/).filter((w) => !w.endsWith('.')).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+    const foto = e.foto ? `<img src="${esc(e.foto)}" alt="${esc(e.nombre)}">` : esc(ini);
+    return `<div class="esp-mini"><div class="av">${foto}</div><div><b>${esc(e.nombre)}${e.matricula ? ` · ${esc(e.matricula)}` : ''}</b><small>${esc(e.titulo)}${DATOS.diagnosticos ? ` · +${esc(DATOS.diagnosticos)} diagnósticos` : ''}</small></div></div>`;
+};
 
 function tarjetaEspecialista(compacta = false) {
   const e = DATOS.especialista || {};
