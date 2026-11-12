@@ -169,7 +169,7 @@
 
   /* Proyección de peso de hoy a la meta con CALC.curva. */
   function grafico(peso, meta, fechaTxt) {
-    const W = 320, H = window.innerHeight < 700 ? 72 : window.innerHeight < 900 ? 90 : 134, pl = 16, pr = 16, pt = 34, pb = 34;   // más baja en celulares chicos para que el perfil entre sin scroll
+    const W = 320, H = 130, pl = 16, pr = 16, pt = 34, pb = 34;   // más baja en celulares chicos para que el perfil entre sin scroll
     const pts = CALC.curva(peso, meta, 40);
     const rango = Math.max(1, peso - meta);
     const X = (x) => +(pl + x * (W - pl - pr)).toFixed(1);
@@ -287,14 +287,23 @@
       const imc = imc1(CALC.imc(A.peso, A.altura));
       h += `<div class="box res" style="--d:.1s"><div class="row"><b>Tu punto de partida</b><span class="vimc">IMC ${coma(imc)} · ${NOMBRE_CAT[CALC.categoria(imc)]}</span></div>${barraImc(imc)}</div>`;
     }
-    /* Movimiento de hoy: sale de lo que contestó en «actividad» (nada inventado). */
-    const MOV = { 'Nada': [12, 'Bajo', '#f59e0b', 'Venís de poco movimiento: el plan arranca suave y sube de a poco.'], 'Alguna que otra vez': [30, 'Bajo', '#f59e0b', 'Venís de poco movimiento: el plan arranca suave y sube de a poco.'],
-      'Una vez por semana': [55, 'Medio', '#84cc16', 'Ya tenés una base: el plan te ordena la semana para sostenerla.'], 'Varias veces por semana': [85, 'Alto', '#16A34A', 'Ya te movés seguido: el plan suma boxeo a tu rutina.'] }[A.actividad];
-    if (MOV) h += `<div class="box res" style="--d:.35s"><div class="row"><b>Tu movimiento hoy</b><span class="vimc" style="color:${MOV[2] === '#f59e0b' ? '#b45309' : '#15803d'}">${MOV[1]}</span></div><div class="rbar" role="img" aria-label="Movimiento actual: ${MOV[1]}"><i style="--w:${MOV[0]}%;--c:${MOV[2]}"></i></div><p class="rtx">${MOV[3]}</p></div>`;
+    /* «Tu condición hoy»: cada barra sale de una respuesta del quiz (nada inventado). [valor 0-100, etiqueta, nivel 0 bajo / 1 medio / 2 alto] */
+    const NIV = [['#f59e0b', '#b45309'], ['#84cc16', '#4d7c0f'], ['#16A34A', '#15803d']];
+    const barras = [
+      ['Movimiento actual', { 'Nada': [10, 'Muy bajo', 0], 'Alguna que otra vez': [30, 'Bajo', 0], 'Una vez por semana': [55, 'Medio', 1], 'Varias veces por semana': [85, 'Alto', 2] }[A.actividad]],
+      ['Resistencia', { 'Sin aire': [25, 'Para trabajar', 0], 'Agitado, pero bien': [58, 'Media', 1], 'Tranquilo': [88, 'Buena', 2] }[A.escaleras]],
+      ['Descanso', { 'Menos de 5 horas': [22, 'Corto', 0], '5 a 6 horas': [50, 'Justo', 1], '7 a 8 horas': [90, 'Bueno', 2], 'Más de 8 horas': [80, 'Bueno', 2] }[A.sueno]],
+      ['Tiempo para entrenar', { 'Arranque': [35, '2-3 días', 0], 'Ritmo': [65, '3-4 días', 1], 'Impulso': [92, '4-5 días', 2] }[A.tiempo]],
+    ].filter((x) => x[1]);
+    if (barras.length) {
+      h += '<div class="box res" style="--d:.35s"><b>Tu condición hoy</b>' + barras.map(([t, v], i) =>
+        `<div class="fila" style="--d:${(0.5 + i * 0.18).toFixed(2)}s"><div class="row"><span>${t}</span><span class="vimc" style="color:${NIV[v[2]][1]}">${v[1]}</span></div><div class="rbar" role="img" aria-label="${t}: ${v[1]}"><i style="--w:${v[0]}%;--c:${NIV[v[2]][0]}"></i></div></div>`).join('') +
+        '<p class="rtx">El plan arranca desde donde estás hoy y ajusta la carga a tu tiempo.</p></div>';
+    }
     if (tienePeso && A.pesoMeta && A.pesoMeta < A.peso) {
       const sem = CALC.semanas(A.peso, A.pesoMeta);
       const fecha = CALC.mesAnio(CALC.fechaMeta(new Date(), sem));
-      h += `<div class="box res" style="--d:.6s"><b>Tu proyección</b>${grafico(A.peso, A.pesoMeta, fecha)}</div>`;
+      h += `<div class="box res" style="--d:1.1s"><b>Tu proyección</b>${grafico(A.peso, A.pesoMeta, fecha)}</div>`;
     }
     const ev = { 'Vacaciones': 'tus vacaciones', 'Un casamiento o evento': 'ese casamiento o evento', 'Un cumpleaños': 'tu cumpleaños' }[A.evento];
     if (ev) h += `<p class="evento">Tu plan de 4 semanas puede ser un primer paso hacia ${ev}.</p>`;

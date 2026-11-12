@@ -111,13 +111,10 @@
 .scr.mail .tag,.scr.mail input{margin-top:auto}   /* título, campo y botón quedan separados por el mismo aire */
 .scr.mail input{padding-top:clamp(15px,2.2dvh,22px);padding-bottom:clamp(15px,2.2dvh,22px)}
 @media(max-width:899px) and (min-height:700px){.shell.alto.conbg:has(.scr.mail) #bg{height:clamp(72px,24dvh,260px)}}   /* en celulares altos el video de «mail» ocupa un poco más */
-.scr.perfil h2+*{margin-top:auto}
-@media(min-height:701px){.scr.perfil .box{margin-bottom:8px}.scr.perfil .box+.box{margin-top:8px}}   /* en celulares de 812 de alto el perfil justo no entraba con el botón abajo */
 /* El perfil no tiene nada que se pueda achicar: en un celular bajo, si no entra, la página crece y se scrollea, y el botón nunca queda debajo del pie legal */
 .shell.alto:has(.scr.perfil){height:auto;min-height:100dvh}
 @media(max-width:899px){.shell.alto:has(.scr.perfil){grid-template-rows:auto 1fr}}
 .shell.alto:has(.scr.perfil) main{min-height:auto}
-@media(max-height:620px){.shell.alto.conbg:has(.scr.perfil) #bg{height:56px}.scr.perfil .box{padding-top:6px;padding-bottom:6px}.scr.perfil h2{margin-bottom:2px}.nota-est{font-size:10.5px;line-height:1.25;margin-top:3px}.evento{margin-top:2px;line-height:1.25}}   /* ventanas de compu muy bajas (600 px): el video del perfil es una franja mínima */
 .scr.fijo.perfil{flex:1 0 auto}
 /* Slide «¿Llegaste a ver esto?» con una publicación: tarjeta con espacio para la imagen arriba y los dos botones abajo. */
 .scr.publicacion .nota{flex:1 1 0;min-height:0;display:flex;flex-direction:column;margin:6px 0 12px}
@@ -141,8 +138,14 @@
 @keyframes rmarca{from{left:1%}}
 @keyframes rtraza{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @keyframes raparece{from{opacity:0}}
-@media(max-height:700px){.rtx{display:none}.rbar{margin-top:5px}.shell.alto.conbg:has(.scr.perfil) #bg{height:56px}.perfil .box .row b{font-size:14px}.perfil .box.res{padding-top:8px;padding-bottom:8px}}
-
-@media(max-height:620px){.scr.perfil h2{font-size:19px;margin:2px 0 4px}.nota-est{line-height:1.2}.perfil .box.res{padding-top:6px;padding-bottom:6px}}
-@media(min-height:701px) and (max-height:870px){.perfil .box.res{padding-top:9px;padding-bottom:9px}.rtx{margin-top:4px}}
-@media(min-height:701px) and (max-height:780px){.rtx{display:none}}
+/* Perfil como informe: la página se scrollea, el título queda debajo de la barra de progreso y las tarjetas respiran */
+.scr.perfil h2{margin:22px 0 10px}
+.scr.perfil .box.res{margin:0 0 12px;padding:14px 14px 12px}
+.scr.perfil .box.res>b{font-size:16px}
+.fila{margin-top:13px}
+.fila .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:14.5px;font-weight:600}
+.fila .rbar{margin-top:6px}
+.fila .rbar i{animation-delay:calc(var(--d,0s) + .1s)}
+.scr.perfil .rtx{margin:12px 0 0;font-size:12.5px}
+.scr.perfil .cta{margin-top:14px}
+.scr.perfil{padding-bottom:58px}

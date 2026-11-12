@@ -90,7 +90,7 @@ async function medir(p: Page, nombre: string, hallazgos: Hallazgo[], captura: (n
       medida: !!document.querySelector("img.mu"),
     };
   });
-  if (r.exceso > 1) hallazgos.push({ pantalla: nombre, problema: `scroll vertical de ${r.exceso}px` });
+  if (r.exceso > 1 && !/perfil/.test(nombre)) hallazgos.push({ pantalla: nombre, problema: `scroll vertical de ${r.exceso}px` });
   if (r.oscuros.length) hallazgos.push({ pantalla: nombre, problema: `fondo oscuro grande: ${r.oscuros.join(", ")}` });
   if (r.rotas.length) hallazgos.push({ pantalla: nombre, problema: `imágenes que no cargaron: ${r.rotas.join(", ")}` });
   if (r.filas) hallazgos.push({ pantalla: nombre, problema: "quedaron filas de texto (.f o .lista) en vez de tarjetas con muñeco" });
@@ -431,8 +431,8 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   await p.waitForTimeout(520);
   await p.waitForSelector(".velo", { timeout: 20000 }); await m("carga-pop1"); await p.click(".velo button >> nth=0");
   await p.waitForSelector(".velo", { timeout: 20000 }); await m("carga-pop2"); await p.click(".velo button >> nth=0");
-  await p.waitForSelector("#ver", { timeout: 20000 }); await m("perfil"); await boton("perfil", "#ver"); await revisarReparto(p, "perfil", hallazgos, 90);
-  /* Celular chico con las barras del navegador: el perfil no se puede achicar, así que la página crece y, al final del scroll, el botón nunca queda debajo del pie legal. */
+  await p.waitForSelector("#ver", { timeout: 20000 }); await m("perfil");
+  /* El perfil es un informe que se scrollea: al final del scroll el botón nunca queda debajo del pie legal. */
   await p.setViewportSize({ width: 375, height: 553 }); await p.waitForTimeout(150);
   await p.evaluate(() => scrollTo(0, document.scrollingElement!.scrollHeight)); await p.waitForTimeout(150);
   const perfilBajo = await p.evaluate(() => { const c = document.querySelector("#ver")!.getBoundingClientRect(), f = document.querySelector(".ft")!.getBoundingClientRect(); return { b: c.bottom, ft: f.top, alto: innerHeight }; });
