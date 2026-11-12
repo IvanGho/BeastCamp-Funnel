@@ -443,7 +443,7 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   if (finales.some(([, v]) => Math.abs(v - finales[0][1]) > 1.5)) falla("botones", `el botón no queda siempre en el mismo lugar: ${finales.map(([k, v]) => `${k} ${Math.round(v)}px`).join(", ")}`);
   if (!(await video()).endsWith("/media/hd/oferta.mp4")) falla("perfil", "el perfil no usa el video oferta");
   const perfil = await p.evaluate(() => ({ tag: !!document.querySelector(".tag"), imc: !!document.querySelector(".box .imcb"), graf: !!document.querySelector(".box .graf") }));
-  if (!perfil.tag || !perfil.imc || !perfil.graf) falla("perfil", `el perfil perdió el .tag, la barra de IMC o la proyección dentro de los .box (${JSON.stringify(perfil)})`);
+  if (!perfil.imc || !perfil.graf) falla("perfil", `el perfil perdió la barra de IMC o la proyección dentro de los .box (${JSON.stringify(perfil)})`);
   const llamadas: string[] = await p.evaluate(() => (window as any).__llamadas);
   if (llamadas.includes("lead")) falla("mail", `el quiz llamó a __send('lead'): ${llamadas.join(", ")}`);
   await p.click("#ver");

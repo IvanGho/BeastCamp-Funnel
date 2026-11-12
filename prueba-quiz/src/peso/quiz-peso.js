@@ -169,7 +169,7 @@
 
   /* Proyección de peso de hoy a la meta con CALC.curva. */
   function grafico(peso, meta, fechaTxt) {
-    const W = 320, H = window.innerHeight < 700 ? 90 : 134, pl = 16, pr = 16, pt = 34, pb = 34;   // más baja en celulares chicos para que el perfil entre sin scroll
+    const W = 320, H = window.innerHeight < 700 ? 72 : window.innerHeight < 900 ? 90 : 134, pl = 16, pr = 16, pt = 34, pb = 34;   // más baja en celulares chicos para que el perfil entre sin scroll
     const pts = CALC.curva(peso, meta, 40);
     const rango = Math.max(1, peso - meta);
     const X = (x) => +(pl + x * (W - pl - pr)).toFixed(1);
@@ -180,10 +180,10 @@
       '<defs><linearGradient id="gp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16A34A" stop-opacity=".28"/><stop offset="1" stop-color="#16A34A" stop-opacity="0"/></linearGradient></defs>' +
       `<line x1="${pl}" y1="${H - pb}" x2="${W - pr}" y2="${H - pb}" stroke="#d6e0d9" stroke-width="1.5"/>` +
       `<line x1="${X(0)}" y1="${Y(meta)}" x2="${X(1)}" y2="${Y(meta)}" stroke="#16A34A" stroke-width="1" stroke-dasharray="3 4" opacity=".5"/>` +
-      `<path d="${area}" fill="url(#gp)"/><path d="${linea}" fill="none" stroke="#16A34A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>` +
-      `<circle cx="${X(0)}" cy="${Y(peso)}" r="5.5" fill="#fff" stroke="#0b0f0c" stroke-width="2.6"/><circle cx="${X(1)}" cy="${Y(meta)}" r="6.5" fill="#16A34A" stroke="#fff" stroke-width="2.4"/>` +
-      `<text x="${X(0)}" y="${Y(peso) - 12}" font-size="13" font-weight="800" fill="#0b0f0c">Hoy ${peso} kg</text>` +
-      `<text x="${X(1)}" y="${H - pb + 20}" font-size="13" font-weight="800" fill="#15803d" text-anchor="end">${meta} kg · ${esc(fechaTxt)}</text></svg>`;
+      `<path class="ga" d="${area}" fill="url(#gp)"/><path class="gl" pathLength="1" d="${linea}" fill="none" stroke="#16A34A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `<g class="gp0"><circle cx="${X(0)}" cy="${Y(peso)}" r="5.5" fill="#fff" stroke="#0b0f0c" stroke-width="2.6"/><text x="${X(0)}" y="${Y(peso) - 12}" font-size="13" font-weight="800" fill="#0b0f0c">Hoy ${peso} kg</text></g>` +
+      `<g class="gp1"><circle cx="${X(1)}" cy="${Y(meta)}" r="6.5" fill="#16A34A" stroke="#fff" stroke-width="2.4"/>` +
+      `<text x="${X(1)}" y="${H - pb + 20}" font-size="13" font-weight="800" fill="#15803d" text-anchor="end">${meta} kg · ${esc(fechaTxt)}</text></g></svg>`;
   }
 
   /* Validación de los campos numéricos. Devuelve { ok, n, html, tono, incompleto } según lo tipeado. */
@@ -282,15 +282,19 @@
 
   function perfil() {
     const tienePeso = A.peso && A.altura;
-    let h = `<div class="tag cen">Tu perfil</div><h2>Así queda tu plan</h2>`;
+    let h = `<h2>Así queda tu plan</h2>`;
     if (tienePeso) {
       const imc = imc1(CALC.imc(A.peso, A.altura));
-      h += `<div class="box"><div class="row"><b>Tu punto de partida</b><span class="vimc">IMC ${coma(imc)} · ${NOMBRE_CAT[CALC.categoria(imc)]}</span></div>${barraImc(imc)}</div>`;
+      h += `<div class="box res" style="--d:.1s"><div class="row"><b>Tu punto de partida</b><span class="vimc">IMC ${coma(imc)} · ${NOMBRE_CAT[CALC.categoria(imc)]}</span></div>${barraImc(imc)}</div>`;
     }
+    /* Movimiento de hoy: sale de lo que contestó en «actividad» (nada inventado). */
+    const MOV = { 'Nada': [12, 'Bajo', '#f59e0b', 'Venís de poco movimiento: el plan arranca suave y sube de a poco.'], 'Alguna que otra vez': [30, 'Bajo', '#f59e0b', 'Venís de poco movimiento: el plan arranca suave y sube de a poco.'],
+      'Una vez por semana': [55, 'Medio', '#84cc16', 'Ya tenés una base: el plan te ordena la semana para sostenerla.'], 'Varias veces por semana': [85, 'Alto', '#16A34A', 'Ya te movés seguido: el plan suma boxeo a tu rutina.'] }[A.actividad];
+    if (MOV) h += `<div class="box res" style="--d:.35s"><div class="row"><b>Tu movimiento hoy</b><span class="vimc" style="color:${MOV[2] === '#f59e0b' ? '#b45309' : '#15803d'}">${MOV[1]}</span></div><div class="rbar" role="img" aria-label="Movimiento actual: ${MOV[1]}"><i style="--w:${MOV[0]}%;--c:${MOV[2]}"></i></div><p class="rtx">${MOV[3]}</p></div>`;
     if (tienePeso && A.pesoMeta && A.pesoMeta < A.peso) {
       const sem = CALC.semanas(A.peso, A.pesoMeta);
       const fecha = CALC.mesAnio(CALC.fechaMeta(new Date(), sem));
-      h += `<div class="box"><b>Tu proyección</b>${grafico(A.peso, A.pesoMeta, fecha)}</div>`;
+      h += `<div class="box res" style="--d:.6s"><b>Tu proyección</b>${grafico(A.peso, A.pesoMeta, fecha)}</div>`;
     }
     const ev = { 'Vacaciones': 'tus vacaciones', 'Un casamiento o evento': 'ese casamiento o evento', 'Un cumpleaños': 'tu cumpleaños' }[A.evento];
     if (ev) h += `<p class="evento">Tu plan de 4 semanas puede ser un primer paso hacia ${ev}.</p>`;
