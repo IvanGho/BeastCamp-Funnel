@@ -46,13 +46,13 @@ test("quiz: sin marcas de prueba, sin emojis y garantía de 30 días en todo", (
   assert.doesNotMatch(todas.join("\n"), /Beast Camp/, "nombre público BeastCamp");
 });
 
-test("quiz: los datos reales viven en un solo archivo y están vacíos o con lo verificado (especialista: Juan Medina con matrícula y estudios)", () => {
+test("quiz: los datos reales viven en un solo archivo y están vacíos o con lo verificado (especialista: Néstor J. Medina con matrícula y estudios)", () => {
   const D = new Function(`${leer("prueba-quiz/src/datos.js")}; return DATOS;`)();
   assert.equal(D.personas, "");
   assert.equal(D.diagnosticos, "3.200");
   assert.equal(D.estrellas, "");
   assert.deepEqual(D.testimonios, []);
-  assert.equal(D.especialista.nombre, "Néstor J. Medina"); assert.equal(D.especialista.matricula, "MN 9467"); assert.equal(D.especialista.foto, "/media/juan-medina.jpg");
+  assert.equal(D.especialista.nombre, "Néstor J. Medina"); assert.equal(D.especialista.matricula, "MN 9467"); assert.equal(D.especialista.foto, "/media/nestor-medina.jpg");
   assert.deepEqual(D.pagoUrl, { base: "", b1: "", b2: "" }, "un link de pago por precio, vacíos hasta que exista el checkout");
   assert.equal(D.appUrl, "/app/");
   assert.equal(D.sitioUrl, "", "vacío = etiquetas para compartir con rutas relativas");

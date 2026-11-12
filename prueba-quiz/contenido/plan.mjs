@@ -1,4 +1,4 @@
-// Contenido escrito para BeastCamp. Pendiente de revisión de Juan Medina antes de publicarlo.
+// Contenido escrito para BeastCamp. Pendiente de revisión de Néstor J. Medina antes de publicarlo.
 //
 // Plan de entrenamiento de la app del comprador: 2 perfiles (peleador y bajar de peso) × 4 niveles de carga × 4 semanas,
 // más los drills y la guía bono «Guía de guardia y desplazamientos».

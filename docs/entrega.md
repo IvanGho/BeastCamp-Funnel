@@ -43,7 +43,7 @@ Lo que falta para salir está en el README, en [«Qué falta para salir con anun
 - [x] Botones de 44 px o más, movimiento reducido respetado y sin scroll roto.
 - [x] `appUrl: '/app/'` cargado.
 - [ ] Videos de los ejercicios, drills y guía: tienen el lugar reservado (`video: ''`). Mientras tanto se ve el muñeco con las indicaciones.
-- [ ] Revisión del plan por Juan Medina.
+- [ ] Revisión del plan por Néstor J. Medina.
 - [ ] Prueba en un iPhone y un Android de verdad.
 
 ### Imágenes

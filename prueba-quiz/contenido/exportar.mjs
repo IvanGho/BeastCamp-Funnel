@@ -31,7 +31,7 @@ function generar() {
   const out = [];
   out.push('# Plan de entrenamiento BeastCamp: para revisar');
   out.push('');
-  out.push('Contenido escrito para BeastCamp. Pendiente de revisión de Juan Medina antes de publicarlo.');
+  out.push('Contenido escrito para BeastCamp. Pendiente de revisión de Néstor J. Medina antes de publicarlo.');
   out.push('');
   out.push(`Versión del contenido: ${VERSION}.`);
   out.push('');

@@ -1,6 +1,6 @@
 # Plan de entrenamiento BeastCamp: para revisar
 
-Contenido escrito para BeastCamp. Pendiente de revisión de Juan Medina antes de publicarlo.
+Contenido escrito para BeastCamp. Pendiente de revisión de Néstor J. Medina antes de publicarlo.
 
 Versión del contenido: 1.
 

@@ -12,7 +12,7 @@ const DATOS = {
     { nombre: 'Diego F.', detalle: 'Nivel Impulso', texto: 'Entreno en casa y noto la diferencia en el sparring.' },
   ],
   especialista: {
-    nombre: 'Juan Medina',
+    nombre: 'Néstor J. Medina',
     titulo: 'Médico deportista',
     foto: '',
     matricula: 'MN 00000',

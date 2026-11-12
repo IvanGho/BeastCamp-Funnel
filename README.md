@@ -39,7 +39,7 @@ El detalle está en `docs/pendientes-imagenes.md`.
   - los pósters de los videos, a mejor resolución.
 - **Opcional, solo con datos reales y verificables:** cifra de personas, diagnósticos, estrellas y testimonios, y la matrícula, la universidad y los posgrados del especialista. Mientras estén vacíos, no se muestran.
 
-### 3. Revisión del plan por Juan Medina
+### 3. Revisión del plan por Néstor J. Medina
 
 El plan completo, para leer sin código, está en `prueba-quiz/contenido/plan-para-revisar.md`. Quedan 5 preguntas para él:
 
@@ -181,7 +181,7 @@ Un segundo funnel, para hombres de 30 años o más sin experiencia que quieren b
   - progreso: racha, calendario de 28 días y puntos;
   - perfil.
 - **Ranking:** contra **rivales virtuales** que genera la app, marcados como virtuales. El comprador aparece con su apodo y sus puntos reales. No se muestran otros compradores ni cifras inventadas.
-- **Contenido:** sale de `prueba-quiz/contenido/`. Está escrito para BeastCamp y **pendiente de revisión de Juan Medina** (ver `plan-para-revisar.md`). Cada sesión vale sus minutos × 10 puntos, y la racha suma 10 puntos por día seguido, hasta 60.
+- **Contenido:** sale de `prueba-quiz/contenido/`. Está escrito para BeastCamp y **pendiente de revisión de Néstor J. Medina** (ver `plan-para-revisar.md`). Cada sesión vale sus minutos × 10 puntos, y la racha suma 10 puntos por día seguido, hasta 60.
 - **Videos:** cada ejercicio, drill y sección de la guía tiene `video: ''`. Mientras esté vacío, la app muestra el muñeco y las indicaciones. Para cargar uno: subir el mp4 (sin audio, liviano) a `prueba-quiz/sitio/media/app/<id>.mp4`, poner esa ruta en `video` y correr `npm run construir`.
 - **Progreso:** se guarda en el celu y se sube al servicio. Así no se pierde al cambiar de celu ni al instalar la app en iPhone, que guarda sus datos aparte de Safari.
 - **Archivos:** las fuentes en `prueba-quiz/src/app/` y el caché sin conexión en `sw.js`. `prueba-quiz/scripts/construir-app.mjs` arma `sitio/app/`. Los íconos van en `sitio/img/marca/`.

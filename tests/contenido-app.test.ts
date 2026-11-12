@@ -281,12 +281,12 @@ test("contenido: determinista y sin dependencias del entorno", () => {
     const codigo = leer(`prueba-quiz/contenido/${f}`);
     assert.doesNotMatch(codigo, /Date\.now|new Date|Math\.random|process\.env|from 'node:|from "node:/, f);
   }
-  assert.ok(leer("prueba-quiz/contenido/plan.mjs").startsWith("// Contenido escrito para BeastCamp. Pendiente de revisión de Juan Medina antes de publicarlo."));
+  assert.ok(leer("prueba-quiz/contenido/plan.mjs").startsWith("// Contenido escrito para BeastCamp. Pendiente de revisión de Néstor J. Medina antes de publicarlo."));
 });
 
 test("contenido: el documento para revisar está al día", () => {
   const md = leer("prueba-quiz/contenido/plan-para-revisar.md");
   assert.equal(md, textoParaRevisar() + "\n", "corré: node prueba-quiz/contenido/exportar.mjs");
   assert.match(md, /^# Plan de entrenamiento BeastCamp: para revisar/);
-  assert.match(md, /Pendiente de revisión de Juan Medina antes de publicarlo\./);
+  assert.match(md, /Pendiente de revisión de Néstor J. Medina antes de publicarlo\./);
 });
