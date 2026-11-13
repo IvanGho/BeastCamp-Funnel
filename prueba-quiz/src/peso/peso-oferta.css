@@ -193,3 +193,12 @@ body.consticky{padding-bottom:84px}
 .rvjs .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.3,.8,.3,1)}
 .rvjs .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.po-anillo>i,.po .po-cta,.po-badge,.po .po-arco circle{animation:none}}
+/* Quién está detrás: la tarjeta del médico y su cita pegada abajo */
+.po-medico .med{margin-top:14px;animation:none}
+.po-medico .po-cita{margin-top:12px}
+.rvjs .po-medico:not(.in) .med-l li,.rvjs .po-medico:not(.in) .med-chip{animation:none;opacity:0}
+/* Testimonios: los globos entran de a uno, de abajo, cuando la sección aparece */
+.po-globo .estr{display:block;font-size:13px;margin-bottom:4px}
+.po-msj{animation:poMsj .55s cubic-bezier(.3,.8,.3,1) calc(.2s + var(--i,0) * .25s) both}
+.rvjs .po-testis:not(.in) .po-msj{animation:none;opacity:0}
+@keyframes poMsj{from{opacity:0;transform:translateY(16px) scale(.97)}}

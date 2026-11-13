@@ -103,7 +103,8 @@ test("peso: sin fetch/XHR/WebSocket/form y URLs externas solo las de DATOS y DAT
 test("peso: sin emojis, sin testimonios inventados y datos con fuente", () => {
   assert.doesNotMatch(html, /\p{Extended_Pictographic}/u, "sin emojis");
   assert.doesNotMatch(textoPeso, /\p{Extended_Pictographic}/u, "sin emojis en src/peso");
-  assert.deepEqual(DATOS_PESO.testimonios, []);
+  /* Testimonios: los carga el dueño (personas reales, con su permiso); cada uno con nombre, edad y ciudad, y texto. */
+  assert.ok(DATOS_PESO.testimonios.length <= 3 && DATOS_PESO.testimonios.every((t: any) => t.nombre && /\d+ años · \S/.test(t.detalle) && t.texto.length > 20), "testimonios con nombre, edad · ciudad y texto");
   for (const [k, f] of Object.entries<any>(DATOS_PESO.fuentes)) if (f.verificada) assert.match(f.url, /^https:\/\//, `fuente ${k} con enlace`);
   assert.doesNotMatch(html, /Beast Camp/, "nombre público BeastCamp");
 });

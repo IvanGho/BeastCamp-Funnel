@@ -193,6 +193,24 @@ body:has(#shell.conbg) main{padding-top:36px}
  body:has(#shell.conbg) .prog{top:14px;left:75%;width:min(calc(50% - 56px),464px)}
  body:has(#shell.conbg) main{padding-top:32px}
 }
+/* Tarjeta grande del especialista (funnel de bajar de peso) */
+.med{position:relative;background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px 16px 16px;text-align:center;box-shadow:0 14px 34px rgba(11,15,12,.08);display:flex;flex-direction:column;align-items:center;animation:medSube .6s cubic-bezier(.3,.8,.3,1) both}
+.med-foto{position:relative;width:96px;height:96px;margin-bottom:12px}
+.med-aro{position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(from 0deg,#4ade80,#15803d,#bbf7d0,#4ade80);animation:medGira 5s linear infinite}
+.med-foto img,.med-foto>i{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid #fff;background:linear-gradient(135deg,var(--g),#065f46);color:#fff;font:800 28px/1 system-ui;font-style:normal}
+.med-mn{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);white-space:nowrap;font-size:11.5px;font-weight:800;background:#fef9c3;color:#854d0e;border:2px solid #fff;border-radius:99px;padding:2px 9px;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.med-nm{font-size:19px;font-weight:800;margin-top:4px}.med-ti{font-size:14px;color:var(--m)}
+.med-l{list-style:none;margin:12px 0 0;padding:0;text-align:left;display:flex;flex-direction:column;gap:8px;align-self:stretch}
+.med-l li{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.38;color:#3c4540;animation:medEntra .5s cubic-bezier(.3,.8,.3,1) calc(.35s + var(--i) * .14s) both}
+.med-l svg{flex:none;width:30px;height:30px;padding:6px;border-radius:10px;background:#ecfdf3;fill:none;stroke:var(--gd);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.med-chip{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12.5px;font-weight:700;color:#854d0e;background:#fffbe6;border:1px solid #fde68a;border-radius:99px;padding:5px 12px;animation:medSube .5s ease .9s both}
+.med-chip .estr{letter-spacing:0}
+@keyframes medGira{to{transform:rotate(360deg)}}
+@keyframes medSube{from{opacity:0;transform:translateY(14px)}}
+@keyframes medEntra{from{opacity:0;transform:translateX(12px)}}
+.scr.experto .med{margin:auto 0}
+@media(max-height:700px){.med{padding:12px 12px 10px}.med-foto{width:66px;height:66px;margin-bottom:10px}.med-nm{font-size:17px}.med-l{margin-top:8px;gap:5px}.med-l li{font-size:12px;line-height:1.3}.med-l svg{width:24px;height:24px;padding:4px}.med-chip{margin-top:8px}}
+@media(max-height:640px){.med-ti{display:none}.med-l li{font-size:11.5px}.med-l li.res{display:none}}
 </style></head><body><div class="legal"><p><a href="/quiz/">← Volver</a></p><h1>Política de privacidad</h1>
 <p>Esta política explica qué datos guardamos cuando usás el quiz y la app de BeastCamp, quién los procesa, por cuánto tiempo y cómo ejercer tus derechos.</p>
 <h2>1. Responsable</h2><p>El responsable del tratamiento de los datos es el titular de BeastCamp, que opera este sitio. Para consultas sobre tus datos, escribinos por el mismo medio por el que llegaste a esta página.</p>

@@ -120,11 +120,11 @@ function bloqueHeroe() {
 
 const tildes = (items) => items.map((x) => `<div class="st"><i>✓</i><span>${x}</span></div>`).join('');
 
-/* Cita real del especialista (la misma de la slide de publicación del quiz). */
+/* El especialista con toda su formación y su cita real (la misma de la slide de publicación del quiz). */
 function bloqueCita() {
   const n = (typeof DATOS_PESO !== 'undefined' && DATOS_PESO.publicacion) || {};
-  if (!n.bajada || !n.fuente) return '';
-  return `<figure class="po-cita rv"><blockquote>${esc(n.bajada)}</blockquote><figcaption>${esc(n.fuente)}</figcaption></figure>`;
+  const cita = n.bajada && n.fuente ? `<figure class="po-cita"><blockquote>${esc(n.bajada)}</blockquote><figcaption>${esc(n.fuente)}</figcaption></figure>` : '';
+  return `<section class="po-sec po-medico rv"><h2>Quién está detrás de tu plan</h2>${tarjetaMedico()}${cita}</section>`;
 }
 
 function bloqueLinea() {
@@ -155,7 +155,7 @@ const bloqueComparar = () => `<div class="po-comp rv"><div><span>Cuota de gimnas
 function bloqueTestimoniosPeso(titulo = 'Lo que nos escriben') {
   const ts = (typeof DATOS_PESO !== 'undefined' && DATOS_PESO && DATOS_PESO.testimonios) || [];
   if (!ts.length) return '';
-  return `<section class="po-sec rv"><h2>${titulo}</h2>${ts.slice(0, 3).map((t) => `<div class="po-msj"><span class="po-av">${esc(String(t.nombre || '?')[0])}</span><div class="po-globo"><p>${esc(t.texto)}</p><small>${esc(t.nombre)}${t.detalle ? ' · ' + esc(t.detalle) : ''}</small></div></div>`).join('')}</section>`;
+  return `<section class="po-sec po-testis rv"><h2>${titulo}</h2>${ts.slice(0, 3).map((t, i) => `<div class="po-msj" style="--i:${i}"><span class="po-av">${esc(String(t.nombre || '?')[0])}</span><div class="po-globo"><span class="estr">★★★★★</span><p>“${esc(t.texto)}”</p><small>${esc(t.nombre)}${t.detalle ? ', ' + esc(t.detalle) : ''}</small></div></div>`).join('')}</section>`;
 }
 
 const bloqueAntesDespues = () => `<div class="po-vs rv"><div><small>SIN PLAN</small><p>Improvisás y lo dejás a la semana</p><p>No sabés por dónde empezar</p><p>Sesiones largas que no sostenés</p><p>Nadie te marca el ritmo</p></div><div class="on"><small>CON TU PLAN</small><p>Sabés qué hacer cada día</p><p>Arrancás desde cero y subís de a poco</p><p>Rounds cortos a tu nivel de carga</p><p>El timer te marca el ritmo</p></div></div>`;

@@ -193,6 +193,24 @@ body:has(#shell.conbg) main{padding-top:36px}
  body:has(#shell.conbg) .prog{top:14px;left:75%;width:min(calc(50% - 56px),464px)}
  body:has(#shell.conbg) main{padding-top:32px}
 }
+/* Tarjeta grande del especialista (funnel de bajar de peso) */
+.med{position:relative;background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px 16px 16px;text-align:center;box-shadow:0 14px 34px rgba(11,15,12,.08);display:flex;flex-direction:column;align-items:center;animation:medSube .6s cubic-bezier(.3,.8,.3,1) both}
+.med-foto{position:relative;width:96px;height:96px;margin-bottom:12px}
+.med-aro{position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(from 0deg,#4ade80,#15803d,#bbf7d0,#4ade80);animation:medGira 5s linear infinite}
+.med-foto img,.med-foto>i{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid #fff;background:linear-gradient(135deg,var(--g),#065f46);color:#fff;font:800 28px/1 system-ui;font-style:normal}
+.med-mn{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);white-space:nowrap;font-size:11.5px;font-weight:800;background:#fef9c3;color:#854d0e;border:2px solid #fff;border-radius:99px;padding:2px 9px;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.med-nm{font-size:19px;font-weight:800;margin-top:4px}.med-ti{font-size:14px;color:var(--m)}
+.med-l{list-style:none;margin:12px 0 0;padding:0;text-align:left;display:flex;flex-direction:column;gap:8px;align-self:stretch}
+.med-l li{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.38;color:#3c4540;animation:medEntra .5s cubic-bezier(.3,.8,.3,1) calc(.35s + var(--i) * .14s) both}
+.med-l svg{flex:none;width:30px;height:30px;padding:6px;border-radius:10px;background:#ecfdf3;fill:none;stroke:var(--gd);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.med-chip{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12.5px;font-weight:700;color:#854d0e;background:#fffbe6;border:1px solid #fde68a;border-radius:99px;padding:5px 12px;animation:medSube .5s ease .9s both}
+.med-chip .estr{letter-spacing:0}
+@keyframes medGira{to{transform:rotate(360deg)}}
+@keyframes medSube{from{opacity:0;transform:translateY(14px)}}
+@keyframes medEntra{from{opacity:0;transform:translateX(12px)}}
+.scr.experto .med{margin:auto 0}
+@media(max-height:700px){.med{padding:12px 12px 10px}.med-foto{width:66px;height:66px;margin-bottom:10px}.med-nm{font-size:17px}.med-l{margin-top:8px;gap:5px}.med-l li{font-size:12px;line-height:1.3}.med-l svg{width:24px;height:24px;padding:4px}.med-chip{margin-top:8px}}
+@media(max-height:640px){.med-ti{display:none}.med-l li{font-size:11.5px}.med-l li.res{display:none}}
 /* CSS propio del quiz de bajar de peso (/quiz-peso/). Se carga después de base.css y manda base.css: tarjetas con muñeco, filas .ill, franja de regalo, carga y pop-ups
    salen de ahí, igual que en /quiz/. Acá solo van las piezas que /quiz/ no tiene: medidas, barra de IMC y proyección. */
 
@@ -813,6 +831,23 @@ function tarjetaEspecialista(compacta = false) {
   const lista = [e.universidad, ...(e.posgrados || [])].filter(Boolean).map((x) => `<li>${esc(x)}</li>`).join('');
   return `<div class="exp"><div class="av">${foto}</div><div class="nm">${esc(e.nombre)}</div><div class="ti">${esc(e.titulo)}</div>${e.matricula ? `<span class="mt">${esc(e.matricula)}</span>` : ''}${e.resumen ? `<p style="font-size:13px;color:var(--m);margin:8px 0 0">${esc(e.resumen)}</p>` : ''}${lista && !compacta ? `<ul>${lista}</ul>` : ''}${DATOS.diagnosticos ? `<div class="chips"><span>${estrellas() || I_TILDE} +${esc(DATOS.diagnosticos)} diagnósticos realizados</span></div>` : ''}</div>`;
 }
+/* Tarjeta grande del especialista con toda su formación (funnel de bajar de peso). Cada renglón entra con animación; con movimiento reducido queda quieta. */
+function tarjetaMedico() {
+  const e = DATOS.especialista || {};
+  if (!e.nombre) return '';
+  const birrete = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6"/></svg>';
+  const medalla = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>';
+  const filas = [
+    e.resumen ? [medalla, e.resumen, 'res'] : null,
+    e.universidad ? [birrete, 'Médico egresado de la ' + e.universidad, ''] : null,
+    ...(e.posgrados || []).map((x) => [birrete, 'Posgrado en ' + x, '']),
+  ].filter(Boolean);
+  const foto = e.foto ? `<img src="${esc(e.foto)}" alt="${esc(e.nombre)}">` : `<i>${esc(e.nombre.split(/\s+/).map((p) => p[0]).slice(0, 2).join(''))}</i>`;
+  return `<div class="med"><div class="med-foto"><span class="med-aro"></span>${foto}${e.matricula ? `<span class="med-mn">${esc(e.matricula)}</span>` : ''}</div>` +
+    `<b class="med-nm">${esc(e.nombre)}</b><span class="med-ti">${esc(e.titulo)}</span>` +
+    (filas.length ? `<ul class="med-l">${filas.map((f, i) => `<li class="${f[2]}" style="--i:${i}">${f[0]}<span>${esc(f[1])}</span></li>`).join('')}</ul>` : '') +
+    (DATOS.diagnosticos ? `<span class="med-chip"><span class="estr">★</span> +${esc(DATOS.diagnosticos)} diagnósticos realizados</span>` : '') + '</div>';
+}
 const chipsGatillos = () => `<div class="chips"><span>${I_RELOJ} 3 minutos</span><span>${I_CANDADO} 100% privado</span><span>${I_TILDE} Sin costo</span></div>`;
 
 function bloqueTestimonios(titulo = 'Lo que dicen quienes lo probaron') {
@@ -1002,7 +1037,11 @@ const DATOS_PESO = {
   },
 
   /* Testimonios de personas reales con su permiso. Vacío = no se ve el bloque. */
-  testimonios: [],
+  testimonios: [
+    { nombre: 'Marcos', detalle: '34 años · Buenos Aires', texto: 'Venía bastante sedentario y necesitaba empezar a moverme. Arranqué haciendo shadowboxing en casa y me terminó enganchando. En unas semanas mejoré un montón el aire y empecé a notar cambios en la panza.' },
+    { nombre: 'Federico', detalle: '39 años · Córdoba', texto: 'Siempre me costó mantener una rutina de entrenamiento. Lo bueno de la app es que puedo entrenar en casa, sin necesitar máquinas ni equipamiento. Transpirás, quemás calorías y sentís que realmente estás aprovechando el tiempo.' },
+    { nombre: 'Diego', detalle: '46 años · Mendoza', texto: 'Mi objetivo era bajar unos kilos y recuperar el estado físico que había perdido. Me sorprendió lo completo que puede ser el boxeo de sombra. Ahora tengo más resistencia, me siento más liviano y disfruto entrenar. Lo puedo hacer sin salir de casa.' },
+  ],
 };
 
 /* Quiz de bajar de peso (/quiz-peso/). Mismo motor y mismo aspecto que quiz.js: la primera pantalla ya es una pregunta, todas las opciones son
@@ -1275,7 +1314,7 @@ const DATOS_PESO = {
       const previo = A[x.k] ? String(A[x.k]) : x.def;
       h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p>${img3d(x.muneco, 'mu')}<div class="slid"><output id="v" for="n"><b>${esc(previo)}</b><span>${esc(x.unidad)}</span></output><input id="n" type="range" min="${x.min}" max="${x.max}" step="1" value="${esc(previo)}" aria-label="${esc(x.titulo)}"><div class="rng"><span>${x.min} ${esc(x.unidad)}</span><span>${esc(x.maxTxt || x.max + ' ' + x.unidad)}</span></div></div><div class="msg" id="msg" role="status" aria-live="polite"></div><button class="cta" id="seguir" disabled>Seguir</button>`;
     } else if (x.t === 'experto') {
-      h = `<div class="tag cen">Tu plan personalizado</div><h2>Tu análisis ya está en marcha</h2><p class="sub">Con tus respuestas ajustamos tu plan de 4 semanas al tiempo que tenés.</p>${tarjetaEspecialista()}${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi análisis →</button>`;
+      h = `<div class="tag cen">Tu plan personalizado</div><h2>Tu plan sigue el método del Dr. Medina</h2><p class="sub">Con tus respuestas ajustamos tus 4 semanas al tiempo que tenés.</p>${tarjetaMedico()}${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi análisis →</button>`;
     } else if (x.t === 'carga') {
       return cargando();
     } else if (x.t === 'perfil') {

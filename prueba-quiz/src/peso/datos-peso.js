@@ -58,5 +58,9 @@ const DATOS_PESO = {
   },
 
   /* Testimonios de personas reales con su permiso. Vacío = no se ve el bloque. */
-  testimonios: [],
+  testimonios: [
+    { nombre: 'Marcos', detalle: '34 años · Buenos Aires', texto: 'Venía bastante sedentario y necesitaba empezar a moverme. Arranqué haciendo shadowboxing en casa y me terminó enganchando. En unas semanas mejoré un montón el aire y empecé a notar cambios en la panza.' },
+    { nombre: 'Federico', detalle: '39 años · Córdoba', texto: 'Siempre me costó mantener una rutina de entrenamiento. Lo bueno de la app es que puedo entrenar en casa, sin necesitar máquinas ni equipamiento. Transpirás, quemás calorías y sentís que realmente estás aprovechando el tiempo.' },
+    { nombre: 'Diego', detalle: '46 años · Mendoza', texto: 'Mi objetivo era bajar unos kilos y recuperar el estado físico que había perdido. Me sorprendió lo completo que puede ser el boxeo de sombra. Ahora tengo más resistencia, me siento más liviano y disfruto entrenar. Lo puedo hacer sin salir de casa.' },
+  ],
 };

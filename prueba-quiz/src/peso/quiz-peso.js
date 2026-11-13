@@ -268,7 +268,7 @@
       const previo = A[x.k] ? String(A[x.k]) : x.def;
       h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p>${img3d(x.muneco, 'mu')}<div class="slid"><output id="v" for="n"><b>${esc(previo)}</b><span>${esc(x.unidad)}</span></output><input id="n" type="range" min="${x.min}" max="${x.max}" step="1" value="${esc(previo)}" aria-label="${esc(x.titulo)}"><div class="rng"><span>${x.min} ${esc(x.unidad)}</span><span>${esc(x.maxTxt || x.max + ' ' + x.unidad)}</span></div></div><div class="msg" id="msg" role="status" aria-live="polite"></div><button class="cta" id="seguir" disabled>Seguir</button>`;
     } else if (x.t === 'experto') {
-      h = `<div class="tag cen">Tu plan personalizado</div><h2>Tu análisis ya está en marcha</h2><p class="sub">Con tus respuestas ajustamos tu plan de 4 semanas al tiempo que tenés.</p>${tarjetaEspecialista()}${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi análisis →</button>`;
+      h = `<div class="tag cen">Tu plan personalizado</div><h2>Tu plan sigue el método del Dr. Medina</h2><p class="sub">Con tus respuestas ajustamos tus 4 semanas al tiempo que tenés.</p>${tarjetaMedico()}${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi análisis →</button>`;
     } else if (x.t === 'carga') {
       return cargando();
     } else if (x.t === 'perfil') {

@@ -193,6 +193,23 @@ function tarjetaEspecialista(compacta = false) {
   const lista = [e.universidad, ...(e.posgrados || [])].filter(Boolean).map((x) => `<li>${esc(x)}</li>`).join('');
   return `<div class="exp"><div class="av">${foto}</div><div class="nm">${esc(e.nombre)}</div><div class="ti">${esc(e.titulo)}</div>${e.matricula ? `<span class="mt">${esc(e.matricula)}</span>` : ''}${e.resumen ? `<p style="font-size:13px;color:var(--m);margin:8px 0 0">${esc(e.resumen)}</p>` : ''}${lista && !compacta ? `<ul>${lista}</ul>` : ''}${DATOS.diagnosticos ? `<div class="chips"><span>${estrellas() || I_TILDE} +${esc(DATOS.diagnosticos)} diagnósticos realizados</span></div>` : ''}</div>`;
 }
+/* Tarjeta grande del especialista con toda su formación (funnel de bajar de peso). Cada renglón entra con animación; con movimiento reducido queda quieta. */
+function tarjetaMedico() {
+  const e = DATOS.especialista || {};
+  if (!e.nombre) return '';
+  const birrete = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6"/></svg>';
+  const medalla = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>';
+  const filas = [
+    e.resumen ? [medalla, e.resumen, 'res'] : null,
+    e.universidad ? [birrete, 'Médico egresado de la ' + e.universidad, ''] : null,
+    ...(e.posgrados || []).map((x) => [birrete, 'Posgrado en ' + x, '']),
+  ].filter(Boolean);
+  const foto = e.foto ? `<img src="${esc(e.foto)}" alt="${esc(e.nombre)}">` : `<i>${esc(e.nombre.split(/\s+/).map((p) => p[0]).slice(0, 2).join(''))}</i>`;
+  return `<div class="med"><div class="med-foto"><span class="med-aro"></span>${foto}${e.matricula ? `<span class="med-mn">${esc(e.matricula)}</span>` : ''}</div>` +
+    `<b class="med-nm">${esc(e.nombre)}</b><span class="med-ti">${esc(e.titulo)}</span>` +
+    (filas.length ? `<ul class="med-l">${filas.map((f, i) => `<li class="${f[2]}" style="--i:${i}">${f[0]}<span>${esc(f[1])}</span></li>`).join('')}</ul>` : '') +
+    (DATOS.diagnosticos ? `<span class="med-chip"><span class="estr">★</span> +${esc(DATOS.diagnosticos)} diagnósticos realizados</span>` : '') + '</div>';
+}
 const chipsGatillos = () => `<div class="chips"><span>${I_RELOJ} 3 minutos</span><span>${I_CANDADO} 100% privado</span><span>${I_TILDE} Sin costo</span></div>`;
 
 function bloqueTestimonios(titulo = 'Lo que dicen quienes lo probaron') {
