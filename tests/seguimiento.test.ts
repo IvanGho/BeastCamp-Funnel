@@ -87,8 +87,8 @@ async function quizPeleador(p: Page) {
 
 /* Quiz de bajar de peso hasta «Ver mi plan». Elige «Ritmo» (t2) y deja el nombre vacío (no hay mail en este quiz). */
 async function quizPeso(p: Page) {
-  await clic(p, ".c >> nth=1");                      // edad
-  await clic(p, ".c >> nth=2");                      // cuerpo
+  await clic(p, ".c >> nth=2");                      // cuerpo (primera pantalla)
+  await setRango(p, "38"); await p.waitForTimeout(100); await clic(p, "#seguir");        // edad (deslizador)
   await clic(p, ".c >> nth=1");                      // meta
   await clic(p, ".c >> nth=2"); await clic(p, "#seguir");   // zonas
   await clic(p, ".c >> nth=0");                      // forma
@@ -335,7 +335,7 @@ test("videos (iOS): silenciados, en línea, con póster y precarga; el fondo del
         src: v.getAttribute("src"), poster: v.getAttribute("poster"), muted: v.muted, mutedAttr: v.hasAttribute("muted"), inline: v.hasAttribute("playsinline"),
         webkit: v.hasAttribute("webkit-playsinline"), loop: v.loop, autoplay: v.autoplay, preload: v.preload, volumenAudible: !v.muted && v.volume > 0,
       })));
-      for (const [ruta, src, poster] of [["/quiz/", "/media/hd/hook.mp4", "/media/hook.jpg"], ["/quiz-peso/", "/media/hd/hook.mp4", "/media/hook.jpg"], ["/oferta/", "/media/hd/oferta.mp4", "/media/oferta.jpg"], ["/oferta-peso/", "/media/hd/oferta.mp4", "/media/oferta.jpg"], ["/back1/", "/media/hd/oferta.mp4", "/media/oferta.jpg"], ["/back2-peso/", "/media/hd/oferta.mp4", "/media/oferta.jpg"]]) {
+      for (const [ruta, src, poster] of [["/quiz/", "/media/hd/hook.mp4", "/media/hook.jpg"], ["/quiz-peso/", "/media/hd/hook.mp4", "/media/hook.jpg"], ["/oferta/", "/media/hd/oferta.mp4", "/media/oferta.jpg"], ["/oferta-peso/", "/media/hd/oferta.mp4", "/media/oferta.jpg"], ["/back1/", "/media/hd/oferta.mp4", "/media/oferta.jpg"]]) {   // los rescates de peso son cortos y no llevan video
         await p.goto(`${base}${ruta}`); await p.waitForSelector("video"); await p.waitForTimeout(300);
         const vs = await atributos();
         assert.ok(vs.length >= 1, `${ruta}: hay un video`);

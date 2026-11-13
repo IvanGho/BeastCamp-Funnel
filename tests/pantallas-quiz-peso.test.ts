@@ -111,48 +111,44 @@ async function medir(p: Page, nombre: string, hallazgos: Hallazgo[], captura: (n
   await captura(nombre);
 }
 
-/* Los bloques de la oferta y de los rescates, en el orden del funnel original (oferta.js). */
+/* Oferta larga (sin barra de tiempo arriba: el tiempo va en la barra de compra) y rescates cortos con la barra de tiempo arriba y la tarjeta del descuento. */
 async function revisarOferta(p: Page, pagina: string, hallazgos: Hallazgo[]) {
   const r = await p.evaluate(() => {
-    const txt = document.body.innerText;
-    const v = document.querySelector(".vid video");
     const sticky = document.querySelector(".sticky");
     return {
-      txt,
-      video: v ? v.getAttribute("src") : null, poster: v ? v.getAttribute("poster") : null,
-      sello: !!document.querySelector(".box.sello svg"), tbar: !!document.querySelector(".tbar"),
-      vs: !!document.querySelector(".vs .on"), pasos: document.querySelectorAll(".box .st").length, sem: document.querySelectorAll(".box .sem").length,
-      garantia: !!document.querySelector(".garantia svg"), faq: document.querySelectorAll(".faq details").length,
+      txt: document.body.innerText.toLowerCase(),
+      video: document.querySelector(".vid video")?.getAttribute("src") ?? null, poster: document.querySelector(".vid video")?.getAttribute("poster") ?? null,
+      tbar: !!document.querySelector(".tbar"), tmBarra: document.querySelector(".tbar .tm")?.textContent ?? null,
+      garantia: !!document.querySelector(".po-gar svg"), faq: document.querySelectorAll(".po-faq details").length,
       cta: document.querySelectorAll(".cta[data-reservar]").length, sticky: !!sticky && !!sticky.querySelector(".cta[data-reservar]"),
+      precioFija: sticky?.querySelector(".po-sp b")?.textContent ?? null, tmFija: sticky?.querySelector(".tm")?.textContent ?? null,
       contador: document.querySelectorAll(".tm").length,
-      barra: document.querySelector(".tbar span")?.textContent ?? null, tmBarra: document.querySelector(".tbar .tm")?.textContent ?? null,
-      fijaTxt: sticky?.querySelector("span")?.firstChild?.textContent ?? null, tmFija: sticky?.querySelector(".tm")?.textContent ?? null,
     };
   });
   const falla = (problema: string) => hallazgos.push({ pantalla: pagina, problema });
-  if (r.video !== "/media/hd/oferta.mp4" || r.poster !== "/media/oferta.jpg") falla(`falta el video de la oferta con su póster (${r.video} · ${r.poster})`);
-  if (!r.tbar) falla("falta la barra superior .tbar");
-  if (!r.sello) falla("falta el sello con escudo");
-  if (!r.vs) falla("falta el antes/después");
-  if (r.pasos !== 13) falla(`los pasos .st (qué incluye 6, cómo funciona 3, por qué te sirve 4) son ${r.pasos}`);
-  if (r.sem !== 4) falla(`faltan las 4 semanas .sem: ${r.sem}`);
   if (!r.garantia) falla("falta la garantía");
-  if (r.faq < 7) falla(`faltan preguntas frecuentes: ${r.faq}`);
-  if (r.cta < 1 || !r.sticky) falla("falta el botón de reserva o la barra fija");
-  /* Contador igual al de oferta.js: uno en la barra de arriba y otro en la barra fija, con la misma cuenta y la frase de cada página. */
-  if (r.barra !== BARRAS[pagina]) falla(`la barra dice «${r.barra}» y debería decir «${BARRAS[pagina]}»`);
-  if (r.contador !== 2) falla(`el contador .tm debería estar en la barra y en la barra fija (2) y hay ${r.contador}`);
-  if (!(segundos(r.tmBarra) >= 1 && segundos(r.tmBarra) <= CICLO[pagina])) falla(`el contador de la barra no es un mm:ss dentro del ciclo de ${CICLO[pagina]} s: «${r.tmBarra}»`);
-  if (r.tmFija !== r.tmBarra) falla(`la barra fija marca «${r.tmFija}» y la de arriba «${r.tmBarra}»`);
-  if (r.fijaTxt !== "Oferta termina en") falla(`la barra fija dice «${r.fijaTxt}» y debería decir «Oferta termina en»`);
-  const orden = ["HOY", "TU META", "Tu camino hasta tu meta", "Hecho para arrancar de cero", ...(pagina === "oferta-peso" ? ["Por qué arrancar sin plan te frena"] : []), "Plan de 4 semanas de shadowboxing en casa", "Qué incluye", "Así cambia tu forma de arrancar", "Cómo funciona", "Qué hacés cada semana", "Por qué te sirve", "Valor total", "Garantía de 30 días", "Preguntas frecuentes"];
+  if (r.cta < 2 || !r.sticky) falla(`faltan los botones de compra o la barra fija (${r.cta})`);
+  if (!r.precioFija || !/^\$\d/.test(r.precioFija)) falla(`la barra fija no muestra el precio: «${r.precioFija}»`);
+  let orden: string[];
+  if (pagina === "oferta-peso") {
+    if (r.video !== "/media/hd/oferta.mp4" || r.poster !== "/media/oferta.jpg") falla(`falta el video de la oferta con su póster (${r.video} · ${r.poster})`);
+    if (r.tbar) falla("la oferta no lleva la barra de tiempo arriba: el tiempo va en la barra de compra de abajo");
+    if (r.faq < 7) falla(`faltan preguntas frecuentes: ${r.faq}`);
+    if (r.contador !== 3) falla(`el contador .tm va en el aviso del precio, en el cierre y en la barra fija (3) y hay ${r.contador}`);
+    if (!(segundos(r.tmFija) >= 1 && segundos(r.tmFija) <= CICLO[pagina])) falla(`el contador de la barra fija no es un mm:ss dentro del ciclo: «${r.tmFija}»`);
+    orden = ["ya está armado", "lo que vimos en tus respuestas", "tu camino hasta tu meta", "lo que vas a hacer", "semana 1", "semana 4", "por qué funciona el shadowboxing", "qué incluye tu plan", "hoy pagás", "quiero mi plan personalizado", "sin plan", "garantía de 30 días", "preguntas frecuentes", "u plan te está esperando"];
+  } else {
+    if (!r.tbar) falla("el rescate lleva la barra de tiempo arriba");
+    if (!(segundos(r.tmBarra) >= 1 && segundos(r.tmBarra) <= CICLO[pagina])) falla(`el contador de la barra no es un mm:ss dentro del ciclo de ${CICLO[pagina]} s: «${r.tmBarra}»`);
+    if (r.txt.includes("preguntas frecuentes")) falla("el rescate es corto: sin preguntas frecuentes");
+    orden = ["off", "precio normal", "tu precio con el descuento", "vas a poder", "garantía de 30 días"];
+  }
   let desde = 0;
   for (const t of orden) {
     const i = r.txt.indexOf(t, desde);
     if (i < 0) { falla(`falta «${t}» o está fuera de orden`); break; }
     desde = i + t.length;
   }
-  if (pagina !== "oferta-peso" && r.txt.includes("Por qué arrancar sin plan te frena")) falla("el rescate no debería llevar «Por qué arrancar sin plan te frena» (igual que en el funnel original)");
 }
 
 /* Pantallas que llenan el alto: entre el título y el pie legal no queda vacío (a lo sumo el margen de unos pocos píxeles). */
@@ -319,7 +315,7 @@ async function revisarReparto(p: Page, nombre: string, hallazgos: Hallazgo[], ma
   if (mayor > max) hallazgos.push({ pantalla: nombre, problema: `queda un vacío de ${Math.round(mayor)}px (${donde}): el contenido no está repartido entre el título y el botón (máximo ${max}px)` });
 }
 
-/* Barra fija de la oferta: fuera de pantalla y sin recibir toques al cargar; visible al pasar el final de «Por qué te sirve»; oculta otra vez al subir. */
+/* Barra de compra fija: oculta arriba de todo, visible ni bien se desliza un poco, nunca tapa el pie legal y se oculta otra vez al volver arriba. */
 async function revisarBarra(p: Page, pagina: string, hallazgos: Hallazgo[]) {
   const estado = () => p.evaluate(() => {
     const k = document.querySelector(".sticky") as HTMLElement, b = k.getBoundingClientRect(), cs = getComputedStyle(k);
@@ -328,28 +324,20 @@ async function revisarBarra(p: Page, pagina: string, hallazgos: Hallazgo[]) {
     return { top: b.top, bottom: b.bottom, alto: innerHeight, vis: cs.visibility, toques: cs.pointerEvents, tocaBarra: !!arriba && !!arriba.closest(".sticky"), oculta: k.classList.contains("oculta") };
   });
   const falla = (problema: string) => hallazgos.push({ pantalla: pagina, problema });
-  const fin = () => p.evaluate(() => { const q = document.getElementById("por-que")!; return { b: q.getBoundingClientRect().bottom + scrollY, ok: /Por qué te sirve/.test(q.textContent ?? "") }; });
-  const a = (await fin());
-  if (!a.ok) return falla("no encuentro el bloque «Por qué te sirve» (#por-que)");
   await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(500);
   let e = await estado();
-  if (e.top < e.alto || e.vis !== "hidden" || e.toques !== "none" || e.tocaBarra || !e.oculta) falla(`al cargar la barra fija debería estar fuera de pantalla y sin recibir toques: ${JSON.stringify(e)}`);
-  /* La barra entra recién cuando el final del bloque quedó por encima de ella: nunca le tapa las últimas líneas. */
-  const umbral = a.b - (await p.evaluate(() => innerHeight - (document.querySelector(".sticky") as HTMLElement).offsetHeight));
-  await p.evaluate((y) => scrollTo(0, y), umbral - 20); await p.waitForTimeout(500);
+  if (e.top < e.alto || e.vis !== "hidden" || e.toques !== "none" || e.tocaBarra || !e.oculta) falla(`arriba de todo la barra fija debería estar fuera de pantalla y sin recibir toques: ${JSON.stringify(e)}`);
+  await p.evaluate(() => scrollTo(0, 200)); await p.waitForTimeout(600);
   e = await estado();
-  if (e.vis !== "hidden" || !e.oculta) falla("la barra fija aparece antes de terminar «Por qué te sirve» y le tapa el final");
-  await p.evaluate((y) => scrollTo(0, y), umbral + 20); await p.waitForTimeout(600);
-  e = await estado();
-  if (e.vis !== "visible" || e.toques === "none" || e.oculta || e.bottom > e.alto + 1 || e.top >= e.alto) falla(`pasado «Por qué te sirve» la barra fija debería verse: ${JSON.stringify(e)}`);
-  const finBloque = await p.evaluate(() => document.getElementById("por-que")!.getBoundingClientRect().bottom);
-  if (finBloque > e.top + 1) falla(`la barra fija tapa el final de «Por qué te sirve»: el bloque termina en ${Math.round(finBloque)}px y la barra empieza en ${Math.round(e.top)}px`);
+  if (e.vis !== "visible" || e.toques === "none" || e.oculta || e.bottom > e.alto + 1 || e.top >= e.alto || !e.tocaBarra) falla(`al deslizar un poco la barra fija debería verse: ${JSON.stringify(e)}`);
   await p.evaluate(() => scrollTo(0, document.scrollingElement!.scrollHeight)); await p.waitForTimeout(500);
-  if ((await estado()).vis !== "visible") falla("la barra fija debería seguir visible al llegar al final de la página");
-  await p.evaluate((y) => scrollTo(0, y), a.b - (await p.evaluate(() => innerHeight)) - 80); await p.waitForTimeout(600);
   e = await estado();
-  if (e.vis !== "hidden" || e.toques !== "none" || e.tocaBarra || e.top < e.alto) falla(`al subir por encima de «Por qué te sirve» la barra fija debería ocultarse otra vez: ${JSON.stringify(e)}`);
-  await p.evaluate(() => scrollTo(0, 0));
+  if (e.vis !== "visible") falla("la barra fija debería seguir visible al llegar al final de la página");
+  const pie = await p.evaluate(() => { const f = document.querySelector(".ft"); return f ? f.getBoundingClientRect().bottom : 0; });
+  if (pie > e.top + 1) falla(`al final de la página la barra fija tapa el pie legal (${Math.round(pie)}px > ${Math.round(e.top)}px)`);
+  await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(600);
+  e = await estado();
+  if (e.vis !== "hidden" || e.toques !== "none" || e.tocaBarra) falla(`al volver arriba la barra fija debería ocultarse otra vez: ${JSON.stringify(e)}`);
 }
 
 async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, base: string, ancho: number, alto: number, vista: boolean, dirCapturas?: string) {
@@ -378,17 +366,17 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   const falla = (pantalla: string, problema: string) => hallazgos.push({ pantalla, problema });
 
   await p.goto(`${base}/quiz-peso/`);
-  await m("edad", { tarjetas: 4 });
-  /* Primera pantalla: video hook, prueba social (solo con datos), 4 tarjetas con muñeco y la franja de regalo con su texto verdadero. */
-  if (!(await video()).endsWith("/media/hd/hook.mp4")) falla("edad", "la primera pantalla no usa el video hook");
+  await m("cuerpo", { tarjetas: 4, claves: CUERPO });
+  /* Primera pantalla («cuerpo»): video hook, prueba social (solo con datos), 4 tarjetas con muñeco y la franja de regalo con su texto verdadero. */
+  if (!(await video()).endsWith("/media/hd/hook.mp4")) falla("cuerpo", "la primera pantalla no usa el video hook");
   const hook = await p.evaluate(() => ({ pill: !!document.querySelector(".pill"), regalo: document.querySelector(".gift")?.textContent?.trim() ?? "", icono: !!document.querySelector(".gift svg") }));
   const hayPersonas = !!(await p.evaluate("DATOS_PESO.personas"));
-  if (hook.pill !== hayPersonas) falla("edad", `la píldora de personas ${hayPersonas ? "falta aunque hay cifra de personas" : "aparece sin cifra real"}`);
-  if (vista && !hayPersonas) falla("edad", "los datos de relleno deberían traer la cifra de personas");
-  if (hook.regalo !== REGALO || !hook.icono) falla("edad", `la franja de regalo no dice lo acordado: «${hook.regalo}»`);
+  if (hook.pill !== hayPersonas) falla("cuerpo", `la píldora de personas ${hayPersonas ? "falta aunque hay cifra de personas" : "aparece sin cifra real"}`);
+  if (vista && !hayPersonas) falla("cuerpo", "los datos de relleno deberían traer la cifra de personas");
+  if (hook.regalo !== REGALO || !hook.icono) falla("cuerpo", `la franja de regalo no dice lo acordado: «${hook.regalo}»`);
   await p.click(".c >> nth=1", { clickCount: 2 }); await p.waitForTimeout(520);   // doble toque: pasa una sola pantalla
-  if (!/cuerpo/.test(await titulo())) falla("edad", `un doble toque saltó de pantalla: ahora dice «${await titulo()}»`);
-  await m("cuerpo", { tarjetas: 4, claves: CUERPO }); await revisarAlto(p, "cuerpo", hallazgos); await clic(".c >> nth=2");
+  if (!/años/.test(await titulo())) falla("cuerpo", `un doble toque saltó de pantalla: ahora dice «${await titulo()}»`);
+  await m("edad", { medida: true }); await revisarMedida(p, "edad", hallazgos); await clic("#seguir");
   await m("meta", { tarjetas: 4 }); await revisarAlto(p, "meta", hallazgos); await clic(".c >> nth=1");
   const botones: Record<string, number> = {};
   const boton = async (pantalla: string, sel = "#seguir") => { botones[pantalla] = await revisarBoton(p, pantalla, hallazgos, sel); };
@@ -452,7 +440,7 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   await p.screenshot({ path: dirCapturas ? `${dirCapturas}/peso-${ancho}x${alto}-${vista ? "vp" : "prod"}-oferta-completa.png` : undefined, fullPage: true }).catch(() => {});
   await revisarOferta(p, "oferta-peso", hallazgos);
   await revisarBarra(p, "oferta-peso", hallazgos);
-  /* Los rescates comparten la plantilla: mismos bloques (salvo «Por qué arrancar sin plan te frena», que solo va en la oferta). */
+  /* Los rescates son cortos: barra de tiempo arriba, tarjeta del descuento y garantía. */
   for (const rescate of ["back1-peso", "back2-peso"]) {
     await p.goto(`${base}/${rescate}/`); await p.waitForTimeout(500);
     await revisarOferta(p, rescate, hallazgos);
@@ -468,11 +456,11 @@ async function recorrer(browser: Awaited<ReturnType<typeof chromium.launch>>, ba
   /* El contador de oferta arranca casi en cero (faltan 5 s: margen para que una carga lenta no lo reinicie antes de leerlo) para comprobar que se reinicia solo, como el de /oferta/. */
   await p2.addInitScript(() => { try { sessionStorage.setItem("bc_t0_oferta", String(Math.floor(Date.now() / 1000) - 595)); } catch (e) {} });
   await p2.goto(`${base}/oferta-peso/`); await p2.waitForTimeout(400);
-  const cuenta = await p2.evaluate(() => document.querySelector(".tbar .tm")?.textContent ?? "");
+  const cuenta = await p2.evaluate(() => document.querySelector(".sticky .tm")?.textContent ?? "");
   if (!(segundos(cuenta) >= 1 && segundos(cuenta) <= 5)) falla("oferta-peso", `el contador debería arrancar entre 00:05 y 00:01 y marca «${cuenta}»`);
-  const directa = await p2.evaluate(() => ({ h1: document.querySelector("h1")?.textContent ?? "", personal: !!document.querySelector(".po-hoy, .po-graf"), video: !!document.querySelector(".vid video"), pasos: document.querySelectorAll(".box .st").length }));
-  if (directa.personal || !directa.video || directa.pasos !== 13 || directa.h1 !== "Tu plan para bajar de peso ya está armado.") falla("oferta-peso", `la entrada directa no queda bien: ${JSON.stringify(directa)}`);
-  await p2.waitForFunction(() => { const t = document.querySelector(".tbar .tm")?.textContent ?? ""; return /^\d\d:\d\d$/.test(t) && +t.slice(0, 2) * 60 + +t.slice(3) > 590; }, null, { timeout: 6000 })
+  const directa = await p2.evaluate(() => ({ h1: document.querySelector("h1")?.textContent ?? "", personal: !!document.querySelector(".po-hoy, .po-graf, .po-cuenta"), video: !!document.querySelector(".vid video"), semanas: document.querySelectorAll(".po-linea-t li").length }));
+  if (directa.personal || !directa.video || directa.semanas !== 4 || directa.h1 !== "Tu plan para bajar de peso ya está armado") falla("oferta-peso", `la entrada directa no queda bien: ${JSON.stringify(directa)}`);
+  await p2.waitForFunction(() => { const t = document.querySelector(".sticky .tm")?.textContent ?? ""; return /^\d\d:\d\d$/.test(t) && +t.slice(0, 2) * 60 + +t.slice(3) > 590; }, null, { timeout: 6000 })
     .catch(() => falla("oferta-peso", "el contador no se reinició solo al llegar a cero"));
   /* Con movimiento reducido la barra fija no anima su entrada. */
   await p2.emulateMedia({ reducedMotion: "reduce" });

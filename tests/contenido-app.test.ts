@@ -54,7 +54,7 @@ const promedio = (a: number[]) => a.reduce((x, y) => x + y, 0) / a.length;
 function semanasDeOferta(archivo: string, nombre: string): string[] {
   const bloque = leer(archivo).match(new RegExp(`const ${nombre} = \\[([\\s\\S]*?)\\n\\];`));
   assert.ok(bloque, `no se encontró ${nombre} en ${archivo}`);
-  return [...bloque[1].matchAll(/\['Semana (\d)',\s*'([^']+)'\]/g)].sort((a, b) => Number(a[1]) - Number(b[1])).map((m) => m[2]);
+  return [...bloque[1].matchAll(/\['Semana (\d)',\s*'([^']+)'(?:,\s*'[^']*')?\]/g)].sort((a, b) => Number(a[1]) - Number(b[1])).map((m) => m[2]);
 }
 
 test("contenido: versión, niveles y formato válido para los dos perfiles", () => {

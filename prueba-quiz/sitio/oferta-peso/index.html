@@ -234,6 +234,160 @@ body:has(#shell.conbg) main{padding-top:36px}
 .vid-fila .vid video{width:100%;height:100%;aspect-ratio:auto;object-fit:cover}
 .vid-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
 .vid-info .st{font-size:14px;line-height:1.3}
+
+/* ===== Oferta y rescates (diseño nuevo): bloques con animación al aparecer y barra de compra abajo ===== */
+.po{--rojo:#dc2626}
+.po svg:not(.po-graf){fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.po h2{font-size:22px;line-height:1.2;text-align:center;margin:0 0 4px}
+.po-h1{font-size:clamp(25px,7vw,32px);line-height:1.15;text-align:center;margin:6px 0 6px;letter-spacing:-.01em}
+.po-h1 em{font-style:normal;color:var(--g)}
+.po-sub{text-align:center;color:var(--m);font-size:15px;margin:0 0 6px}
+.po-top{display:flex;justify-content:center}.po-top .esp-mini{display:flex;align-items:center;gap:10px;text-align:left;padding:2px 0;margin:0 0 6px}.po-top .esp-mini .av{width:44px;height:44px;flex:none;margin:0;font-size:15px;box-shadow:0 0 0 2px var(--g2)}.po-top .esp-mini b{display:block;font-size:14.5px;line-height:1.25}.po-top .esp-mini small{display:block;color:var(--m);font-size:12.5px;line-height:1.3}
+.po-sec{margin:28px 0 8px}
+
+/* Disco con la meta: dos anillos que laten y un arco que se dibuja */
+.po-heroe{display:flex;justify-content:center;margin:14px 0 18px}
+.po-anillo{position:relative;width:min(78vw,280px);aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.po-anillo>i{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(22,163,74,.22);animation:poLate 2.8s ease-out infinite}
+.po-anillo>i+i{animation-delay:1.4s}
+.po-arco{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.po .po-arco circle{stroke:var(--g);stroke-width:3;stroke-dasharray:1;stroke-dashoffset:0;animation:poArco 1.8s cubic-bezier(.3,.8,.3,1) .3s both}
+.po-disco{position:relative;width:84%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 35%,#fff,#f3faf5);box-shadow:0 14px 40px rgba(22,163,74,.18),inset 0 0 0 1px #dcefe2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
+.po-disco small{font-size:14px;color:var(--m)}.po-disco small s{color:var(--rojo);font-weight:700}
+.po-disco b{font-size:clamp(54px,16vw,72px);line-height:1;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.po-disco b em{font-style:normal;font-size:22px;font-weight:700;color:var(--m);margin-left:4px}
+.po-chip{margin-top:4px;font-size:14px;font-weight:800;color:var(--gd);background:#dcfce7;border-radius:99px;padding:4px 12px}
+@keyframes poLate{0%{transform:scale(.86);opacity:0}30%{opacity:1}100%{transform:scale(1.08);opacity:0}}
+@keyframes poArco{from{stroke-dashoffset:1}}
+
+/* Lo que vimos */
+.po-vi{background:#fff;box-shadow:0 6px 24px rgba(11,15,12,.06)}
+.po-vi>b{font-size:17px}
+.po-vi ul{list-style:none;margin:10px 0 0;padding:0}
+.po-vi li{position:relative;padding:0 0 0 24px;margin:9px 0;font-size:15px;line-height:1.4;color:#2d3530}
+.po-vi li:before{content:"";position:absolute;left:4px;top:.45em;width:10px;height:10px;border-radius:50%;background:var(--g);box-shadow:0 0 0 4px #dcfce7}
+
+/* Gráfico: la línea se dibuja al aparecer */
+.rvjs .po-gbox .po-linea{stroke-dasharray:1;stroke-dashoffset:1}
+.rvjs .po-gbox.in .po-linea{animation:poTraza 1.6s cubic-bezier(.4,.1,.3,1) .2s forwards}
+@keyframes poTraza{to{stroke-dashoffset:0}}
+
+/* Cita del especialista */
+.po-cita{margin:22px 0 10px;background:linear-gradient(135deg,#15803d,#16A34A);color:#fff;border-radius:22px;padding:22px 20px;text-align:center;box-shadow:0 12px 30px rgba(21,128,61,.25)}
+.po-cita blockquote{margin:0;font-size:17px;line-height:1.45;font-weight:600}
+.po-cita figcaption{margin-top:10px;font-size:13.5px;font-style:italic;opacity:.9}
+
+/* Línea de tiempo semana a semana: la línea se llena al aparecer */
+.po-linea-t{list-style:none;margin:16px 0 0;padding:0;position:relative}
+.po-linea-t:before,.po-linea-t:after{content:"";position:absolute;left:21px;top:20px;bottom:30px;width:3px;border-radius:3px;background:#e3eae5}
+.po-linea-t:after{background:var(--g);transform-origin:top}.po-linea-t:before,.po-linea-t:after{z-index:0}.po-linea-t li{z-index:1}
+.rvjs .po-sec:not(.in) .po-linea-t:after{transform:scaleY(0)}
+.rvjs .po-sec.in .po-linea-t:after{animation:poLlena 1.8s ease .2s both}
+@keyframes poLlena{from{transform:scaleY(0)}}
+.po-linea-t li{position:relative;display:flex;gap:12px;align-items:flex-start;margin:0 0 12px}
+.po-nodo{flex:none;position:relative;z-index:1;width:45px;height:45px;border-radius:50%;background:#fff;border:2.5px solid var(--g);color:var(--gd);display:flex;align-items:center;justify-content:center}
+.po-nodo svg{width:22px;height:22px}
+.po-linea-t li>div{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:11px 14px;box-shadow:0 4px 14px rgba(11,15,12,.04)}
+.po-et2{display:inline-block;font-size:12px;font-weight:800;color:var(--gd);background:#dcfce7;border-radius:99px;padding:2px 9px;margin-bottom:4px}
+.po-linea-t b{display:block;font-size:15.5px;line-height:1.25}
+.po-linea-t p{margin:4px 0 0;font-size:13.5px;line-height:1.4;color:var(--m)}
+.rvjs .po-sec:not(.in) .po-linea-t li{opacity:0}
+.rvjs .po-sec.in .po-linea-t li{animation:poEntraX .5s cubic-bezier(.3,.8,.3,1) calc(.25s + var(--i) * .3s) both}
+@keyframes poEntraX{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.po-pie2{text-align:center;color:var(--m);font-size:13.5px;margin:4px 0 0}
+
+/* Tarjetas con ícono */
+.po-cards{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.po-card{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 14px;box-shadow:0 4px 14px rgba(11,15,12,.04)}
+.po-card>svg{flex:none;width:40px;height:40px;padding:8px;border-radius:12px;background:#ecfdf3;color:var(--gd)}
+.po-card b{display:block;font-size:15.5px}.po-card span{display:block;font-size:14px;line-height:1.35;color:#3c4540}
+
+/* Precio */
+.po-precio{background:#fff;border-radius:22px;box-shadow:0 10px 30px rgba(11,15,12,.07);padding:16px}
+.po-tit{display:block;font-size:18px;margin-bottom:6px}
+.po-item{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.3}
+.po-item svg{flex:none;width:22px;height:22px;color:var(--gd)}
+.po-item span{flex:1}.po-item s{color:var(--m);white-space:nowrap}.po-item em{font-style:normal;font-size:12.5px;font-weight:700;color:var(--gd);white-space:nowrap}
+.po-total{display:flex;justify-content:space-between;padding:12px 0 2px;color:var(--m)}.po-total s{font-size:17px}
+.po-hoy2{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.po-hoy2 span{font-weight:800;font-size:16px}
+.po-hoy2 b{font-size:clamp(40px,12vw,50px);font-weight:900;color:var(--g);line-height:1.05}
+.po-dia{text-align:right;margin:2px 0 0;font-size:13px;color:var(--m)}
+.po-urg{display:flex;justify-content:center;align-items:center;gap:6px;margin:18px 0 0;color:var(--rojo);font-weight:800;font-size:14.5px}
+.po-urg svg{width:18px;height:18px}.po-urg b{font-variant-numeric:tabular-nums}
+.po .po-cta{border-radius:99px;padding:18px 12px;margin-top:10px;font-size:clamp(14.5px,4.3vw,18px);white-space:nowrap;letter-spacing:.01em;animation:poCta 2.4s ease-in-out infinite}
+.po-apoyo{display:block;font-size:13.5px;font-weight:600;margin-top:3px;opacity:.95}
+@keyframes poCta{0%,100%{box-shadow:0 8px 22px rgba(22,163,74,.28)}50%{box-shadow:0 8px 30px rgba(22,163,74,.55),0 0 0 6px rgba(74,222,128,.18)}}
+.po-conf{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 14px;margin:10px 0 0;font-size:12.5px;color:var(--m)}
+.po-conf span{display:inline-flex;align-items:center;gap:4px}.po-conf svg{width:14px;height:14px;color:var(--gd)}
+.po-comp{display:flex;flex-direction:column;gap:8px;margin:18px 0 6px}
+.po-comp>div{display:flex;justify-content:space-between;gap:10px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:12px 18px;font-size:14.5px}
+.po-comp i{font-style:normal;color:var(--m)}.po-comp .on{border:1.5px solid var(--g);background:#f0fdf4}.po-comp .on b{color:var(--gd)}
+
+/* Testimonios en formato de chat (solo reales) */
+.po-msj{display:flex;align-items:flex-end;gap:8px;margin-top:12px}
+.po-av{flex:none;width:32px;height:32px;border-radius:50%;background:#ecfdf3;color:var(--gd);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+.po-globo{flex:1;background:#e7f7ec;border-radius:20px 20px 20px 6px;padding:12px 15px}
+.po-globo p{margin:0;font-size:15px;line-height:1.45}.po-globo small{display:block;text-align:right;margin-top:6px;font-size:12.5px;color:var(--m)}
+
+/* Sin plan / Con plan */
+.po-vs{display:flex;gap:10px;margin:22px 0 8px}
+.po-vs>div{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px 12px}
+.po-vs small{display:block;font-weight:900;letter-spacing:.06em;font-size:12.5px;color:var(--rojo);margin-bottom:6px}
+.po-vs .on{background:#f0fdf4;border-color:#c8f1d6}.po-vs .on small{color:var(--gd)}
+.po-vs p{position:relative;margin:7px 0 0;padding-left:18px;font-size:13.5px;line-height:1.35}
+.po-vs p:before{content:"\00D7";position:absolute;left:1px;top:-1px;font-weight:900;color:var(--rojo)}
+.po-vs .on p:before{content:"\2713";color:var(--g)}
+
+/* Garantía */
+.po-gar{display:flex;gap:14px;align-items:flex-start;border:2px solid var(--g);border-radius:22px;padding:16px;margin:22px 0 8px;background:#fff}
+.po-gar-ic{flex:none;width:48px;height:48px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center}.po-gar-ic svg{width:26px;height:26px}
+.po-gar small{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--gd)}.po-gar b{display:block;font-size:19px;margin:1px 0 4px}
+.po-gar p{margin:0;font-size:14px;line-height:1.45;color:var(--m)}
+
+/* Preguntas frecuentes en tarjetas */
+.po-faq{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.po-faq details{background:#fff;border:1px solid var(--line);border-radius:18px;padding:0 16px}
+.po-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:10px;padding:14px 0;font-weight:600;font-size:15px}
+.po-faq summary::-webkit-details-marker{display:none}
+.po-faq summary:after{content:"+";color:var(--g);font-size:20px;line-height:1;font-weight:700;transition:transform .2s}
+.po-faq details[open] summary:after{transform:rotate(45deg)}
+.po-faq p{margin:0 0 14px;font-size:14px;line-height:1.45;color:var(--m)}
+
+/* Cierre */
+.po-fin{margin:28px -16px 0;padding:24px 16px 14px;background:#f0fdf4;text-align:center}
+.po-fin p{margin:4px 0 0;color:var(--m)}
+.po-reloj{font-size:44px;font-weight:900;color:var(--rojo);font-variant-numeric:tabular-nums;margin:2px 0 4px}
+
+/* Barra de compra fija abajo */
+body.consticky{padding-bottom:84px}
+.sticky.po-st{display:flex;align-items:center;gap:12px;padding-top:10px;box-shadow:0 -8px 24px rgba(11,15,12,.08)}
+.po-sp{flex:none;display:flex;flex-direction:column;line-height:1.15}
+.sticky.po-st .po-sp b{display:block;font-size:22px;font-weight:900;color:var(--gd)}
+.sticky.po-st .po-sp small{font-size:12px;color:#dc2626;font-weight:700}
+.sticky.po-st .po-sp .tm{display:inline;font-variant-numeric:tabular-nums}
+.sticky.po-st .cta{flex:1 1 auto;border-radius:99px;font-size:16px;padding:14px 12px}
+
+/* Rescates */
+.po .po-tbar{display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(90deg,#7f1d1d,#dc2626);border-radius:14px;padding:10px 12px;font-weight:700}
+.po-tbar svg{width:18px;height:18px;flex:none}
+.po .po-tbar b{background:rgba(0,0,0,.28);border-radius:7px;padding:2px 8px;font-size:16px}
+.po-cen{text-align:center;margin-top:10px}
+.po-pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--gd);background:#ecfdf3;border:1px solid #c8f1d6;border-radius:99px;padding:6px 14px}
+.po-pill svg{width:15px;height:15px}
+.po-res .po-h1 em{color:var(--rojo)}
+.po-intro{color:var(--m);font-size:15.5px;line-height:1.5;margin:6px 4px 0}
+.po-oferta{position:relative;margin:20px 0 8px;border:2px solid var(--g);border-radius:24px;padding:26px 16px 16px;text-align:center;background:#fff;box-shadow:0 14px 34px rgba(22,163,74,.16)}
+.po-badge{display:inline-flex;align-items:center;gap:6px;background:var(--g);color:#fff;font-weight:800;font-size:13.5px;border-radius:99px;padding:6px 14px;animation:poCta 2.4s ease-in-out infinite}
+.po-badge svg{width:16px;height:16px}
+.po-normal{margin:12px 0 0;color:var(--m);font-size:15px}.po-normal s{color:var(--rojo)}
+.po-etq{margin:4px 0 0;font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gd)}
+.po-grande{font-size:clamp(52px,16vw,66px);font-weight:900;line-height:1.05;color:var(--g);letter-spacing:-.02em}
+.po-oferta .po-dia{text-align:center}
+
+/* Entrada al aparecer (solo con JS y sin movimiento reducido) */
+.rvjs .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.3,.8,.3,1)}
+.rvjs .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.po-anillo>i,.po .po-cta,.po-badge,.po .po-arco circle{animation:none}}
 </style></head><body><div class="shell" id="shell"><div id="bg"></div><main id="app" class="oferta-main"></main></div><script>
 /*DATOS-INICIO*/
 /* ============================================================================================
@@ -727,17 +881,17 @@ const DATOS_PESO = {
   testimonios: [],
 };
 
-/* Oferta (/oferta-peso/) y rescates (/back1-peso/ con 20% y /back2-peso/ con 50%) del funnel de bajar de peso.
-   Una sola plantilla, con los mismos bloques y en el mismo orden que oferta.js; PAGINA la fija el armado. Usa CALC (calculos-peso.js) y DATOS_PESO (datos-peso.js).
-   Lo propio de este funnel es la tarjeta Hoy → Tu meta y el gráfico: sin A.peso y A.pesoMeta numéricos (entrada directa) se ocultan, y lo demás queda igual. */
+/* Oferta (/oferta-peso/) y rescates (/back1-peso/ con 20% y /back2-peso/ con 50%) del funnel de bajar de peso. PAGINA la fija el armado. Usa CALC (calculos-peso.js) y DATOS_PESO (datos-peso.js).
+   La oferta es larga (disco con tu meta, lo que vimos en tus respuestas, plan semana a semana, precio, garantía y preguntas) con una barra de compra abajo que aparece ni bien se desliza.
+   Los rescates son cortos y van directo al descuento, con el contador arriba. Lo personal (Hoy → Tu meta, gráfico, disco) se oculta si no hay A.peso y A.pesoMeta numéricos. */
 const CFG = {
-  oferta: { clave: 'base', siguiente: '/back1-peso/', barra: 'Tu precio de lanzamiento está reservado por' },
-  back1: { clave: 'b1', siguiente: '/back2-peso/', barra: 'ESPERÁ — TU DESCUENTO ESTÁ RESERVADO POR', etiqueta: 'Desbloqueaste un descuento', dto: '20% OFF',
-    titulo: 'Tenés 20% OFF en tu plan', intro: 'Sabemos que decidir cuesta. Te dejamos BeastCamp Sombra con 20% OFF para que arranques hoy.',
-    etiquetaPrecio: 'Tu precio con el descuento', boton: 'QUIERO MI 20% OFF →', apoyo: 'Empezar hoy por ' },
-  back2: { clave: 'b2', siguiente: null, barra: 'ÚLTIMA OPORTUNIDAD — SE ACABA EN', etiqueta: 'Precio más bajo', dto: '50% OFF',
-    titulo: 'Tu plan con 50% OFF', intro: 'Este es el precio más bajo que tenemos.',
-    etiquetaPrecio: 'Tu precio con el descuento', boton: 'SÍ, QUIERO EL 50% OFF →', apoyo: 'Empezar hoy por ' },
+  oferta: { clave: 'base', siguiente: '/back1-peso/' },
+  back1: { clave: 'b1', siguiente: '/back2-peso/', barra: 'Tu descuento está reservado por', etiqueta: 'Esperá, desbloqueaste un descuento', dto: '20% OFF', sello: '20% OFF EXCLUSIVO',
+    titulo: 'Antes de irte…', titulo2: 'tenés un 20% OFF', intro: 'Sabemos que decidir cuesta. Por eso, antes de que te vayas, te dejamos tu plan de BeastCamp Sombra con un 20% de descuento.',
+    boton: 'QUIERO MI 20% OFF →', apoyo: 'Empezar hoy por ', testis: 'Casi se van. Hoy entrenan con su plan.' },
+  back2: { clave: 'b2', siguiente: null, barra: 'Última oportunidad, se acaba en', etiqueta: 'Oferta final', dto: '50% OFF', sello: '50% OFF · PRECIO MÁS BAJO',
+    titulo: 'Esta es tu última chance', titulo2: '50% OFF, no hay otra oferta', intro: 'No hay un tercer descuento: este es el precio más bajo que tenemos para tu plan.',
+    boton: 'SÍ, QUIERO EL 50% OFF →', apoyo: 'Empezar hoy por ', testis: 'Casi se van. Hoy entrenan con su plan.' },
 }[PAGINA];
 const G = DATOS.garantiaDias;
 const precio = P[CFG.clave];
@@ -745,13 +899,11 @@ const esRescate = PAGINA !== 'oferta';
 const nombre = esc(A.nombre || '');
 
 const SEMANAS_PLAN = [
-  ['Semana 1', 'Postura, pies y tus dos primeros golpes'],
-  ['Semana 2', 'Esquivas y boxeo al aire'],
-  ['Semana 3', 'Combinaciones y ritmo'],
-  ['Semana 4', 'Rounds completos de 3 minutos, con descanso'],
+  ['Semana 1', 'Postura, pies y tus dos primeros golpes', 'Rounds cortos: el timer te marca cuándo dar y cuándo descansar.'],
+  ['Semana 2', 'Esquivas y boxeo al aire', 'Sumás cintura y piernas, siempre a tu nivel de carga.'],
+  ['Semana 3', 'Combinaciones y ritmo', 'Encadenás golpes y esquivas: los rounds se hacen más fluidos.'],
+  ['Semana 4', 'Rounds completos de 3 minutos, con descanso', 'Cerrás el plan entrenando como en un gimnasio de boxeo, en tu casa.'],
 ];
-
-const confianza = `<p class="note cen" style="margin-top:10px">Pago seguro · Garantía ${G} días · Acceso instantáneo</p>`;
 
 /* ---------- Cálculos de la persona (todo opcional) ---------- */
 const numPeso = (v) => (v === '' || v == null ? NaN : Number(v));
@@ -771,7 +923,7 @@ function planPeso() {
     peso, meta, kg: peso - meta, pct,
     imcHoy: hayAltura ? CALC.imc(peso, alt) : null,
     imcMeta: hayAltura ? CALC.imc(meta, alt) : null,
-    mes: CALC.mesAnio(fecha).replace(/ de (\d)/, ' de\u00a0$1'),   // «marzo de 2027» no se parte en dos líneas
+    mes: CALC.mesAnio(fecha).replace(/ de (\d)/, ' de $1'),   // «marzo de 2027» no se parte en dos líneas
     puntos: CALC.curva(peso, meta, 24),
   };
 }
@@ -785,7 +937,7 @@ function bloqueHoyMeta() {
   if (!plan) return '';
   const col = (et, kg, imc, cls) => `<div class="po-col${cls}"><small>${et}</small><b>${kgTxt(kg)} kg</b>${imc != null ? `<span>IMC ${imcTxt(imc)}</span>` : ''}</div>`;
   const resumen = `${kgTxt(plan.kg)} kg menos${plan.pct >= 1 ? `, un ${plan.pct}% de tu peso` : ''}`;
-  return `<div class="box po-hoy"><div class="po-par">${col('HOY', plan.peso, plan.imcHoy, '')}<div class="po-flecha">${I_FLECHA}</div>${col('TU META', plan.meta, plan.imcMeta, ' meta')}</div><div class="po-fecha">${resumen}<br>Fecha estimada si sostenés este ritmo: <b>${esc(plan.mes)}</b></div></div>`;
+  return `<div class="box po-hoy rv"><div class="po-par">${col('HOY', plan.peso, plan.imcHoy, '')}<div class="po-flecha">${I_FLECHA}</div>${col('TU META', plan.meta, plan.imcMeta, ' meta')}</div><div class="po-fecha">${resumen}<br>Fecha estimada si sostenés este ritmo: <b>${esc(plan.mes)}</b></div></div>`;
 }
 
 function bloqueGrafico() {
@@ -798,100 +950,187 @@ function bloqueGrafico() {
   const base = H - pb + 12;
   const area = `${linea} L${f(xy[xy.length - 1][0])} ${base} L${f(xy[0][0])} ${base} Z`;
   const ini = xy[0], fin = xy[xy.length - 1];
-  return `<div class="box"><b>Tu camino hasta tu meta</b><svg class="po-graf" viewBox="0 0 ${W} ${H}" role="img" aria-label="Proyección de tu peso, de ${kgTxt(plan.peso)} kg hoy a ${kgTxt(plan.meta)} kg en ${esc(plan.mes)}"><defs><linearGradient id="poRelleno" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16A34A" stop-opacity=".28"/><stop offset="1" stop-color="#16A34A" stop-opacity="0"/></linearGradient></defs><path class="po-area" d="${area}"/><path class="po-linea" d="${linea}"/><circle class="po-pt" cx="${f(ini[0])}" cy="${f(ini[1])}" r="5"/><circle class="po-pt meta" cx="${f(fin[0])}" cy="${f(fin[1])}" r="6"/><text class="po-et" x="${f(ini[0])}" y="${f(ini[1] - 12)}" text-anchor="start">Hoy ${kgTxt(plan.peso)} kg</text><text class="po-et meta" x="${f(fin[0])}" y="${f(fin[1] + 22)}" text-anchor="end">${kgTxt(plan.meta)} kg · ${esc(plan.mes)}</text></svg>${notaEstimacion}</div>`;
+  return `<div class="box rv po-gbox"><b>Tu camino hasta tu meta</b><svg class="po-graf" viewBox="0 0 ${W} ${H}" role="img" aria-label="Proyección de tu peso, de ${kgTxt(plan.peso)} kg hoy a ${kgTxt(plan.meta)} kg en ${esc(plan.mes)}"><defs><linearGradient id="poRelleno" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16A34A" stop-opacity=".28"/><stop offset="1" stop-color="#16A34A" stop-opacity="0"/></linearGradient></defs><path class="po-area" d="${area}"/><path class="po-linea" pathLength="1" d="${linea}"/><circle class="po-pt" cx="${f(ini[0])}" cy="${f(ini[1])}" r="5"/><circle class="po-pt meta" cx="${f(fin[0])}" cy="${f(fin[1])}" r="6"/><text class="po-et" x="${f(ini[0])}" y="${f(ini[1] - 12)}" text-anchor="start">Hoy ${kgTxt(plan.peso)} kg</text><text class="po-et meta" x="${f(fin[0])}" y="${f(fin[1] + 22)}" text-anchor="end">${kgTxt(plan.meta)} kg · ${esc(plan.mes)}</text></svg>${notaEstimacion}</div>`;
 }
 
-/* ---------- Bloques ---------- */
-function bloqueEncabezado() {
-  if (esRescate) return `<div class="pill" style="align-self:flex-start">${CFG.etiqueta}</div><h1>${CFG.titulo}</h1><p style="color:var(--m)">${CFG.intro}</p>`;
-  return `<div class="tag">Tu plan está listo</div><h1>${nombre ? nombre + ', t' : 'T'}u plan para bajar de peso ya está armado.</h1><p style="color:var(--m)">Según tus respuestas, armamos tu Semana 1 y las 3 siguientes. Falta un paso para activarlo.</p>`;
+/* ---------- Íconos (SVG, sin emojis) ---------- */
+const ic = (d) => `<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+const IC = {
+  cuerpo: ic('<circle cx="12" cy="5" r="2.2"/><path d="M12 8v6M8 22l4-8 4 8M6 11l6-2 6 2"/>'),
+  reloj: ic('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/>'),
+  casa: ic('<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>'),
+  escalon: ic('<path d="M3 20h5v-5h5v-5h5V5h3"/>'),
+  celu: ic('<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>'),
+  timer: ic('<circle cx="12" cy="13" r="8"/><path d="M12 13V9M12 2v2M18.5 6.5l1.5-1.5"/>'),
+  lista: ic('<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>'),
+  copa: ic('<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 21h6"/>'),
+  guante: ic('<path d="M7 10V7a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v6a5 5 0 0 1-5 5H9a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h3"/><path d="M8 18v3h8v-3"/>'),
+  candado: ic('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
+  rayo: ic('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'),
+  escudo: ic('<path d="M12 3l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>'),
+  alarma: ic('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M4 4l3-2M20 4l-3-2"/>'),
+  regalo: ic('<rect x="3" y="9" width="18" height="12" rx="2"/><path d="M3 13h18M12 9v12M12 9c-2-4-6-4-6-1.5S9 9 12 9zm0 0c2-4 6-4 6-1.5S15 9 12 9z"/>'),
+};
+
+/* ---------- Datos de la persona para los textos ---------- */
+const DETALLE_TIEMPO = { Arranque: '2-3 días · 15-30 min', Ritmo: '3-4 días · 30-40 min', Impulso: '4-5 días · 45-60 min' };
+const comoLista = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+const minus = (t) => String(t).charAt(0).toLowerCase() + String(t).slice(1);
+const precioNum = (t) => Number(String(t).replace(/\D/g, '')) || 0;
+const porDia = (t) => '$' + Math.round(precioNum(t) / 28).toLocaleString('es-AR');
+
+/* Lo que salió de sus respuestas: solo lo que contestó, sin inventar nada. */
+function loQueVimos() {
+  const it = [];
+  const frenos = comoLista(A.frenos), zonas = comoLista(A.zonas);
+  if (frenos.length) it.push(`Lo que te frenó otras veces: <b>${esc(minus(frenos[0]))}</b>. Por eso el plan te dice qué hacer cada día.`);
+  if (zonas.length) it.push(`Lo primero que querés cambiar: <b>${esc(zonas.map(minus).join(', '))}</b>.`);
+  if (plan && plan.imcHoy != null) it.push(`Tu IMC hoy: <b>${imcTxt(plan.imcHoy)}</b>. Es tu punto de partida, no un veredicto.`);
+  if (A.sueno === 'Menos de 5 horas' || A.sueno === '5 a 6 horas') it.push(`Dormís <b>${esc(minus(A.sueno))}</b>: el plan arranca suave para que lo puedas sostener.`);
+  if (A.actividad) it.push(`Cuánto te moviste en los últimos 3 meses: <b>${esc(minus(A.actividad))}</b>.`);
+  if (DETALLE_TIEMPO[A.tiempo]) it.push(`Tu nivel de carga: <b>${esc(A.tiempo)} (${DETALLE_TIEMPO[A.tiempo]})</b>.`);
+  if (!it.length) return '';
+  return `<div class="box po-vi rv"><b>${nombre ? `¡Hola ${nombre}! ` : ''}Esto es lo que vimos en tus respuestas:</b><ul>${it.slice(0, 5).map((x) => `<li>${x}</li>`).join('')}</ul></div>`;
 }
 
-/* Bloque con tildes: el mismo .st con ✓ de «Por qué funciona» en oferta.js. */
+/* Disco animado con la meta: el número baja de tu peso de hoy a tu meta. Sin datos, muestra el plan de 4 semanas. */
+function bloqueHeroe() {
+  const centro = plan
+    ? `<small>Hoy <s>${kgTxt(plan.peso)} kg</s></small><b><span class="po-cuenta" data-de="${plan.peso}" data-a="${plan.meta}">${kgTxt(plan.meta)}</span><em>kg</em></b><small>estimado para ${esc(plan.mes)}</small><span class="po-chip">−${kgTxt(plan.kg)} kg</span>`
+    : `<small>Tu plan</small><b>4<em>semanas</em></b><small>de shadowboxing en casa</small>${DETALLE_TIEMPO[A.tiempo] ? `<span class="po-chip">${DETALLE_TIEMPO[A.tiempo]}</span>` : ''}`;
+  return `<div class="po-heroe"><div class="po-anillo"><i></i><i></i><svg class="po-arco" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="94" pathLength="1"/></svg><div class="po-disco">${centro}</div></div></div>`;
+}
+
 const tildes = (items) => items.map((x) => `<div class="st"><i>✓</i><span>${x}</span></div>`).join('');
 
-function bloquePrecio() {
-  const valor = `<div class="stack">${DATOS.valor.items.map((x) => `<div><span>${x[0]}</span><s>${x[1]}</s></div>`).join('')}<div class="tot"><span>Valor total</span><s>${DATOS.valor.total}</s></div></div>`;
-  if (!esRescate) {
-    return `<div class="box">${valor}<div class="cen" style="margin-top:10px"><div class="note">Tu precio de lanzamiento</div><div class="big">${precio}</div><div>Pago único · Acceso inmediato · Sin suscripción</div><div class="note">Menos que un mes de gimnasio</div></div></div>`;
-  }
-  return `<div class="box">${valor}<div class="cen" style="margin-top:10px"><div class="pill">${CFG.dto}</div></div><div class="precio2"><span>Precio normal</span><s>${P.base}</s></div><div class="precio2"><b>${CFG.etiquetaPrecio}</b><b style="color:var(--gd)">${precio}</b></div><div class="big cen">${precio}</div><div class="cen">Pago único · Acceso inmediato · Sin suscripción</div><div class="note cen">Menos que un mes de gimnasio</div></div>`;
+/* Cita real del especialista (la misma de la slide de publicación del quiz). */
+function bloqueCita() {
+  const n = (typeof DATOS_PESO !== 'undefined' && DATOS_PESO.publicacion) || {};
+  if (!n.bajada || !n.fuente) return '';
+  return `<figure class="po-cita rv"><blockquote>${esc(n.bajada)}</blockquote><figcaption>${esc(n.fuente)}</figcaption></figure>`;
 }
 
-/* Testimonios propios del funnel: sin datos reales (DATOS_PESO.testimonios vacío) no se muestra nada. */
-function bloqueTestimoniosPeso(titulo = 'Lo que cuentan quienes lo probaron') {
+function bloqueLinea() {
+  return `<section class="po-sec rv"><h2>${nombre ? nombre + ', esto' : 'Esto'} es lo que vas a hacer</h2><p class="po-sub">Tu plan, semana a semana</p><ol class="po-linea-t">${SEMANAS_PLAN.map((x, i) =>
+    `<li style="--i:${i}"><span class="po-nodo">${[IC.guante, IC.cuerpo, IC.rayo, IC.copa][i]}</span><div><span class="po-et2">${x[0]}</span><b>${x[1]}</b><p>${x[2]}</p></div></li>`).join('')}</ol><p class="po-pie2">Todo guiado paso a paso desde el celu, sin equipo y sin gimnasio.</p></section>`;
+}
+
+function bloquePorQue() {
+  const f = [
+    [IC.cuerpo, 'Mueve todo el cuerpo', 'Piernas, torso y brazos trabajan a la vez en cada round.'],
+    [IC.reloj, 'Desde 15 minutos', 'Arrancás con lo mínimo y subís cuando te sentís listo.'],
+    [IC.casa, 'En tu casa, sin equipo', 'Sin gimnasio, sin cuotas y sin horarios ajenos.'],
+    [IC.escalon, 'Desde cero', 'No hace falta haber boxeado: el plan sube de a poco.'],
+  ];
+  return `<section class="po-sec rv" id="por-que"><h2>Por qué funciona el shadowboxing</h2><div class="po-cards">${f.map((x) => `<div class="po-card">${x[0]}<div><b>${x[1]}</b><span>${x[2]}</span></div></div>`).join('')}</div></section>`;
+}
+
+function bloqueIncluye() {
+  const ics = [IC.lista, IC.timer, IC.copa, IC.regalo];
+  return `<div class="box po-precio rv"><b class="po-tit">Qué incluye tu plan</b>${DATOS.valor.items.map((x, i) => `<div class="po-item">${ics[i] || IC.lista}<span>${x[0]}</span><s>${x[1]}</s></div>`).join('')}` +
+    `<div class="po-item">${IC.celu}<span>En tu celu, como una app, sin descargar nada</span><em>incluido</em></div>` +
+    `<div class="po-total"><span>Valor total</span><s>${DATOS.valor.total}</s></div><div class="po-hoy2"><span>Hoy pagás</span><b>${precio}</b></div><p class="po-dia">= ${porDia(precio)} por día durante tus 4 semanas · pago único</p></div>`;
+}
+
+const bloqueComparar = () => `<div class="po-comp rv"><div><span>Cuota de gimnasio</span><i>todos los meses</i></div><div><span>Clases con entrenador</span><i>se pagan por clase</i></div><div class="on"><span>BeastCamp Sombra</span><b>${precio} total</b></div></div>`;
+
+/* Testimonios: SOLO personas reales con su permiso (DATOS_PESO.testimonios). Vacío = el bloque no aparece. Formato de chat. */
+function bloqueTestimoniosPeso(titulo = 'Lo que nos escriben') {
   const ts = (typeof DATOS_PESO !== 'undefined' && DATOS_PESO && DATOS_PESO.testimonios) || [];
   if (!ts.length) return '';
-  return `<div class="box"><b>${titulo}</b>${ts.map((t) => `<div class="test2"><div class="av" style="width:42px;height:42px;font-size:16px;margin:0;box-shadow:none;border:0">${esc(String(t.nombre || '?')[0])}</div><div><b>${esc(t.nombre)}</b>${t.detalle ? ` · <span>${esc(t.detalle)}</span>` : ''}<br><span>“${esc(t.texto)}”</span></div></div>`).join('')}</div>`;
+  return `<section class="po-sec rv"><h2>${titulo}</h2>${ts.slice(0, 3).map((t) => `<div class="po-msj"><span class="po-av">${esc(String(t.nombre || '?')[0])}</span><div class="po-globo"><p>${esc(t.texto)}</p><small>${esc(t.nombre)}${t.detalle ? ' · ' + esc(t.detalle) : ''}</small></div></div>`).join('')}</section>`;
 }
 
-function html() {
+const bloqueAntesDespues = () => `<div class="po-vs rv"><div><small>SIN PLAN</small><p>Improvisás y lo dejás a la semana</p><p>No sabés por dónde empezar</p><p>Sesiones largas que no sostenés</p><p>Nadie te marca el ritmo</p></div><div class="on"><small>CON TU PLAN</small><p>Sabés qué hacer cada día</p><p>Arrancás desde cero y subís de a poco</p><p>Rounds cortos a tu nivel de carga</p><p>El timer te marca el ritmo</p></div></div>`;
+
+const bloqueGarantia = () => `<div class="po-gar rv"><span class="po-gar-ic">${IC.escudo}</span><div><small>CERO RIESGO</small><b>Garantía de ${G} días</b><p>Si en ${G} días no te sirve, te devolvemos tu plata, sin preguntas. Un mail y listo.</p></div></div>`;
+
+const bloqueFaq = () => `<section class="po-sec rv"><h2>Preguntas frecuentes</h2><div class="po-faq">
+<details><summary>¿Tengo que saber boxear?</summary><p>No. El plan arranca de cero y sube de a poco.</p></details>
+<details><summary>¿Cómo recibo el plan?</summary><p>Apenas pagás te llega el acceso al celular. Funciona como app, sin descargar nada.</p></details>
+<details><summary>¿Cuánto tiempo necesito por día?</summary><p>Desde 15 minutos. Vos elegís el nivel de carga según el tiempo que tenés.</p></details>
+<details><summary>¿Cuánto voy a bajar?</summary><p>Depende de tu punto de partida, de lo que comas, de tu descanso y de cuánto sostengas el plan. No prometemos una cifra.</p></details>
+<details><summary>¿Incluye dieta?</summary><p>No. Es un plan de entrenamiento; para bajar de peso también cuenta lo que comés.</p></details>
+<details><summary>¿Necesito equipo?</summary><p>No. Se entrena en casa, sin equipo.</p></details>
+<details><summary>¿Y si tengo una lesión o un problema de salud?</summary><p>Consultá a tu médico antes de empezar. Las rutinas no reemplazan a un profesional de la salud.</p></details>
+<details><summary>¿Y si no me sirve?</summary><p>Tenés ${G} días de garantía de devolución, sin vueltas.</p></details></div></section>`;
+
+const confianza = `<div class="po-conf"><span>${IC.candado}Pago seguro</span><span>${IC.rayo}Acceso inmediato</span><span>${IC.escudo}Garantía ${G} días</span></div>`;
+const botonCompra = (txt, apoyo = '') => `<button class="cta po-cta" data-reservar>${txt}${apoyo ? `<span class="po-apoyo">${apoyo}</span>` : ''}</button>`;
+
+/* ---------- Páginas ---------- */
+function oferta() {
   const h = [];
-  const boton = esRescate ? CFG.boton : `QUIERO MI PLAN POR ${precio} →`;
-  const apoyo = esRescate ? CFG.apoyo + precio : 'Empezar hoy mismo';
-  const ctaHtml = `<button class="cta" data-reservar>${boton}<span style="display:block;font-size:13px;font-weight:600;margin-top:2px">${apoyo}</span></button>`;
-  const ctaArriba = PAGINA === 'back2';   // en la última oferta el botón va justo debajo de la tarjeta del especialista (y no al final)
-  h.push(`<div class="tbar${esRescate ? ' up' : ''}"><span>${CFG.barra}</span> <b class="tm">10:00</b></div>`);
-  h.push(bloqueEncabezado());
-  h.push(`<div class="vid-fila"><div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" width="960" height="540" aria-hidden="true" tabindex="-1" disablepictureinpicture></video></div><div class="vid-info">${tildes(['Plan de 4 semanas', '4 niveles de carga', 'Rutinas guiadas paso a paso', 'Timer de rounds'])}</div></div>`);
-  h.push(bloqueHoyMeta());
+  h.push(`<div class="po-top">${tarjetaMini()}</div>`);
+  h.push(`<h1 class="po-h1">${nombre ? nombre + ', t' : 'T'}u plan para bajar de peso <em>ya está armado</em></h1><p class="po-sub">Basado en tus respuestas, tu tiempo y tu punto de partida</p>`);
+  h.push(bloqueHeroe());
+  h.push(loQueVimos());
+  h.push(`<div class="vid-fila rv"><div class="vid"><video src="/media/hd/oferta.mp4" poster="/media/oferta.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" width="960" height="540" aria-hidden="true" tabindex="-1" disablepictureinpicture></video></div><div class="vid-info">${tildes(['Plan de 4 semanas', '4 niveles de carga', 'Rutinas guiadas paso a paso', 'Timer de rounds'])}</div></div>`);
   h.push(bloqueGrafico());
-  h.push(`<div class="box sello">${I_ESCUDO}<div><b>Hecho para arrancar de cero</b><br><span style="color:var(--m);font-size:14px">No necesitás saber boxear ni tener equipo.</span></div></div>`);
-  if (!esRescate) h.push(`<div class="box"><b>Por qué arrancar sin plan te frena</b><p style="margin:8px 0 0;color:var(--m);font-size:15px">Sin un plan es fácil largar a las pocas semanas. Un plan por semanas te dice qué hacer, cuánto y cuándo.</p></div>`);
-  h.push(`<p>Plan de 4 semanas de shadowboxing en casa, en tu celu, con 4 niveles de carga (de 15 minutos por día a 90 minutos por día), timer de rounds y rutinas guiadas.</p>`);
-  h.push(pillPersonas());
-  h.push(`<div class="box"><b>Qué incluye</b>${tildes([
-    'Plan de 4 semanas de shadowboxing, con 4 niveles de carga (de 15 a 90 minutos por día)',
-    'Rutinas guiadas paso a paso',
-    'Timer de rounds: te marca cuándo dar y cuándo descansar',
-    'Ejercicios cortos (drills) y ranking con tu apodo',
-    'Bono: guía de guardia y desplazamientos',
-    'En tu celu, sin descargar nada y sin equipo',
-  ])}</div>`);
-  h.push(tarjetaEspecialista(true));
-  if (ctaArriba) h.push(ctaHtml);
-  h.push(`<div class="box"><b>Así cambia tu forma de arrancar</b><div class="vs"><div><small>ANTES</small>Improvisás y lo dejás a la semana<br>No sabés por dónde empezar<br>Sesiones largas que no sostenés<br>Sin un ritmo que te ordene</div><div class="on"><small>CON BEASTCAMP</small>Plan semana a semana<br>Arrancás desde cero<br>Sesiones desde 15 minutos<br>Timer que marca el ritmo</div></div></div>`);
-  h.push(`<div class="box"><b>Cómo funciona</b><div class="st"><i>1</i>Elegís el nivel de carga que se ajusta a tu tiempo</div><div class="st"><i>2</i>Entrenás en casa, desde el celu, con el timer y las rutinas guiadas</div><div class="st"><i>3</i>Sumás puntos y subís en el ranking con tu apodo</div></div>`);
-  h.push(`<div class="box"><b>Qué hacés cada semana</b>${SEMANAS_PLAN.map((x) => `<div class="sem"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</div>`);
-  h.push(`<div class="box" id="por-que"><b>Por qué te sirve</b>${tildes([
-    '<b>Sin gimnasio:</b> entrenás en casa, cuando te queda cómodo.',
-    '<b>Sin experiencia:</b> el plan arranca desde cero y sube de a poco.',
-    '<b>Desde 15 minutos:</b> podés empezar con lo mínimo y subir después.',
-    '<b>Todo el cuerpo:</b> piernas, torso y brazos se mueven a la vez.',
-  ])}</div>`);
-  h.push(bloqueTestimoniosPeso());
-  h.push(bloquePrecio());
-  h.push(`<div class="garantia">${I_ESCUDO}<div><b>Garantía de ${G} días</b><br><span style="color:var(--m);font-size:14px">Si en ${G} días no te sirve, te devolvemos tu plata, sin preguntas.</span></div></div>`);
-  h.push(`<div class="box faq"><b>Preguntas frecuentes</b>
-<details><summary>¿Tengo que saber boxear?</summary>No. El plan arranca de cero y sube de a poco.</details>
-<details><summary>¿Cuánto voy a bajar?</summary>Depende de tu punto de partida, de lo que comas, de tu descanso y de cuánto sostengas el plan. No prometemos una cifra.</details>
-<details><summary>¿Incluye dieta?</summary>No. Es un plan de entrenamiento; para bajar de peso también cuenta lo que comés.</details>
-<details><summary>¿Necesito equipo?</summary>No. Se entrena en casa, sin equipo.</details>
-<details><summary>¿Y si tengo una lesión o un problema de salud?</summary>Consultá a tu médico antes de empezar. Las rutinas no reemplazan a un profesional de la salud.</details>
-<details><summary>¿Cómo recibo el plan?</summary>Apenas pagás te llega el acceso al celular. Funciona como app, sin descargar nada.</details>
-<details><summary>¿Y si no me sirve?</summary>Tenés ${G} días de garantía de devolución, sin vueltas.</details></div>`);
-  if (!ctaArriba) h.push(ctaHtml);
+  h.push(bloqueCita());
+  h.push(bloqueLinea());
+  h.push(bloquePorQue());
+  h.push(bloqueIncluye());
+  h.push(`<p class="po-urg">${IC.alarma}Precio de lanzamiento · vence en <b class="tm">10:00</b></p>`);
+  h.push(botonCompra('QUIERO MI PLAN PERSONALIZADO →'));
   h.push(confianza);
+  h.push(bloqueComparar());
+  h.push(bloqueTestimoniosPeso());
+  h.push(bloqueAntesDespues());
+  h.push(bloqueGarantia());
+  h.push(bloqueFaq());
+  h.push(`<section class="po-fin rv"><h2>${nombre ? nombre + ', t' : 'T'}u plan te está esperando</h2><p>El precio de lanzamiento de ${precio} vence en:</p><div class="po-reloj tm">10:00</div>${botonCompra(`QUIERO MI PLAN POR ${precio} →`)}${confianza}</section>`);
   h.push(`<p class="note cen" style="margin-top:12px">Pago único, sin suscripción.</p>`);
   return h.join('');
 }
 
-$('app').innerHTML = `<div class="scr">${html()}</div>`;
-const k = document.createElement('div');
-k.className = 'sticky';
-k.innerHTML = `<span>Oferta termina en<b class="tm">10:00</b></span><button class="cta" data-reservar>Reservar mi lugar</button>`;
-document.body.appendChild(k);
-/* La barra fija aparece recién cuando «Por qué te sirve» terminó por encima de ella, así nunca le tapa el final, y se esconde otra vez si la persona sube por encima de ese punto. Sin ese bloque se ve siempre. */
-const porQue = document.getElementById('por-que');
-if (porQue) {
-  const revisaBarra = () => k.classList.toggle('oculta', porQue.getBoundingClientRect().bottom > window.innerHeight - k.offsetHeight);
-  k.classList.add('oculta');
-  window.addEventListener('scroll', revisaBarra, { passive: true });
-  window.addEventListener('resize', revisaBarra, { passive: true });
-  window.addEventListener('load', revisaBarra);
-  revisaBarra();
+function rescate() {
+  const h = [];
+  const puede = [
+    [IC.lista, 'Seguir tu plan de 4 semanas de shadowboxing, armado con tus respuestas'],
+    [IC.escalon, 'Elegir entre 4 niveles de carga, de 15 a 90 minutos por día'],
+    [IC.timer, 'Entrenar con el timer de rounds y las rutinas guiadas paso a paso'],
+    [IC.celu, 'Tener todo en tu celu, como una app, sin equipo y sin gimnasio'],
+  ];
+  const tarjetaPrecio = `<div class="po-oferta rv"><span class="po-badge">${IC.regalo}${CFG.sello}</span><p class="po-normal">Precio normal <s>${P.base}</s></p><p class="po-etq">Tu precio con el descuento</p><div class="po-grande">${precio}</div><p class="po-dia">Pago único · Acceso inmediato a la app · Sin suscripción</p>${botonCompra(CFG.boton, CFG.apoyo + precio)}${confianza}</div>`;
+  h.push(`<div class="tbar up po-tbar">${IC.alarma}<span>${CFG.barra}</span> <b class="tm">10:00</b></div>`);
+  h.push(`<div class="po-cen"><span class="po-pill">${IC.regalo}${CFG.etiqueta}</span><h1 class="po-h1">${CFG.titulo}<br><em>${CFG.titulo2}</em></h1><p class="po-intro">${nombre ? nombre + ', ' + minus(CFG.intro) : CFG.intro}</p></div>`);
+  h.push(tarjetaPrecio);
+  h.push(`<section class="po-sec rv"><h2>Con BeastCamp Sombra vas a poder:</h2><div class="po-cards">${puede.map((x) => `<div class="po-card">${x[0]}<div><span>${x[1]}</span></div></div>`).join('')}</div></section>`);
+  h.push(bloqueHoyMeta());
+  h.push(bloqueTestimoniosPeso(CFG.testis));
+  h.push(bloqueGarantia());
+  h.push(PAGINA === 'back2' ? tarjetaPrecio : `<div class="rv">${botonCompra(CFG.boton, CFG.apoyo + precio)}</div>`);
+  return h.join('');
 }
+
+$('app').innerHTML = `<div class="scr po ${esRescate ? 'po-res' : 'po-of'}">${esRescate ? rescate() : oferta()}</div>`;
+
+/* Barra fija de abajo con el precio y el botón: aparece ni bien la persona desliza un poco (y se esconde arriba de todo). */
+const k = document.createElement('div');
+k.className = 'sticky po-st oculta';
+k.innerHTML = `<div class="po-sp"><b>${precio}</b><small>${esRescate ? CFG.dto + ' · pago único' : 'vence en <span class="tm">10:00</span>'}</small></div><button class="cta" data-reservar>QUIERO MI PLAN →</button>`;
+document.body.appendChild(k);
+document.body.classList.add('consticky');
+const revisaBarra = () => k.classList.toggle('oculta', window.scrollY < 60);
+window.addEventListener('scroll', revisaBarra, { passive: true });
+revisaBarra();
 document.querySelectorAll('[data-reservar]').forEach((b) => (b.onclick = () => reservar(CFG.clave)));
+
+/* Animaciones: los bloques entran al aparecer y el número del disco baja de tu peso a tu meta. Con movimiento reducido todo queda quieto y visible. */
+const quieto = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const cuenta = document.querySelector('.po-cuenta');
+if (cuenta && !quieto && window.requestAnimationFrame) {
+  const de = +cuenta.dataset.de, a = +cuenta.dataset.a, t0 = performance.now() + 500, dur = 1700;
+  const paso = (t) => { const x = Math.min(1, Math.max(0, (t - t0) / dur)); const e = 1 - Math.pow(1 - x, 3); cuenta.textContent = x < 1 ? kgTxt(Math.round(de - (de - a) * e)) : kgTxt(a); if (x < 1) requestAnimationFrame(paso); };
+  cuenta.textContent = kgTxt(de); requestAnimationFrame(paso);
+}
+if (!quieto && 'IntersectionObserver' in window) {
+  document.documentElement.classList.add('rvjs');
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.rv').forEach((e) => io.observe(e));
+}
+
 /* Mismo contador que oferta.js (comun.js): 10:00 en la oferta, 09:57 en back1 y 04:57 en back2, y se reinicia solo al llegar a cero. */
 arrancaContador(PAGINA);
 pie(true, true);            // pie de comun.js al final de la página (sin posición fija), con los enlaces en pestaña nueva para no perder la oferta

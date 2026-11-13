@@ -149,3 +149,49 @@
 .scr.perfil .rtx{margin:12px 0 0;font-size:12.5px}
 .scr.perfil .cta{margin-top:14px}
 .scr.perfil{padding-bottom:58px}
+
+/* La barra de progreso no se muestra en la carga ni en el perfil (el perfil se scrollea y la barra fija tapaba el contenido) */
+body.sinprog .prog{display:none}
+.scr.perfil h2{margin-top:6px}
+
+/* Primera pantalla: «¿Cómo ves tu cuerpo hoy?» en 2 x 2, con el muñeco arriba y el texto abajo, más chico que en pantalla completa */
+.scr.hook.cuerpo .grid{gap:8px}
+.scr.hook.cuerpo .c:has(img.im3d){flex-direction:column;justify-content:flex-start;align-items:center;gap:2px;min-height:0;padding:6px 6px 7px;text-align:center}
+.scr.hook.cuerpo .c:has(img.im3d) b{font-size:clamp(12.5px,1.9dvh,15px)}
+@media(max-width:899px){.scr.hook.cuerpo h2{font-size:clamp(17px,5.2vw,22px);white-space:nowrap}}
+@media(max-height:700px){.scr.hook.cuerpo .chips{display:none}}
+/* Primera pantalla: franja de video más baja y textos más chicos para que los muñecos ganen alto */
+@media(max-width:899px){.shell.conbg:has(.scr.hook.cuerpo) #bg{height:clamp(76px,11dvh,104px)}}
+.scr.hook.cuerpo .c:has(img.im3d) b{font-size:clamp(12.5px,1.75dvh,14.5px);min-height:2.3em}
+.scr.hook.cuerpo .gift{margin-top:8px}
+
+/* Carga: anillo con degradado, halo que late y puntos que orbitan; cada paso tiene su barrita que se llena y un tilde que salta al terminar */
+.scr.cg2 h2{margin-top:10px}
+.scr.cg2 .sub{text-align:center;margin:0 0 4px}
+.cg-ring{position:relative;width:184px;height:184px;margin:14px auto 18px}
+.cg-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);filter:drop-shadow(0 6px 14px rgba(22,163,74,.25))}
+.cg-ring #rc{transition:stroke-dashoffset .12s linear}
+.cg-halo{position:absolute;inset:14px;border-radius:50%;background:radial-gradient(circle,rgba(74,222,128,.28),rgba(74,222,128,0) 70%);animation:cgLate 1.6s ease-in-out infinite}
+.cg-orb{position:absolute;inset:13px;z-index:1;animation:cgGira 3.2s linear infinite}
+.cg-orb i{position:absolute;top:-4.5px;left:50%;transform-origin:4.5px 83.5px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:#22c55e;border:2px solid #fff;box-shadow:0 0 12px rgba(34,197,94,.9)}
+.cg-orb i:nth-child(2){transform:rotate(120deg);opacity:.7}
+.cg-orb i:nth-child(3){transform:rotate(240deg);opacity:.45}
+.cg-centro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.cg-ring .cg-centro b{position:static;display:block;font-size:40px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums;color:var(--t)}
+.cg-centro small{font-size:12.5px;font-weight:700;color:var(--gd);max-width:120px;text-align:center;line-height:1.2}
+@keyframes cgGira{to{transform:rotate(360deg)}}
+@keyframes cgLate{50%{transform:scale(1.12);opacity:.6}}
+.cg-lista{display:flex;flex-direction:column;gap:8px}
+.cg2 .chkl{margin:0;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px 12px;transition:border-color .3s,background .3s,color .3s,opacity .3s;opacity:.55}
+.cg2 .chkl.act{opacity:1;border-color:#bbf7d0;background:#f7fdf9;color:var(--t)}
+.cg2 .chkl.d{opacity:1}
+.cg2 .chkl .ic{margin-top:1px}
+.cg2 .chkl.d .ic{animation:cgSalta .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes cgSalta{from{transform:scale(.3)}}
+.cg-tx{flex:1;min-width:0;font-size:14.5px;line-height:1.3}
+.cg-b{display:block;height:4px;border-radius:99px;background:#e3eae5;margin-top:6px;overflow:hidden;max-height:0;transition:max-height .2s}
+.cg2 .chkl.act .cg-b{max-height:4px}
+.cg-b i{display:block;height:100%;width:var(--p,0%);border-radius:99px;background:linear-gradient(90deg,#4ade80,#16A34A);transition:width .12s linear}
+@media(max-height:700px){.cg-ring{width:140px;height:140px;margin:8px auto 10px}.cg-orb{inset:10px}.cg-orb i{transform-origin:4.5px 64.5px}.cg-ring .cg-centro b{font-size:32px}.cg-centro small{font-size:11px}.cg2 .chkl{padding:6px 10px}.cg-lista{gap:5px}.cg-tx{font-size:13.5px}.scr.cg2 .sub{display:none}}
+@media(prefers-reduced-motion:reduce){.cg-halo,.cg-orb,.cg2 .chkl.d .ic{animation:none}}
+@media(max-height:620px){.cg-ring{width:118px;height:118px;margin:4px auto 8px}.cg-orb{inset:9px}.cg-orb i{transform-origin:4.5px 54.5px}.cg-ring .cg-centro b{font-size:27px}.cg-centro small{display:none}.cg2 .chkl{padding:5px 10px}.cg-lista{gap:4px}.scr.cg2 h2{margin-top:2px}}

@@ -135,7 +135,7 @@ test("quiz: cada pantalla lleva el foco a su título, #app anuncia los cambios y
         const p = await ctx.newPage();
         await p.goto(base + ruta, { waitUntil: "load" }); await p.waitForTimeout(400);
         assert.equal(await p.getAttribute("#app", "aria-live"), "polite", `${ruta}: #app anuncia los cambios`);
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < (ruta === "/quiz-peso/" ? 1 : 2); i++) {   // en el de peso la 2ª pantalla es la edad (deslizador, sin tarjetas)
           await p.click(".c >> nth=0"); await p.waitForTimeout(700);
           const r = await p.evaluate(() => ({ tag: document.activeElement?.tagName, nivel: document.activeElement?.getAttribute("aria-level"), texto: document.activeElement?.textContent, y: scrollY, titulo: document.querySelector("#app h2")?.textContent }));
           assert.equal(r.tag, "H2", `${ruta}: tras elegir una opción el foco está en el título (${r.tag})`);

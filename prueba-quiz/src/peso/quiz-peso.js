@@ -14,10 +14,9 @@
      (c_delgado, c_normal, c_kilos y c_sobrepeso: el mismo boxeador con cuatro contexturas). c_guardia es e_guardia sin la flecha roja, que en este funnel no señala nada. Se muestran con img3d(clave) como los demás; no están en CLAVES_MUNECO. */
   const MARCA = 'Marcá todas las que quieras';
   const S0 = [
-    { t: 'q', k: 'edad', video: 'hook', pill: true, regalo: true, pregunta: '¿Qué edad tenés?', titulo: 'Bajá de peso sin complicarte con shadowboxing en casa', tituloHtml: 'Bajá de peso <em>peleando con tu sombra</em>', sub: 'Respondé 1 pregunta y descubrí cómo conseguirlo.',
-      o: [['18 a 29', 'n_empiezo'], ['30 a 39', 'n_seis'], ['40 a 49', 'n_anios'], ['50 o más', 'n_mas']] },
-    { t: 'q', k: 'cuerpo', alto: true, titulo: '¿Cómo ves tu cuerpo hoy?',
+    { t: 'q', k: 'cuerpo', video: 'hook', alto: true, pill: true, regalo: true, pregunta: '¿Cómo ves tu cuerpo hoy?', titulo: 'Bajá de peso sin complicarte con shadowboxing en casa', tituloHtml: 'Bajá de peso <em>peleando con tu sombra</em>', sub: 'Respondé 1 pregunta y descubrí cómo conseguirlo.',
       o: [['Delgado con algo de panza', 'c_delgado'], ['Normal', 'c_normal'], ['Con kilos de más', 'c_kilos'], ['Con bastante sobrepeso', 'c_sobrepeso']] },
+    { t: 'medida', k: 'edad', unidad: 'años', maxTxt: '65+ años', muneco: 'n_seis', titulo: '¿Cuántos años tenés?', sub: 'Deslizá hasta tu edad.', min: 18, max: 65, def: 38 },
     { t: 'q', k: 'meta', alto: true, titulo: '¿Cómo te gustaría verte?',
       o: [['Un par de talles menos', 'o_peso'], ['En forma, sin exagerar', 'l_casa'], ['Atlético', 'o_tecnica'], ['Marcado', 'n_anios']] },
     { t: 'multi', k: 'zonas', filas: true, titulo: '¿Qué querés cambiar primero?', sub: MARCA, solo: 4,
@@ -137,7 +136,7 @@
     }
   }
 
-  const progreso = () => { $('barra').style.width = Math.max(4, Math.round((s / (S.length - 1)) * 100)) + '%'; };
+  const progreso = () => { document.body.classList.toggle('sinprog', S[s] && (S[s].t === 'carga' || S[s].t === 'perfil')); $('barra').style.width = Math.max(4, Math.round((s / (S.length - 1)) * 100)) + '%'; };
   function siguiente() {
     vib();
     const e = raiz.firstElementChild;
@@ -191,6 +190,7 @@
     const n = crudo ? parseInt(crudo, 10) : NaN;
     const vacio = { ok: false, n, html: '', tono: '' };
     if (!crudo) return vacio;
+    if (x.k === 'edad') return { ok: true, n, html: '', tono: '' };
     if (x.k === 'altura') {
       const [lo, hi] = CALC.LIMITES.altura;
       if (n >= lo && n <= hi) return { ok: true, n, html: '', tono: '' };
@@ -266,7 +266,7 @@
       h = `<h2>¿Llegaste a ver esto?</h2>${tarjetaPublicacion()}<button class="cta" id="seguir">Sí, lo vi</button><button class="cta s" id="seguir2">No, es la primera vez que lo veo</button>`;
     } else if (x.t === 'medida') {
       const previo = A[x.k] ? String(A[x.k]) : x.def;
-      h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p>${img3d(x.muneco, 'mu')}<div class="slid"><output id="v" for="n"><b>${esc(previo)}</b><span>${esc(x.unidad)}</span></output><input id="n" type="range" min="${x.min}" max="${x.max}" step="1" value="${esc(previo)}" aria-label="${esc(x.titulo)}"><div class="rng"><span>${x.min} ${esc(x.unidad)}</span><span>${x.max} ${esc(x.unidad)}</span></div></div><div class="msg" id="msg" role="status" aria-live="polite"></div><button class="cta" id="seguir" disabled>Seguir</button>`;
+      h = `<h2>${esc(x.titulo)}</h2><p class="sub">${esc(x.sub)}</p>${img3d(x.muneco, 'mu')}<div class="slid"><output id="v" for="n"><b>${esc(previo)}</b><span>${esc(x.unidad)}</span></output><input id="n" type="range" min="${x.min}" max="${x.max}" step="1" value="${esc(previo)}" aria-label="${esc(x.titulo)}"><div class="rng"><span>${x.min} ${esc(x.unidad)}</span><span>${esc(x.maxTxt || x.max + ' ' + x.unidad)}</span></div></div><div class="msg" id="msg" role="status" aria-live="polite"></div><button class="cta" id="seguir" disabled>Seguir</button>`;
     } else if (x.t === 'experto') {
       h = `<div class="tag cen">Tu plan personalizado</div><h2>Tu análisis ya está en marcha</h2><p class="sub">Con tus respuestas ajustamos tu plan de 4 semanas al tiempo que tenés.</p>${tarjetaEspecialista()}${chipsPrivado(false)}<button class="cta" id="seguir">Ver mi análisis →</button>`;
     } else if (x.t === 'carga') {
@@ -274,7 +274,7 @@
     } else if (x.t === 'perfil') {
       h = perfil();
     }
-    raiz.innerHTML = `<div class="scr ${x.t}${x.video === 'hook' ? ' hook' : ''}${x.k === 'edad' ? ' edad' : ''}${x.alto ? ' alto' : ''}${x.filas ? ' filas' : ''}${llena ? ' ' + llena : ''}">${h}</div>`;
+    raiz.innerHTML = `<div class="scr ${x.t}${x.video === 'hook' ? ' hook' : ''}${x.video === 'hook' ? ' edad cuerpo' : ''}${x.alto ? ' alto' : ''}${x.filas ? ' filas' : ''}${llena ? ' ' + llena : ''}">${h}</div>`;
     window.scrollTo(0, 0);
     enlaza(x);
     if (s > 0 && x.t !== 'medida') enfocaTitulo(raiz);
@@ -383,7 +383,8 @@
       'Armando tus 4 semanas de shadowboxing…',
       'Listo. Tu plan está armado.',
     ];
-    raiz.innerHTML = `<div class="scr carga"><h2>Estamos preparando tu plan</h2><div class="ring"><svg width="150" height="150"><circle cx="75" cy="75" r="64" stroke="#e5ebe6" stroke-width="11" fill="none"/><circle id="rc" cx="75" cy="75" r="64" stroke="#16A34A" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="${R}" stroke-dashoffset="${R}"/></svg><b id="pc">0%</b></div>${msgs.map((m, i) => `<div class="chkl" id="c${i}"><div class="ic"></div>${esc(m)}</div>`).join('')}</div>`;
+    const ETQ = ['Analizando', 'Tu punto de partida', 'Tu carga', 'Tu progresión', 'Tus 4 semanas', '¡Listo!'];
+    raiz.innerHTML = `<div class="scr carga cg2"><h2>Estamos armando tu plan</h2><p class="sub">Con tus respuestas, en unos segundos</p><div class="ring cg-ring"><span class="cg-halo"></span><span class="cg-orb"><i></i><i></i><i></i></span><svg viewBox="0 0 150 150" aria-hidden="true"><defs><linearGradient id="cgG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#15803d"/></linearGradient></defs><circle cx="75" cy="75" r="64" stroke="#e8efe9" stroke-width="10" fill="none"/><circle id="rc" cx="75" cy="75" r="64" stroke="url(#cgG)" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="${R}" stroke-dashoffset="${R}"/></svg><div class="cg-centro"><b id="pc">0%</b><small id="cgEt">${ETQ[0]}</small></div></div><div class="cg-lista">${msgs.map((m, i) => `<div class="chkl" id="c${i}"><div class="ic"></div><div class="cg-tx">${esc(m)}<span class="cg-b"><i></i></span></div></div>`).join('')}</div></div>`;
     window.scrollTo(0, 0);
     enfocaTitulo(raiz);
     let p = 0, pausa = false;
@@ -392,7 +393,11 @@
       { en: Math.round(paso * 2), pregunta: '¿Podés entrenar a la misma hora todos los días?', opc: ['Sí, ya tengo mi horario', 'Algunos días'], dato: 'Un horario fijo ayuda a sostener la constancia.', aviso: 'Anotado', clave: 'horaFija' },
       { en: Math.round(paso * 4), pregunta: '¿Preferís entrenar a la mañana o a la noche?', opc: ['A la mañana', 'A la noche'], dato: 'Elegí el momento en el que más rendís.', aviso: 'Anotado', clave: 'momento' },
     ];
-    const marca = () => msgs.forEach((_, i) => { const e = $('c' + i); if (e && p >= (i + 1) * paso - 0.01) { e.classList.add('d'); e.querySelector('.ic').textContent = '✓'; } });
+    const marca = () => msgs.forEach((_, i) => {
+      const e = $('c' + i); if (!e) return;
+      if (p >= (i + 1) * paso - 0.01) { if (!e.classList.contains('d')) { e.classList.add('d'); e.classList.remove('act'); e.querySelector('.ic').textContent = '✓'; } }
+      else if (p >= i * paso) { e.classList.add('act'); e.style.setProperty('--p', Math.round(((p - i * paso) / paso) * 100) + '%'); const et = $('cgEt'); if (et) et.textContent = ETQ[i] || ''; }
+    });
     const iv = setInterval(() => {
       if (pausa) return;
       p += 1; $('pc').textContent = p + '%'; $('rc').style.strokeDashoffset = R - (R * p) / 100;
