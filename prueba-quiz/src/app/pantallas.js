@@ -27,6 +27,15 @@ function bloqueInstalar() {
   return `<div class="box"><b>Instalala en tu celu</b><p class="sm">Desde el menú del navegador elegí «Instalar app» o «Agregar a la pantalla de inicio». Así la abrís con un toque y anda sin conexión.</p></div>`;
 }
 
+/* Selector de perfil: aparece solo si el comprador sumó un módulo extra (por ejemplo, Peleador además de Bajar de peso). */
+const TEXTO_PERFIL = { peso: ['Bajar de peso', 'Cardio y técnica a tu ritmo'], peleador: ['Peleador', 'Técnica, combinaciones y drills'] };
+const cardsPerfil = () => {
+  const extras = (ESTADO && ESTADO.extras) || [];
+  if (!extras.length) return '';
+  const sel = perfilActual();
+  const lista = [ESTADO.funnel, ...extras.filter((x) => x !== ESTADO.funnel)];
+  return `<p class="tag">Tu plan</p><h3>Elegí el perfil</h3><div class="grid niveles" role="radiogroup" aria-label="Perfil">${lista.map((p) => `<button type="button" class="c ${p === sel ? 'on' : ''}" role="radio" aria-checked="${p === sel}" data-a="perfil-set" data-p="${esc(p)}"><b>${esc((TEXTO_PERFIL[p] || [p])[0])}<small>${esc((TEXTO_PERFIL[p] || ['', ''])[1])}</small></b></button>`).join('')}</div>`;
+};
 const cardsNivel = (sel, accion) => `<div class="grid niveles" role="radiogroup" aria-label="Nivel de carga">${PLAN.niveles.map((n) => `<button type="button" class="c ${n.id === sel ? 'on' : ''}" role="radio" aria-checked="${n.id === sel}" data-a="${accion}" data-n="${esc(n.id)}">${mun(n.id)}<b>${esc(n.nombre)}<small>${esc(n.dias)} · ${esc(n.minutos)}</small></b></button>`).join('')}</div>`;
 
 function fila(href, im, titulo, meta, extra = '') {

@@ -750,3 +750,37 @@ test("api-app: el código del servicio no loguea datos personales ni usa depende
     for (const imp of src.matchAll(/from "([^"]+)"/g)) assert.match(imp[1], /^(node:|\.\/)/, `${f}: solo node:* y módulos propios`);
   }
 });
+
+test("api-app: upsell (módulo extra): se suma al acceso del mismo mail, habilita su plan y no manda otro mail", async () => {
+  await conServicio({}, async (m) => {
+    await m.pagar(pago()); // compra principal: perfil peso, nivel t2, acceso A
+    // el aviso del upsell llega a otro destino, con ?extra=peleador y sin acceso ni nivel (checkout nuevo de Hilvapay)
+    const up = pago({ monto: "24990.00", whopPlanId: "beastcamp-peleador", paramsExtra: {} });
+    assert.equal((await m.hp("pagado&extra=peleador", up)).status, 200);
+    await m.servicio.esperar();
+    assert.equal((await m.hp("pagado&extra=boxeo", pago())).status, 400, "extra desconocido");
+    const reg = m.lineas("compras.jsonl").filter((r) => r.tipo === "pagado");
+    assert.equal(reg.at(-1).acceso, ACC_A, "el módulo se suma al acceso del mismo mail");
+    assert.equal(reg.at(-1).extra, "peleador");
+    assert.equal(m.resend().length, 1, "solo el mail de la compra principal");
+    assert.equal(m.meta().length, 2, "dos Purchase: compra y upsell");
+    const est = await (await m.pedir(`/api/app/${ACC_A}`)).json();
+    assert.deepEqual([est.funnel, est.nivel, est.extras], ["peso", "t2", ["peleador"]], "los datos salen de la compra principal");
+    assert.equal((await (await m.pedir(`/api/app/${ACC_A}/plan`)).json()).funnel, "peso", "sin perfil: el principal");
+    assert.equal((await (await m.pedir(`/api/app/${ACC_A}/plan?perfil=peso`)).json()).funnel, "peso");
+    const rp = await m.pedir(`/api/app/${ACC_A}/plan?perfil=peleador`);
+    assert.equal(rp.status, 200);
+    assert.equal((await rp.json()).funnel, "peleador");
+    assert.equal((await m.pedir(`/api/app/${ACC_A}/plan?perfil=ninja`)).status, 404);
+    // reembolso del upsell: se pierde el módulo, el acceso principal sigue
+    await m.hp("reembolso", { cobroId: up.cobroId });
+    const est2 = await (await m.pedir(`/api/app/${ACC_A}`)).json();
+    assert.equal(est2.estado, "activo");
+    assert.equal(est2.extras, undefined);
+    assert.equal((await m.pedir(`/api/app/${ACC_A}/plan?perfil=peleador`)).status, 404);
+  });
+  await conServicio({}, async (m) => {
+    await m.pagar(pago()); // sin upsell: el otro perfil no se sirve
+    assert.equal((await m.pedir(`/api/app/${ACC_A}/plan?perfil=peleador`)).status, 404);
+  });
+});

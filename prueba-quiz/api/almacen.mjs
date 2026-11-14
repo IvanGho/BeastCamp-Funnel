@@ -157,8 +157,11 @@ export async function abrirAlmacen(dir) {
       const activos = activosDeAcceso(acceso);
       if (activos.length === 0) return { estado: "revocado" };
       activos.sort((a, b) => a.tsMs - b.tsMs);
-      const ref = activos[activos.length - 1];
-      return { estado: "activo", nombre: ref.nombre || undefined, funnel: ref.funnel, nivel: ref.nivel || undefined, desde: activos[0].tsMs };
+      // los datos del comprador salen de la compra principal (la del módulo extra no trae nivel ni funnel propios)
+      const base = activos.filter((c) => !c.extra);
+      const ref = (base.length ? base : activos).at(-1);
+      const extras = [...new Set(activos.map((c) => c.extra).filter((x) => x && x !== ref.funnel))];
+      return { estado: "activo", nombre: ref.nombre || undefined, funnel: ref.funnel, nivel: ref.nivel || undefined, desde: activos[0].tsMs, ...(extras.length ? { extras } : {}) };
     },
 
     /** El acceso activo más reciente de un mail (o null). */
