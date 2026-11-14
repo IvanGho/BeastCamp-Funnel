@@ -2,7 +2,7 @@
    instalación (Android, iPhone, navegador de Instagram o Facebook) y service worker. */
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const ACC = (() => { const m = location.pathname.match(/^\/app\/([^/]+)\/?/); return m && UUID.test(m[1]) ? m[1] : ''; })();
-const K = { ultimo: 'bc_app_ultimo', estado: `bc_app_${ACC}_estado`, prog: `bc_app_${ACC}_prog`, cola: `bc_app_${ACC}_cola`, plan: `bc_app_${ACC}_plan`, curso: `bc_app_${ACC}_curso` };
+const K = { ultimo: 'bc_app_ultimo', estado: `bc_app_${ACC}_estado`, prog: `bc_app_${ACC}_prog`, cola: `bc_app_${ACC}_cola`, plan: `bc_app_${ACC}_plan`, curso: `bc_app_${ACC}_curso`, perfil: `bc_app_${ACC}_perfil` };
 
 const ls = {
   get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
@@ -13,7 +13,7 @@ const ls = {
   setRaw(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
 };
 
-let ESTADO = null;   // { estado, nombre, funnel, nivel, ts }
+let ESTADO = null;   // { estado, nombre, funnel, nivel, extras, ts }
 let PLAN = null;     // lo que devuelve GET /api/app/<acceso>/plan
 let PROG = null;     // progreso (versión 1 del contrato)
 let ENLINEA = navigator.onLine !== false;
@@ -77,11 +77,21 @@ addEventListener('pagehide', () => { if (subidaT) { clearTimeout(subidaT); subir
 
 /* ---------- estado y plan ---------- */
 async function pedirEstado() { return api(`/api/app/${ACC}`); }
-async function pedirPlan() { return api(`/api/app/${ACC}/plan`, { plazo: 10000 }); }
+/* Perfil que se está mirando: el comprado (funnel) o un módulo extra comprado aparte (upsell). */
+const PERFILES = ['peso', 'peleador'];
+function perfilActual() {
+  if (!ESTADO) return '';
+  const p = ls.get(K.perfil);
+  return p && (ESTADO.extras || []).includes(p) ? p : ESTADO.funnel;
+}
+async function pedirPlan() {
+  const p = perfilActual();
+  return api(`/api/app/${ACC}/plan` + (p && ESTADO && p !== ESTADO.funnel ? `?perfil=${p}` : ''), { plazo: 10000 });
+}
 
 /* Guarda lo que dijo el servidor y lo fusiona con el progreso local. */
 function aplicarEstado(d) {
-  ESTADO = { estado: d.estado, nombre: primerNombre(d.nombre || ''), funnel: d.funnel === 'peleador' ? 'peleador' : 'peso', nivel: /^t[1-4]$/.test(d.nivel) ? d.nivel : 't1', ts: Date.now() };
+  ESTADO = { estado: d.estado, nombre: primerNombre(d.nombre || ''), funnel: d.funnel === 'peleador' ? 'peleador' : 'peso', nivel: /^t[1-4]$/.test(d.nivel) ? d.nivel : 't1', extras: Array.isArray(d.extras) ? d.extras.filter((x) => PERFILES.includes(x)) : [], ts: Date.now() };
   ls.set(K.estado, ESTADO);
   const sp = NUCLEO.normalizarProg(d.progreso);
   if (sp) {
@@ -108,7 +118,7 @@ async function olvidarEnEsteCelu() {
   Object.values(K).forEach((k) => { if (k !== K.ultimo || ls.getRaw(K.ultimo) === ACC) ls.del(k); });
   try {
     const c = await caches.open('bc-app-datos');
-    await Promise.all([`/api/app/${ACC}`, `/api/app/${ACC}/plan`].map((u) => c.delete(u)));
+    await Promise.all([`/api/app/${ACC}`, `/api/app/${ACC}/plan`, ...PERFILES.map((p) => `/api/app/${ACC}/plan?perfil=${p}`)].map((u) => c.delete(u)));
   } catch (e) {}
 }
 

@@ -99,7 +99,7 @@ async function cargar() {
   if (!r.ok || !r.datos || !r.datos.estado) return pintar(vError(r.status === 429 ? 'Hubo muchos pedidos seguidos. Esperá un momento e intentá de nuevo.' : 'No pudimos conectarnos. Revisá tu conexión e intentá de nuevo.'), { titulo: 'Sin conexión' });
   const d = r.datos;
   if (d.estado === 'pendiente') return esperarPago();
-  if (d.estado === 'revocado') { ESTADO = { estado: 'revocado', nombre: '', funnel: 'peso', nivel: 't1', ts: Date.now() }; return pintar(vRevocado(), { titulo: 'Acceso desactivado' }); }
+  if (d.estado === 'revocado') { ESTADO = { estado: 'revocado', nombre: '', funnel: 'peso', nivel: 't1', extras: [], ts: Date.now() }; return pintar(vRevocado(), { titulo: 'Acceso desactivado' }); }
   aplicarEstado(d);
   let plan = null;
   const rp = await pedirPlan();
@@ -161,12 +161,22 @@ const accion = {
     guardarProg(); ir('hoy');
   },
   nivel() {
-    const h = hoja(`<p class="tag">Nivel de carga</p><h3>Elegí cómo entrenar</h3>${cardsNivel(PROG.nivel, 'nivel-set')}<button class="cta s" data-a="cerrar-hoja">Cancelar</button>`);
+    const h = hoja(`${cardsPerfil()}<p class="tag">Nivel de carga</p><h3>Elegí cómo entrenar</h3>${cardsNivel(PROG.nivel, 'nivel-set')}<button class="cta s" data-a="cerrar-hoja">Cancelar</button>`);
     HOJA = h;
   },
   'nivel-set'(b) {
     if (b.dataset.n !== PROG.nivel) { PROG.nivel = b.dataset.n; guardarProg(); toast('Nivel: ' + N.nivelDe(PLAN, PROG.nivel).nombre); }
     if (HOJA) HOJA.cerrar(); render();
+  },
+  /* Cambiar de perfil (solo si compró el módulo extra): baja el plan de ese perfil y vuelve a pintar. El progreso es uno solo: las sesiones de cada perfil tienen su propio id. */
+  async 'perfil-set'(b) {
+    const nuevo = b.dataset.p, antes = perfilActual();
+    if (HOJA) HOJA.cerrar();
+    if (!nuevo || nuevo === antes) return;
+    ls.set(K.perfil, nuevo);
+    const rp = await pedirPlan();
+    if (rp.ok && planValido(rp.datos)) { guardarPlan(rp.datos); entrarALaApp(rp.datos); toast('Perfil: ' + (TEXTO_PERFIL[nuevo] || [nuevo])[0]); }
+    else { ls.set(K.perfil, antes); toast('No pudimos cambiar de perfil. Revisá tu conexión.'); }
   },
   'cerrar-hoja'() { if (HOJA) HOJA.cerrar(); },
   ajuste(b) {

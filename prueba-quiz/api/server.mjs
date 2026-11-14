@@ -1,7 +1,8 @@
 // Servicio del quiz y la app BeastCamp. Node 22+, sin dependencias. Detrás de nginx (127.0.0.1).
 //   POST /api/lead · POST /api/click                     mail y clic de compra (listas cerradas, 4 KB, límite por IP)
-//   POST /api/hilvapay?evento=pagado|reembolso|disputa   aviso de Hilvapay (token Bearer, idempotente por cobroId)
-//   GET  /api/app/<acceso>[/plan] · PUT /api/app/<acceso>/progreso · POST /api/app/recuperar
+//   POST /api/hilvapay?evento=pagado|reembolso|disputa[&extra=peleador|peso]   aviso de Hilvapay (token Bearer, idempotente por cobroId).
+//        `extra` = el aviso es de un módulo extra (upsell) que se suma al acceso del mismo mail.
+//   GET  /api/app/<acceso>[/plan[?perfil=peleador|peso]] · PUT /api/app/<acceso>/progreso · POST /api/app/recuperar
 //   GET  /salud
 // Nunca loguea mails, nombres, IPs ni tokens. Los datos viven en DATA_DIR (ver almacen.mjs). Contrato: sección 4.
 import { createServer } from "node:http";
@@ -24,6 +25,8 @@ const PAGINAS = new Set(["oferta", "back1", "back2"]);
 const NIVELES_APP = new Set(["t1", "t2", "t3", "t4"]);
 const UTMS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 const EVENTOS = new Set(["pagado", "reembolso", "disputa"]);
+// Módulos extra (upsell): otro perfil del plan que se suma al acceso que ya compró el mismo mail.
+const EXTRAS = new Set(["peleador", "peso"]);
 const MAX_BODY = { lead: 4096, click: 4096, hilvapay: 65_536, progreso: 32_768, recuperar: 1024 };
 const LIMITE = { lead: 5, click: 20, estado: 60, plan: 30, progreso: 30, recuperar: 5, authFallida: 10 };
 const HORA_MS = 3_600_000;
@@ -204,14 +207,15 @@ export async function crearServicio({ dataDir, env = process.env, planDe, fetch:
     });
   }
 
-  const despuesDelPago = (cobroId) => Promise.allSettled([correoDeAcceso(cobroId), compraEnMeta(cobroId)]);
+  const despuesDelPago = (cobroId) =>
+    Promise.allSettled([alm.cobro(cobroId)?.extra ? Promise.resolve() : correoDeAcceso(cobroId), compraEnMeta(cobroId)]);
 
   /** Reintenta lo pendiente de las últimas 24 horas (mails y Purchase que no salieron: corte, caída de Resend o de Meta). */
   async function barrer() {
     const desdeMs = Date.now() - 24 * HORA_MS;
     for (const c of alm.todosLosCobros()) {
       if (!c.activo || c.tsMs < desdeMs) continue;
-      const pendiente = (mailListo && c.email && !alm.mailEnviado(c.cobroId)) || (meta.activo && !c.metaEnviado);
+      const pendiente = (mailListo && c.email && !c.extra && !alm.mailEnviado(c.cobroId)) || (meta.activo && !c.metaEnviado);
       const n = intentosBarrido.get(c.cobroId) ?? 0;
       if (!pendiente || n >= 6) continue;
       intentosBarrido.set(c.cobroId, n + 1);
@@ -294,6 +298,11 @@ export async function crearServicio({ dataDir, env = process.env, planDe, fetch:
     }
     const datos = datosDePago(cuerpo);
     if (datos && FUNNEL_FIJO) datos.funnel = FUNNEL_FIJO;   // cada dominio vende un solo producto
+    const extra = url.searchParams.get("extra");
+    if (extra !== null) {
+      if (!EXTRAS.has(extra)) return responder(res, 400);
+      if (datos) datos.extra = extra;
+    }
     if (!datos) return responder(res, 400);
     // IP, navegador y los identificadores de anuncios solo sirven para mandarle la compra a Meta:
     // sin Meta configurado no se guardan (menos datos personales en disco).
@@ -324,11 +333,15 @@ export async function crearServicio({ dataDir, env = process.env, planDe, fetch:
     return responderJson(res, 200, { ...est, ...(progreso ? { progreso } : {}) });
   }
 
-  async function plan(req, res, acceso, ip) {
+  async function plan(req, res, acceso, ip, url) {
     if (!lim.permitir(`plan|${ip}`, LIMITE.plan)) return responder(res, 429);
     const est = alm.estadoAcceso(acceso);
     if (est.estado !== "activo") return responder(res, 403);
-    const p = await obtenerPlan(est.funnel);
+    // ?perfil= elige entre el perfil comprado y los módulos extra; uno no comprado da 404 (403 haría que la app recargue el acceso)
+    const pedido = url.searchParams.get("perfil");
+    const perfil = pedido === null || pedido === est.funnel ? est.funnel : (est.extras ?? []).includes(pedido) ? pedido : null;
+    if (!perfil) return responder(res, 404);
+    const p = await obtenerPlan(perfil);
     if (!p) {
       registrar("plan: no disponible");
       return responder(res, 503);
@@ -411,7 +424,7 @@ export async function crearServicio({ dataDir, env = process.env, planDe, fetch:
         const [, acceso, sub] = m;
         if (!UUID_V4.test(acceso)) return responder(res, 400);
         if (!sub) return soloMetodo("GET") ? undefined : await estado(res, acceso, ip);
-        if (sub === "plan") return soloMetodo("GET") ? undefined : await plan(req, res, acceso, ip);
+        if (sub === "plan") return soloMetodo("GET") ? undefined : await plan(req, res, acceso, ip, url);
         return soloMetodo("PUT") ? undefined : await guardarProgreso(req, res, acceso, ip);
       }
       return responder(res, 404);
